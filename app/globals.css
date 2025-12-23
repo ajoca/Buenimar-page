@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===============================
+   THEME (ajustá acá para dejarlo igual)
+   =============================== */
+:root {
+  /* Tema oscuro (por defecto) */
+  --bg: 17 24 39;
+  --text: 255 255 255;
+  --muted: 156 163 175;
+  --panel: 31 41 55;
+  --line: 75 85 99;
+  --accent: 99 102 241;
+  --shadow: 0 10px 30px rgba(0,0,0,.3);
+  --radius: 14px;
+  --container: 1100px;
+  --nav-h: 58px;
+  --section-gap: 28px;
+  --card-gap: 18px;
+  --slider-h: 280px;
+  --card-img-h: 165px;
+  --brand-tile-h: 220px;
+}
+
+[data-theme="light"] {
+  --bg: 255 255 255;
+  --text: 17 24 39;
+  --muted: 107 114 128;
+  --panel: 255 255 255;
+  --line: 229 231 235;
+  --accent: 220 38 38; /* rojo corporativo como acento en modo claro */
+  --shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+
+html, body { height: 100%; }
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+}
+
+a { color: inherit; }
+* { scroll-behavior: smooth; }
+
+.container-x {
+  width: min(var(--container), 92vw);
+  margin-inline: auto;
+}
+
+.panel {
+  background: rgb(var(--panel));
+  border: 1px solid rgb(var(--line));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.btn {
+  border-radius: 999px;
+  border: 1px solid rgb(var(--line));
+  background: rgb(var(--panel));
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 1;
+  transition: all 180ms ease;
+  transform-origin: center;
+}
+.btn-accent {
+  border-color: rgba(var(--accent), .35);
+  background: rgba(var(--accent), .12);
+}
+.btn:hover { filter: brightness(.98); }
+.btn-accent:hover { background: rgba(var(--accent), .18); }
+.btn:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.btn:active { transform: translateY(0) scale(0.99); box-shadow: 0 6px 18px rgba(0,0,0,.16); }
+
+/* Consistent section titles across the site */
+@layer components {
+  .section-title {
+    @apply text-3xl font-semibold tracking-tight;
+    color: rgb(var(--text));
+  }
+}

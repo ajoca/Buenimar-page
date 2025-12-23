@@ -227,8 +227,8 @@ export default function ContactSection({
             >
               Al seleccionar esto, aceptas nuestra{" "}
               <a
-                href="#"
-                className="font-semibold whitespace-nowrap"
+                href="/politica-privacidad"
+                className="font-semibold whitespace-nowrap hover:underline transition-colors"
                 style={{ color: "rgb(var(--accent))" }}
               >
                 política de privacidad

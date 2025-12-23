@@ -22,28 +22,28 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
     <section className="py-[var(--section-gap)]">
       <div className="container-x">
         <div className="panel overflow-hidden">
-          <div className="grid grid-cols-[44px_1fr_44px]">
+          <div className="grid grid-cols-[36px_1fr_36px] md:grid-cols-[44px_1fr_44px]">
             <button
               aria-label="Anterior"
               onClick={prev}
-              className="border-r text-[22px] transition-all duration-200 hover:scale-110 hover:-translate-y-[2px] hover:bg-white/10 hover:shadow-lg active:scale-105 active:-translate-y-[1px]"
+              className="border-r text-lg md:text-[22px] transition-all duration-200 hover:scale-105 hover:bg-white/10 active:scale-95"
               style={{ borderColor: "rgb(var(--line))" }}
             >
               ❮
             </button>
 
             <div className="relative">
-              <div className="h-[var(--slider-h)] overflow-hidden">
+              <div className="h-[clamp(220px, var(--slider-h), 320px)] overflow-hidden">
                 <div
                   className="flex h-full transition-transform duration-300 ease-out"
                   style={{ transform: `translateX(-${idx * 100}%)` }}
                 >
                   {safeSlides.map((s, i) => (
-                    <div key={i} className="min-w-full p-5 md:p-7">
-                      <div className="text-[18px] font-semibold">{s.title ?? " "}</div>
+                    <div key={i} className="min-w-full p-3 md:p-5 lg:p-7">
+                      <div className="text-base md:text-lg font-semibold">{s.title ?? " "}</div>
                       {!!s.text && (
                         <div
-                          className="mt-2 text-[14px]"
+                          className="mt-1 md:mt-2 text-xs md:text-sm"
                           style={{ color: "rgb(var(--muted))" }}
                         >
                           {s.text}
@@ -74,7 +74,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             <button
               aria-label="Siguiente"
               onClick={next}
-              className="border-l text-[22px] transition-all duration-200 hover:scale-110 hover:-translate-y-[2px] hover:bg-white/10 hover:shadow-lg active:scale-105 active:-translate-y-[1px]"
+              className="border-l text-lg md:text-[22px] transition-all duration-200 hover:scale-105 hover:bg-white/10 active:scale-95"
               style={{ borderColor: "rgb(var(--line))" }}
             >
               ❯

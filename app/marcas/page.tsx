@@ -13,10 +13,10 @@ export default function MarcasPage() {
   return (
     <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
-      <main className="py-[var(--section-gap)]">
+      <main className="py-6 md:py-[var(--section-gap)]">
         <div className="container-x">
           <h1
-            className="text-5xl font-bold text-center drop-shadow-lg leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-center drop-shadow-lg leading-tight mb-6 md:mb-8"
             style={{ color: "rgb(var(--text))" }}
           >
             {SITE.brandsTitle}

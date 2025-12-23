@@ -17,16 +17,16 @@ export default function ProductsSection({
           {title}
         </h2>
 
-        <div className="mt-4 grid grid-cols-2 gap-[var(--card-gap)] md:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4">
           {products.map((p) => (
             <article
               key={p.id}
-              className="panel overflow-hidden hover:scale-105 hover:rotate-1 hover:shadow-2xl active:scale-105 active:rotate-1 active:shadow-2xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500"
+              className="panel overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 flex flex-col"
             >
               <div
-                className="flex items-center justify-center"
+                className="flex items-center justify-center flex-shrink-0"
                 style={{
-                  height: "var(--card-img-h)",
+                  height: "clamp(120px, 165px, 200px)",
                   borderBottom: "1px solid rgb(var(--line))",
                   background: "rgba(0,0,0,.02)",
                 }}
@@ -48,13 +48,13 @@ export default function ProductsSection({
                 )}
               </div>
 
-              <div className="p-3">
-                <h3 className="text-[14px] font-semibold leading-snug">
+              <div className="p-2 md:p-3 flex-grow">
+                <h3 className="text-xs md:text-sm font-semibold leading-snug line-clamp-2">
                   {p.name}
                 </h3>
                 {!!p.subtitle && (
                   <div
-                    className="text-[13px]"
+                    className="text-[11px] md:text-xs mt-1 line-clamp-1"
                     style={{ color: "rgb(var(--muted))" }}
                   >
                     {p.subtitle}
@@ -62,7 +62,7 @@ export default function ProductsSection({
                 )}
                 {!!p.code && (
                   <div
-                    className="mt-2 text-[13px]"
+                    className="mt-1 md:mt-2 text-[11px] md:text-xs"
                     style={{ color: "rgb(var(--muted))" }}
                   >
                     Código:{" "}

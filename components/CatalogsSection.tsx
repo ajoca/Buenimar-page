@@ -7,17 +7,17 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
       className="py-12"
       style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}
     >
-      <div className="space-y-4 max-w-3xl mx-auto px-4">
+      <div className="space-y-3 md:space-y-4 max-w-3xl mx-auto px-4">
         {catalogs.map((c) => {
           const href = c.href ?? (c.file ? `/archivos/${c.file}` : "#");
           const isExternal = href.startsWith("http");
           return (
             <div
               key={c.id}
-              className="flex justify-between items-center panel p-4 rounded-lg"
+              className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center panel p-3 md:p-4 rounded-lg gap-3"
             >
               <h3
-                className="text-xl font-semibold"
+                className="text-base md:text-lg lg:text-xl font-semibold"
                 style={{ color: "rgb(var(--text))" }}
               >
                 {c.title}
@@ -28,14 +28,14 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
                 download={!isExternal && !!c.file}
                 target={isExternal ? "_blank" : undefined}
                 rel={isExternal ? "noreferrer" : undefined}
-                className="px-4 py-2 rounded-lg transition-all duration-300 hover:scale-110 hover:-translate-y-[2px] hover:rotate-2 hover:shadow-2xl active:scale-105 active:-translate-y-[1px] border-2 border-transparent"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm md:text-base font-semibold whitespace-nowrap transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-100 flex-shrink-0"
                 style={{
                   background: "rgb(var(--accent))",
                   color: "white",
-                  borderColor: "rgba(var(--accent), 0.35)",
                 }}
               >
-                📄 Descargar
+                <span className="text-lg">📄</span>
+                <span>Descargar</span>
               </a>
             </div>
           );

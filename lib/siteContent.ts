@@ -71,10 +71,10 @@ socials: [
 
 brandsTitle: "Marcas con las que trabajamos",
  catalogs: [
-  { id: "c1", title: "Catálogo Conaprole", file: "Catalogo-Conaprole.pdf" },
-  { id: "c2", title: "Catálogo La Especialista", file: "Catalogo-La-Especialista.pdf" },
-  { id: "c3", title: "Catálogo Pagnifique", file: "Catalogo-Pagnifique.pdf" },
-  { id: "c4", title: "Catálogo Almena", file: "Catalogo-Almena.pdf" },
+  { id: "c1", title: "Catálogo Conaprole", file: "Catalogo-Conaprole_Buenimar-Colonia_v2.pdf" },
+  { id: "c2", title: "Catálogo La Especialista", file: "Catalogo-La-Especialista_Buenimar-Colonia_v2.pdf" },
+  { id: "c3", title: "Catálogo Pagnifique", file: "Catalogo-Pagnifique_Buenimar-Colonia_v2.pdf" },
+  { id: "c4", title: "Catálogo Almena", file: "Catalogo-Almena_Buenimar-Colonia_v2.pdf" },
 ],
 
   brands: [

@@ -9,7 +9,7 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
     >
       <div className="space-y-4 max-w-3xl mx-auto px-4">
         {catalogs.map((c) => {
-          const href = c.href ?? (c.file ? `/marcas/docs/${c.file}` : "#");
+          const href = c.href ?? (c.file ? `/archivos/${c.file}` : "#");
           const isExternal = href.startsWith("http");
           return (
             <div

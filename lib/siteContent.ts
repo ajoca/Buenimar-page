@@ -32,6 +32,7 @@ export const SITE: {
     { id: "B67566812", name: "Ades", subtitle: "Ananá", code: "B67566812", image: "/productos/adesanana-B67566812.jpg" },
     { id: "B172048", name: "Coca Cola", code: "B172048", image: "/productos/coca-B172048.jpg" },
     { id: "10090", name: "Vino Tannat", subtitle: "Don Pascual", code: "10090", image: "/productos/tannat-10090.jpg" },
+    { id: "LE214", name: "Pizza Muzza", subtitle: "La Especialista", code: "LE214", image: "/productos/pizzamuzza - LE214.png" },
   ],
 
   portal: {

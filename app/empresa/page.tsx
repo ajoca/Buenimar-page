@@ -75,7 +75,7 @@ export default function EmpresaPage() {
                 En el año 2012, Buenimar comenzó a trabajar en busca de la Certificación de Calidad, asumiendo el compromiso del enfoque basado en procesos, la búsqueda constante de la satisfacción del cliente y la mejora continua. En Octubre de 2013 después de un arduo trabajo de todo su equipo y colaboradores se logró el objetivo promovido por la dirección de la empresa, la certificación en la norma ISO 9001:2008.
               </p>
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
-                Con este objetivo cumplido, el compromiso por el cliente, proveedores y sus colaboradores se acrecienta día a día. Buenimar, 18 años entregando servicio.
+                Con este objetivo cumplido, el compromiso por el cliente, proveedores y sus colaboradores se acrecienta día a día. Buenimar, 30 años entregando servicio.
               </p>
             </div>
             <h3 className="mt-6 md:mt-10 text-2xl sm:text-3xl font-bold text-center mb-4 md:mb-6 text-white">CULTURA DE CALIDAD</h3>

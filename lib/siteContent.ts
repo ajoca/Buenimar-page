@@ -23,16 +23,15 @@ export const SITE: {
     { title: " ", text: " " },
   ],
 
-  productsTitle: "Nuevos Productos",
+  productsTitle: "Productos destacados",
   products: [
-    { id: "p1", name: "Producto 1", subtitle: "Formato / cantidad", code: "COD-001" },
-    { id: "p2", name: "Producto 2", subtitle: "Formato / cantidad", code: "COD-002" },
-    { id: "p3", name: "Producto 3", subtitle: "Formato / cantidad", code: "COD-003" },
-    { id: "p4", name: "Producto 4", subtitle: "Formato / cantidad", code: "COD-004" },
-    { id: "p5", name: "Producto 5", subtitle: "Formato / cantidad", code: "COD-005" },
-    { id: "p6", name: "Producto 6", subtitle: "Formato / cantidad", code: "COD-006" },
-    { id: "p7", name: "Línea nueva", subtitle: "Nombre de línea" },
-    { id: "p8", name: "Producto 8", subtitle: "Formato / cantidad", code: "COD-008" },
+    { id: "8004", name: "Clasicas", subtitle: "Hamburguesas x2", code: "8004", image: "/productos/clasicas-8004.jpeg" },
+    { id: "81424", name: "Colet", subtitle: "Dulce de leche", code: "81424", image: "/productos/colet-81424.png" },
+    { id: "5009", name: "Panchos", subtitle: "Schneck x8", code: "5009", image: "/productos/panchos-5009.jpeg" },
+    { id: "1321", name: "Tortugas", subtitle: "Pagnifique x6", code: "1321", image: "/productos/tortugas-1321.avif" },
+    { id: "B67566812", name: "Ades", subtitle: "Ananá", code: "B67566812", image: "/productos/adesanana-B67566812.jpg" },
+    { id: "B172048", name: "Coca Cola", code: "B172048", image: "/productos/coca-B172048.jpg" },
+    { id: "10090", name: "Vino Tannat", subtitle: "Don Pascual", code: "10090", image: "/productos/tannat-10090.jpg" },
   ],
 
   portal: {

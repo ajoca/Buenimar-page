@@ -12,7 +12,10 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             {/* Left side - Values */}
             <div className="flex flex-col justify-center space-y-3 md:space-y-4">
               {["CALIDAD", "SERVICIO", "VOCACIÓN", "LOGÍSTICA", "RAPIDEZ", "CONFIANZA"].map((item) => (
-                <div key={item} className="bg-red-600 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-full text-center text-sm md:text-base lg:text-lg w-full">
+                <div 
+                  key={item} 
+                  className="bg-red-600 text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-full text-center text-sm md:text-base lg:text-lg w-full transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-red-700 active:scale-95 cursor-pointer"
+                >
                   {item}
                 </div>
               ))}
@@ -20,12 +23,12 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             
             {/* Right side - Image */}
             <div className="flex md:flex items-center justify-center mt-6 md:mt-0">
-              <div className="relative">
+              <div className="relative transition-all duration-500 hover:scale-105 hover:rotate-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src="/img/2070a6_303f0748f5fd4775a89fd681c4f8d080~mv2 (1).avif"
                   alt="Buenimar Camiones" 
-                  className="rounded-full w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover border-4 border-orange-400 shadow-2xl"
+                  className="rounded-full w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover border-4 border-orange-400 shadow-2xl transition-all duration-500"
                 />
               </div>
             </div>

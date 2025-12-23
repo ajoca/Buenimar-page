@@ -36,7 +36,7 @@ export default function CompanySection({
                 <img
                   src={slide.image}
                   alt="Empresa"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain md:object-cover bg-black"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">

@@ -26,7 +26,7 @@ export default function Navbar() {
     }
   };
   return (
-    <header className="bg-red-600 shadow-md sticky top-0 z-50">
+    <header className="bg-red-600 shadow-md sticky top-0 z-50 md:relative">
       <div className="max-w-6xl mx-auto flex justify-between items-center p-4 md:p-6">
         <Link href="/" className="block">
           <img

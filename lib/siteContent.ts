@@ -63,9 +63,9 @@ contactLines: [
 ],
 
 socials: [
-  { id: "wa", label: "WhatsApp", href: "https://wa.me/598XXXXXXXX" },
-  { id: "ig", label: "Instagram", href: "https://instagram.com/TU_USUARIO" },
-  { id: "fb", label: "Facebook", href: "https://facebook.com/TU_PAGINA" },
+  { id: "wa", label: "WhatsApp", href: "https://wa.me/59897557366" },
+  { id: "ig", label: "Instagram", href: "https://www.instagram.com/buenimarcolonia" },
+  { id: "fb", label: "Facebook", href: "https://www.facebook.com/buenimarcolonia" },
 ],
 
 brandsTitle: "Marcas con las que trabajamos",

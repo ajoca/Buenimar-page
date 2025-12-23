@@ -2,16 +2,41 @@ import Navbar from "@/components/Navbar";
 import CompanySection from "@/components/CompanySection";
 import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata = {
-  title: "Empresa - Buenimar Colonia",
-  description: "Nuestra historia y cultura de calidad desde 1996",
+  title: "Nuestra Empresa - Historia y Valores | Buenimar Colonia",
+  description: "Conocé la historia de Buenimar Distribuciones en Colonia del Sacramento. Más de años de experiencia brindando calidad, servicio, vocación, logística, rapidez y confianza a nuestros clientes.",
+  keywords: "buenimar historia, empresa distribuidora colonia, cultura calidad, logística uruguay",
+  openGraph: {
+    title: "Nuestra Historia - Buenimar Distribuciones",
+    description: "Empresa líder en distribución con años de trayectoria en Colonia del Sacramento. Conocé nuestra historia y valores.",
+    url: "https://www.buenimar.com/empresa",
+    siteName: "Buenimar Distribuciones",
+    images: [
+      {
+        url: "/img/BUENIMAR-2.avif",
+        width: 1200,
+        height: 630,
+        alt: "Buenimar Distribuciones - Nuestra Empresa",
+      },
+    ],
+    locale: "es_UY",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nuestra Empresa - Buenimar",
+    description: "Historia y valores de Buenimar Distribuciones",
+    images: ["/img/BUENIMAR-2.avif"],
+  },
 };
 
 export default function EmpresaPage() {
   return (
     <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
+      <Breadcrumbs items={[{ label: "Empresa" }]} />
       <main className="pt-0 pb-0">
 
         <CompanySection

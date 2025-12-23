@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { FaWhatsapp } from "react-icons/fa";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -19,6 +20,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es">
       <body className={`${montserrat.className} min-h-screen antialiased`}>
         {children}
+
+        <ScrollToTop />
 
         <div className="fixed bottom-6 right-6 z-50">
           <a

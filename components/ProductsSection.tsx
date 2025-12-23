@@ -19,19 +19,28 @@ export default function ProductsSection({
   return (
     <section
       className="pb-[var(--section-gap)]"
-      aria-labelledby="nuevos"
+      aria-labelledby="productos-destacados"
     >
       <div className="container-x">
-        <h2 id="nuevos" className="section-title">
+        <h2 id="productos-destacados" className="section-title">
           {title}
         </h2>
 
-        <div className="mt-4 grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4" role="list" aria-label="Lista de productos destacados">
           {displayProducts.map((p) => (
             <article
               key={p.id}
               onClick={() => setSelectedProduct(p)}
-              className="panel overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 flex flex-col"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedProduct(p);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`Ver detalles de ${p.name}${p.subtitle ? `, ${p.subtitle}` : ''}${p.code ? `, c\u00f3digo ${p.code}` : ''}`}
+              className="panel overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 flex flex-col"
             >
               <div
                 className="flex items-center justify-center flex-shrink-0"
@@ -107,6 +116,12 @@ export default function ProductsSection({
         <div
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedProduct(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setSelectedProduct(null);
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="product-modal-title"
         >
           <div
             className="relative max-w-4xl w-full rounded-lg overflow-hidden shadow-2xl"
@@ -115,10 +130,10 @@ export default function ProductsSection({
           >
             <button
               onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all text-xl font-bold"
-              aria-label="Cerrar"
+              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all text-xl font-bold focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Cerrar vista detallada del producto"
             >
-              ✕
+              \u2715
             </button>
             
             <div className="grid md:grid-cols-2 gap-6 p-6 md:p-8">
@@ -128,7 +143,7 @@ export default function ProductsSection({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={selectedProduct.image}
-                    alt={selectedProduct.name}
+                    alt={`Imagen de ${selectedProduct.name}${selectedProduct.subtitle ? ` - ${selectedProduct.subtitle}` : ''}`}
                     className="max-h-[400px] w-full object-contain"
                   />
                 ) : (
@@ -138,7 +153,7 @@ export default function ProductsSection({
               
               {/* Info */}
               <div className="flex flex-col justify-center space-y-6">
-                <h3 className="text-3xl md:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
+                <h3 id="product-modal-title" className="text-3xl md:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
                   {selectedProduct.name}
                 </h3>
                 {selectedProduct.subtitle && (

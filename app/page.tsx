@@ -36,18 +36,28 @@ export const metadata = {
 export default function HomePage() {
   return (
     <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
+      {/* Skip to main content link for keyboard/screen reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-red-600 focus:text-white focus:rounded"
+      >
+        Saltar al contenido principal
+      </a>
+      
       <div id="inicio" />
       <Navbar />
 
-      <HeroSlider slides={SITE.heroSlides} />
+      <main id="main-content" role="main" aria-label="Contenido principal">
+        <HeroSlider slides={SITE.heroSlides} />
 
-      <ProductsSection title={SITE.productsTitle} products={SITE.products} />
+        <ProductsSection title={SITE.productsTitle} products={SITE.products} />
 
-      <PortalSection
-        title={SITE.portal.title}
-        buttonText={SITE.portal.buttonText}
-        href={SITE.portal.href}
-      />
+        <PortalSection
+          title={SITE.portal.title}
+          buttonText={SITE.portal.buttonText}
+          href={SITE.portal.href}
+        />
+      </main>
 
       <Footer />
     </div>

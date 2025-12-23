@@ -28,10 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             href="https://wa.me/59897557366"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#25D366] text-white p-4 rounded-full shadow-xl hover:bg-[#128C7E] transition-all duration-300 flex items-center justify-center hover:scale-110 hover:-translate-y-1 hover:shadow-2xl active:scale-105 active:-translate-y-0.5"
-            aria-label="Abrir WhatsApp"
+            className="bg-[#25D366] text-white p-4 rounded-full shadow-xl hover:bg-[#128C7E] transition-all duration-300 flex items-center justify-center hover:scale-110 hover:-translate-y-1 hover:shadow-2xl active:scale-105 active:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+            aria-label="Contactar por WhatsApp al +598 97 557 366"
           >
-            <FaWhatsapp className="text-3xl" />
+            <FaWhatsapp className="text-3xl" aria-hidden="true" />
+            <span className="sr-only">Abrir chat de WhatsApp</span>
           </a>
         </div>
       </body>

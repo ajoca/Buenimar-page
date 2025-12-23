@@ -26,17 +26,25 @@ export default function Navbar() {
     }
   };
   return (
-    <header className="bg-red-600 shadow-md sticky top-0 z-50 md:relative">
+    <header className="bg-red-600 shadow-md sticky top-0 z-50 md:relative" role="banner">
       <div className="max-w-6xl mx-auto flex justify-between items-center p-4 md:p-6">
-        <Link href="/" className="block">
+        <Link href="/" className="block" aria-label="Buenimar Distribuciones - Ir a inicio">
           <img
             src="/img/Logo.png"
-            alt="Logo"
+            alt="Logo Buenimar Distribuciones"
             className="h-8 md:h-10 transition-transform duration-200 hover:scale-105"
           />
         </Link>
-        <button className="md:hidden text-white text-2xl" onClick={()=>setOpen(!open)}>☰</button>
-        <nav className="hidden md:flex space-x-8 text-white font-medium">
+        <button 
+          className="md:hidden text-white text-2xl" 
+          onClick={()=>setOpen(!open)}
+          aria-label={open ? "Cerrar men\u00fa de navegaci\u00f3n" : "Abrir men\u00fa de navegaci\u00f3n"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+        >
+          {open ? "\u2715" : "\u2630"}
+        </button>
+        <nav className="hidden md:flex space-x-8 text-white font-medium" role="navigation" aria-label="Navegaci\u00f3n principal">
           <Link
             href="/"
             className="inline-block px-2 py-1 rounded-md border-b-2 border-transparent transition-all duration-200 hover:bg-white/10 hover:scale-105 hover:-rotate-1 hover:border-white/60 focus:outline-none focus:ring-2 focus:ring-white/40"

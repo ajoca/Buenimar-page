@@ -38,6 +38,7 @@ html, body { height: 100%; }
 body {
   background: rgb(var(--bg));
   color: rgb(var(--text));
+  overflow-x: hidden;
 }
 
 a { color: inherit; }
@@ -46,6 +47,8 @@ a { color: inherit; }
 .container-x {
   width: min(var(--container), 92vw);
   margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
 }
 
 .panel {

@@ -27,12 +27,12 @@ export default function Navbar() {
   };
   return (
     <header className="bg-red-600 shadow-md sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto flex justify-between items-center p-6">
+      <div className="max-w-6xl mx-auto flex justify-between items-center p-4 md:p-6">
         <Link href="/" className="block">
           <img
             src="/img/Logo.png"
             alt="Logo"
-            className="h-10 transition-transform duration-200 hover:scale-105"
+            className="h-8 md:h-10 transition-transform duration-200 hover:scale-105"
           />
         </Link>
         <button className="md:hidden text-white text-2xl" onClick={()=>setOpen(!open)}>☰</button>
@@ -117,6 +117,24 @@ export default function Navbar() {
           >
             CONTACTO
           </Link>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/40 px-4 py-2 text-sm font-semibold transition-all duration-200 hover:bg-white/10 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+            aria-label="Cambiar tema"
+          >
+            {theme === "dark" ? (
+              <>
+                <LuSunMedium className="text-lg" aria-hidden />
+                <span>Modo claro</span>
+              </>
+            ) : (
+              <>
+                <LuMoon className="text-lg" aria-hidden />
+                <span>Modo oscuro</span>
+              </>
+            )}
+          </button>
         </div>
       )}
     </header>

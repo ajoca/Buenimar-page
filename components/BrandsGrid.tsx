@@ -1,6 +1,15 @@
+"use client";
+
+import { useState } from "react";
 import type { Brand } from "@/lib/types";
 
 export default function BrandsGrid({ brands }: { brands: Brand[] }) {
+  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
+
+  if (!brands || brands.length === 0) {
+    return null;
+  }
+
   return (
     <section className="pb-[var(--section-gap)]">
       <div className="container-x">
@@ -8,7 +17,17 @@ export default function BrandsGrid({ brands }: { brands: Brand[] }) {
           {brands.map((b) => (
             <div
               key={b.id}
-              className="panel flex items-center justify-center overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 active:border-red-500 bg-white aspect-square"
+              onClick={() => setSelectedBrand(b)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setSelectedBrand(b);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`Ver detalles de ${b.name}`}
+              className="panel flex items-center justify-center overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 active:border-red-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white aspect-square"
               style={{ minHeight: "140px" }}
             >
               {b.image ? (
@@ -30,6 +49,57 @@ export default function BrandsGrid({ brands }: { brands: Brand[] }) {
           ))}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      {selectedBrand && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedBrand(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setSelectedBrand(null);
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="brand-modal-title"
+        >
+          <div
+            className="relative max-w-3xl w-full rounded-lg overflow-hidden shadow-2xl"
+            style={{ background: "rgb(var(--panel))" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedBrand(null)}
+              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all text-xl font-bold focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Cerrar vista detallada de la marca"
+            >
+              ✕
+            </button>
+            
+            <div className="flex flex-col items-center justify-center p-8 md:p-12">
+              {/* Image */}
+              <div className="w-full max-w-md bg-white rounded-lg p-8 mb-6">
+                {selectedBrand.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={selectedBrand.image}
+                    alt={`Logo de ${selectedBrand.name}`}
+                    className="w-full h-auto object-contain"
+                  />
+                ) : (
+                  <span className="text-gray-400">Sin imagen</span>
+                )}
+              </div>
+              
+              {/* Info */}
+              <div className="text-center">
+                <h3 id="brand-modal-title" className="text-3xl md:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
+                  {selectedBrand.name}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

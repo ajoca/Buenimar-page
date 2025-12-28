@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function PoliticaPrivacidadPage() {
   return (
-    <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
+    <div className="min-h-screen bg-pattern" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
       <Breadcrumbs items={[{ label: "Política de Privacidad" }]} />
       

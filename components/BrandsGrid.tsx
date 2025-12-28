@@ -69,10 +69,12 @@ export default function BrandsGrid({ brands }: { brands: Brand[] }) {
           >
             <button
               onClick={() => setSelectedBrand(null)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all text-xl font-bold focus:outline-none focus:ring-2 focus:ring-white"
+              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all font-bold focus:outline-none focus:ring-2 focus:ring-white"
               aria-label="Cerrar vista detallada de la marca"
             >
-              ✕
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
             
             <div className="flex flex-col items-center justify-center p-8 md:p-12">

@@ -35,7 +35,7 @@ export const metadata = {
 
 export default function MarcasPage() {
   return (
-    <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
+    <div className="min-h-screen bg-pattern" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
       <Breadcrumbs items={[{ label: "Marcas" }]} />
       <main className="py-6 md:py-[var(--section-gap)]">

@@ -35,7 +35,7 @@ export const metadata = {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
+    <div className="min-h-screen bg-pattern" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       {/* Skip to main content link for keyboard/screen reader users */}
       <a
         href="#main-content"

@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Raleway } from "next/font/google";
 import { FaWhatsapp } from "react-icons/fa";
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -8,17 +8,26 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
+  variable: "--font-montserrat",
+});
+
+const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["600", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-raleway",
 });
 
 export const metadata: Metadata = {
-  title: "Buenimar Colonia",
-  description: "Plantilla",
+  title: "Buenimar Distribuciones | Calidad, Servicio y Confianza en Colonia",
+  description: "Distribuidora líder en Colonia del Sacramento. Más de 100 marcas reconocidas, logística eficiente y servicio personalizado. Productos de primera calidad para tu negocio.",
+  keywords: "distribuidora colonia, buenimar, productos alimenticios uruguay, distribución mayorista, logística colonia",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className={`${montserrat.className} min-h-screen antialiased`}>
+      <body className={`${montserrat.variable} ${raleway.variable} ${montserrat.className} min-h-screen antialiased`}>
         {children}
 
         <ScrollToTop />

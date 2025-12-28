@@ -34,7 +34,7 @@ export const metadata = {
 
 export default function EmpresaPage() {
   return (
-    <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
+    <div className="min-h-screen bg-pattern" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
       <Breadcrumbs items={[{ label: "Empresa" }]} />
       <main className="pt-0 pb-0">

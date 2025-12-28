@@ -1,10 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Brand } from "@/lib/types";
 
 export default function BrandsGrid({ brands }: { brands: Brand[] }) {
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
+
+  // Cerrar modal con Escape
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedBrand) {
+        setSelectedBrand(null);
+      }
+    };
+    
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [selectedBrand]);
 
   if (!brands || brands.length === 0) {
     return null;

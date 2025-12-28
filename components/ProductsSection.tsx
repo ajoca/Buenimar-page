@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Product } from "@/lib/types";
 
 export default function ProductsSection({
@@ -12,6 +12,18 @@ export default function ProductsSection({
 }) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showAll, setShowAll] = useState(false);
+
+  // Cerrar modal con Escape
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedProduct) {
+        setSelectedProduct(null);
+      }
+    };
+    
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [selectedProduct]);
   
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const displayProducts = (isMobile && !showAll) ? products.slice(0, 6) : products;

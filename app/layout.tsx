@@ -19,15 +19,75 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: "Buenimar Distribuciones | Calidad, Servicio y Confianza en Colonia",
-  description: "Distribuidora líder en Colonia del Sacramento. Más de 100 marcas reconocidas, logística eficiente y servicio personalizado. Productos de primera calidad para tu negocio.",
-  keywords: "distribuidora colonia, buenimar, productos alimenticios uruguay, distribución mayorista, logística colonia",
+  metadataBase: new URL("https://www.buenimar.com"),
+  title: {
+    default: "Buenimar Colonia | Distribución mayorista en Colonia del Sacramento",
+    template: "%s | Buenimar Colonia",
+  },
+  description:
+    "Distribuidora mayorista en Colonia del Sacramento. Más de 100 marcas líderes, catálogos descargables, pedidos por WhatsApp y atención personalizada. Calidad, servicio y confianza.",
+  keywords: "distribuidora colonia, buenimar, productos alimenticios uruguay, distribución mayorista, logística colonia, catálogos productos",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_UY",
+    url: "https://www.buenimar.com",
+    siteName: "Buenimar Colonia",
+    title: "Buenimar Colonia | Distribución mayorista",
+    description:
+      "Distribuidora mayorista en Colonia del Sacramento. Más de 100 marcas líderes, catálogos y pedidos por WhatsApp.",
+    images: [
+      { url: "/og-buenimar.png", width: 1200, height: 630, alt: "Buenimar Colonia - Distribución mayorista" },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Buenimar Colonia | Distribución mayorista",
+    description: "Más de 100 marcas líderes, catálogos y pedidos por WhatsApp.",
+    images: ["/og-buenimar.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Buenimar Colonia",
+  url: "https://www.buenimar.com",
+  telephone: "+59845224091",
+  email: "pedidos@buenimar.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Pablo Zufriategui 374",
+    addressLocality: "Colonia del Sacramento",
+    addressCountry: "UY",
+  },
+  sameAs: [
+    "https://wa.me/59897557366"
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <body className={`${montserrat.variable} ${raleway.variable} ${montserrat.className} min-h-screen antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
 
         <ScrollToTop />

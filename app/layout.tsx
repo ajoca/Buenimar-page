@@ -83,6 +83,10 @@ const jsonLd = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className={`${montserrat.variable} ${raleway.variable} ${montserrat.className} min-h-screen antialiased`}>
         <script
           type="application/ld+json"

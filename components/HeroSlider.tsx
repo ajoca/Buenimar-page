@@ -26,26 +26,26 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
 
             {/* Contenido encima de la imagen */}
-            <div className="absolute inset-0 flex flex-col justify-center left-6 md:left-12 max-w-sm md:max-w-xl text-white z-20 p-4">
-              <p className="text-xs md:text-sm font-bold tracking-widest opacity-90 mb-2" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR COLONIA</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
+            <div className="absolute inset-0 flex flex-col justify-center left-4 md:left-12 max-w-xs md:max-w-xl text-white z-20 p-3 md:p-4">
+              <p className="text-xs md:text-sm font-bold tracking-widest opacity-90 mb-1 md:mb-2" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR COLONIA</p>
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-2 md:mb-3" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
                 Distribución y logística con confianza
               </h2>
-              <p className="text-sm md:text-base opacity-90 mb-6 leading-relaxed">
+              <p className="text-xs md:text-base opacity-90 mb-4 md:mb-6 leading-relaxed">
                 Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio.
               </p>
 
               {/* Botones CTA */}
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 md:gap-3">
                 <a
                   href="#productos"
-                  className="rounded-full bg-white/95 px-5 py-2.5 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="rounded-full bg-white/95 px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
                   Ver productos destacados
                 </a>
                 <a
                   href="/marcas"
-                  className="rounded-full bg-red-600/95 px-5 py-2.5 text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="rounded-full bg-red-600/95 px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
                   Catálogos
                 </a>

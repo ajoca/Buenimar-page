@@ -7,11 +7,13 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
       className="py-12"
       style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}
     >
-      <div className="space-y-3 md:space-y-4 max-w-3xl mx-auto px-4">
-        {catalogs.map((c) => {
-          const href = c.href ?? (c.file ? `/archivos/${c.file}` : "#");
-          const isExternal = href.startsWith("http");
-          return (
+      <div className="max-w-3xl mx-auto px-4">
+        <h2 className="section-title text-center mb-6 md:mb-8">Catálogos</h2>
+        <div className="space-y-3 md:space-y-4">
+          {catalogs.map((c) => {
+            const href = c.href ?? (c.file ? `/archivos/${c.file}` : "#");
+            const isExternal = href.startsWith("http");
+            return (
             <div
               key={c.id}
               className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center panel p-3 md:p-4 rounded-lg gap-3"
@@ -38,8 +40,9 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
                 <span>Descargar</span>
               </a>
             </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );

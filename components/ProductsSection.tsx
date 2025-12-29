@@ -12,6 +12,18 @@ export default function ProductsSection({
 }) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detectar si es móvil después de montar el componente
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Cerrar modal con Escape
   useEffect(() => {
@@ -25,7 +37,6 @@ export default function ProductsSection({
     return () => window.removeEventListener('keydown', handleEscape);
   }, [selectedProduct]);
   
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const displayProducts = (isMobile && !showAll) ? products.slice(0, 6) : products;
 
   return (

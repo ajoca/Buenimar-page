@@ -19,7 +19,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             <img
               src="/img/BUENIMAR-2.avif"
               alt="Centro logístico Buenimar Colonia"
-              className="h-[320px] md:h-[400px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              className="h-[380px] md:h-[400px] w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
             />
             
             {/* Overlay con gradiente de marca */}

@@ -9,7 +9,6 @@ export default function Footer() {
           <div className="text-center md:text-left space-y-3">
             <h2 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR</h2>
             <p className="text-sm md:text-base font-semibold italic opacity-90">"Vamos que vamos"</p>
-            <p className="text-xs md:text-sm opacity-80 leading-relaxed">Calidad, servicio y confianza en cada entrega.</p>
           </div>
 
           {/* Columna 2: Contacto */}

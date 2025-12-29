@@ -26,8 +26,8 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
               <div className="relative transition-all duration-500 hover:scale-105 hover:rotate-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
-                  src="/img/2070a6_303f0748f5fd4775a89fd681c4f8d080~mv2 (1).avif"
-                  alt="Buenimar Camiones" 
+                  src="/img/BUENIMAR-2.avif"
+                  alt="Buenimar Distribuciones" 
                   className="rounded-full w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover border-4 border-orange-400 shadow-2xl transition-all duration-500"
                 />
               </div>

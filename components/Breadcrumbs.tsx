@@ -13,7 +13,7 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
           <li>
             <Link 
               href="/" 
-              className="hover:underline transition-colors"
+              className="hover:underline hover:text-red-600 transition-colors"
               style={{ color: "rgb(var(--muted))" }}
             >
               Inicio
@@ -25,7 +25,7 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
               {item.href ? (
                 <Link 
                   href={item.href} 
-                  className="hover:underline transition-colors"
+                  className="hover:underline hover:text-red-600 transition-colors"
                   style={{ color: "rgb(var(--muted))" }}
                 >
                   {item.label}

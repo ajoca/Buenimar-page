@@ -30,6 +30,7 @@ export default function ProductsSection({
 
   return (
     <section
+      id="productos"
       className="pb-[var(--section-gap)]"
       aria-labelledby="productos-destacados"
     >

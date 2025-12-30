@@ -15,10 +15,34 @@ export default function Footer() {
           {/* Columna 2: Contacto */}
           <div className="text-center md:text-left space-y-2">
             <h3 className="text-lg font-bold mb-3">Contacto</h3>
-            <p className="text-sm">📍 Pablo Zufriategui 374<br />Colonia del Sacramento, Uruguay</p>
-            <p className="text-sm">📞 +598 4522 4091</p>
-            <p className="text-sm">📱 +598 97 557 366</p>
-            <p className="text-sm">📧 pedidos@buenimar.com</p>
+            <a 
+              href="https://maps.app.goo.gl/yqpgdfnVyrvCvtzL9" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sm block hover:text-orange-300 transition-colors hover:underline"
+            >
+              📍 Pablo Zufriategui 374<br />Colonia del Sacramento, Uruguay
+            </a>
+            <a 
+              href="tel:+59845224091" 
+              className="text-sm block hover:text-orange-300 transition-colors hover:underline"
+            >
+              📞 +598 4522 4091
+            </a>
+            <a 
+              href="https://wa.me/59897557366" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sm block hover:text-orange-300 transition-colors hover:underline"
+            >
+              📱 +598 97 557 366
+            </a>
+            <a 
+              href="mailto:pedidos@buenimar.com" 
+              className="text-sm block hover:text-orange-300 transition-colors hover:underline"
+            >
+              📧 pedidos@buenimar.com
+            </a>
           </div>
 
           {/* Columna 3: Links útiles */}

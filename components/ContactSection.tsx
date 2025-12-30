@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { SocialLink } from "@/lib/types";
-import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
+import { FaTwitter, FaInstagram, FaFacebookF } from "react-icons/fa";
 
 export default function ContactSection({
   title,
@@ -14,7 +14,7 @@ export default function ContactSection({
   socials: SocialLink[];
 }) {
   const iconMap: Record<string, React.ElementType> = {
-    wa: FaWhatsapp,
+    tw: FaTwitter,
     ig: FaInstagram,
     fb: FaFacebookF,
   };
@@ -311,11 +311,11 @@ export default function ContactSection({
                   <span
                     className="grid h-10 w-10 place-items-center rounded-full"
                     style={{
-                      background: "rgba(var(--accent), 0.12)",
-                      color: "rgb(var(--text))",
+                      background: "transparent",
+                      color: "#dc2626",
                     }}
                   >
-                    {Icon ? <Icon className="text-[22px]" /> : null}
+                    {Icon ? <Icon className="text-[28px]" /> : null}
                   </span>
                   <span className="leading-none">{s.label}</span>
                 </a>

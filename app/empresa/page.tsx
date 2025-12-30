@@ -72,7 +72,7 @@ export default function EmpresaPage() {
                 Con este objetivo cumplido, el compromiso por el cliente, proveedores y sus colaboradores se acrecienta día a día.
               </p>
               <div className="mt-8 md:mt-12 text-center">
-                <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary drop-shadow-lg">
+                <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-primary drop-shadow-lg">
                   Buenimar, 30 años entregando servicio.
                 </p>
               </div>

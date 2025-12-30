@@ -33,6 +33,20 @@ export const SITE: {
     { id: "B172048", name: "Coca Cola", code: "B172048", image: "/productos/coca-B172048.jpg" },
     { id: "10090", name: "Vino Tannat", subtitle: "Don Pascual", code: "10090", image: "/productos/tannat-10090.jpg" },
     { id: "LE214", name: "Pizza Muzza", subtitle: "La Especialista", code: "LE214", image: "/productos/pizzamuzza - LE214.png" },
+    { id: "prod1", name: "Franui Negro", subtitle: "Frutillas en chocolate", code: "", image: "/productos/franui.jpg" },
+    { id: "prod2", name: "Speed Unlimited", subtitle: "Bebida energética", code: "", image: "/productos/speedlata.jpg" },
+    { id: "prod3", name: "Dulce de Leche", subtitle: "La Paila Premium", code: "", image: "/productos/lapaila.jpg" },
+    { id: "prod4", name: "El Faro", subtitle: "Helado chocolate almendras", code: "", image: "/productos/elfarohelado.jpg" },
+    { id: "prod5", name: "Primecão", subtitle: "Alimento perros 22kg", code: "", image: "/productos/primocao22.jpg" },
+    { id: "prod6", name: "Bizarra", subtitle: "Cerveza artesanal", code: "", image: "/productos/bizarra.jpg" },
+    { id: "prod7", name: "Cabesas Bier", subtitle: "Cerveza artesanal", code: "", image: "/productos/cabesasbier.jpg" },
+    { id: "prod8", name: "9 de Oro", subtitle: "Galletitas agridulces", code: "", image: "/productos/9deoro.jpg" },
+    { id: "prod9", name: "Nuggets", subtitle: "Sadia", code: "", image: "/productos/nuggetssadia.jpg" },
+    { id: "prod10", name: "Sur 34 Gin", subtitle: "Gin artesanal", code: "", image: "/productos/ginsur34.jpg" },
+    { id: "prod11", name: "Hellmann's", subtitle: "Mayonesa clásica", code: "", image: "/productos/mayonesahellmans.jpg" },
+    { id: "prod12", name: "Olaso", subtitle: "Ramona dulce de leche", code: "", image: "/productos/olasopostre.jpg" },
+    { id: "prod13", name: "Ravioles", subtitle: "5 Estrellas", code: "", image: "/productos/ravioles5estrellas.jpg" },
+    { id: "prod14", name: "Papas Fritas", subtitle: "Lamb Weston 9mm", code: "", image: "/productos/papaslaweston.jpg" },
   ],
 
   portal: {
@@ -64,7 +78,7 @@ contactLines: [
 ],
 
 socials: [
-  { id: "wa", label: "WhatsApp", href: "https://wa.me/59897557366" },
+  { id: "tw", label: "Twitter", href: "https://twitter.com/buenimarcolonia" },
   { id: "ig", label: "Instagram", href: "https://www.instagram.com/buenimarcolonia" },
   { id: "fb", label: "Facebook", href: "https://www.facebook.com/buenimarcolonia" },
 ],

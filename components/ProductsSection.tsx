@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import type { Product } from "@/lib/types";
-import ScrollReveal from "./ScrollReveal";
 
 export default function ProductsSection({
   title,
@@ -47,17 +46,15 @@ export default function ProductsSection({
       aria-labelledby="productos-destacados"
     >
       <div className="container-x">
-        <ScrollReveal animation="slide-up">
-          <h2 id="productos-destacados" className="section-title">
-            {title}
-          </h2>
-        </ScrollReveal>
+        <h2 id="productos-destacados" className="section-title">
+          {title}
+        </h2>
 
         <div className="mt-4 grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr" role="list" aria-label="Lista de productos destacados">
           {displayProducts.map((p, index) => (
-            <ScrollReveal key={p.id} animation="zoom" delay={index * 50}>
-              <article
-                onClick={() => setSelectedProduct(p)}
+            <article
+              key={p.id}
+              onClick={() => setSelectedProduct(p)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -117,7 +114,6 @@ export default function ProductsSection({
                 </div>
               </div>
             </article>
-            </ScrollReveal>
           ))}
         </div>
 

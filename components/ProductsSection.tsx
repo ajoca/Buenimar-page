@@ -71,7 +71,7 @@ export default function ProductsSection({
                 style={{
                   height: "clamp(120px, 165px, 200px)",
                   borderBottom: "1px solid rgb(var(--line))",
-                  background: "rgba(0,0,0,.02)",
+                  background: "#ffffff",
                 }}
               >
                 {p.image ? (
@@ -79,7 +79,11 @@ export default function ProductsSection({
                   <img
                     src={p.image}
                     alt={p.name}
-                    className="h-full w-full object-contain p-2"
+                    className="h-full w-full object-contain"
+                    style={{
+                      padding: "20px",
+                      background: "#ffffff",
+                    }}
                   />
                 ) : (
                   <span

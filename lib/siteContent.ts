@@ -37,7 +37,7 @@ export const SITE: {
     { id: "prod2", name: "Speed Unlimited", subtitle: "Bebida energética", code: "", image: "/productos/speedlata.jpg" },
     { id: "prod3", name: "Dulce de Leche", subtitle: "La Paila Premium", code: "", image: "/productos/lapaila.jpg" },
     { id: "prod4", name: "El Faro", subtitle: "Helado chocolate almendras", code: "", image: "/productos/elfarohelado.jpg" },
-    { id: "prod5", name: "Primecão", subtitle: "Alimento perros 22kg", code: "", image: "/productos/primocao22.jpg" },
+    { id: "prod5", name: "Primocão", subtitle: "Alimento perros 22kg", code: "", image: "/productos/primocao22.jpg" },
     { id: "prod6", name: "Bizarra", subtitle: "Cerveza artesanal", code: "", image: "/productos/bizarra.jpg" },
     { id: "prod7", name: "Cabesas Bier", subtitle: "Cerveza artesanal", code: "", image: "/productos/cabesasbier.jpg" },
     { id: "prod8", name: "9 de Oro", subtitle: "Galletitas agridulces", code: "", image: "/productos/9deoro.jpg" },

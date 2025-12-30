@@ -84,18 +84,19 @@ export default function EmpresaPage() {
             </ScrollReveal>
             <ScrollReveal animation="fade" delay={400}>
               <div className="bg-white/90 text-black p-4 md:p-8 rounded-lg shadow-lg">
-              <p className="text-sm md:text-base lg:text-lg leading-relaxed">
-                Buenimar S.A. es una empresa de venta y distribución de productos líderes en el mercado, que busca posicionarse como representante exclusivo de las mejores marcas a través de un servicio eficiente y eficaz.
-              </p>
-              <p className="text-sm md:text-base lg:text-lg leading-relaxed mt-3 md:mt-4">
-                Desde su inicio en 1996, Buenimar tiene la creencia que sólo a través de un nexo confiable, apoyados en una ética de servicios sumamente profesional, así como lo legalmente requerido, es posible lograr el éxito sostenido y la mejora contínua.
-              </p>
-              <p className="text-sm md:text-base lg:text-lg leading-relaxed mt-3 md:mt-4">
-                Para satisfacer los requerimientos de nuestros clientes, dependemos de la unidad de esfuerzos de muchos, es por eso que el personal competente junto a nuestros valiosos proveedores compartimos valores en común; confianza, enfoque en el cliente, valor humano, trabajo en equipo, compromiso y entrega, relacionamiento personal, soluciones y desarrollo, asegurando prosperidad a todas las partes interesadas.
-              </p>
-              <p className="text-sm md:text-base lg:text-lg leading-relaxed mt-3 md:mt-4">
-                Logramos el éxito cuando cada decisión se basa en una planificación previa de todos los elementos involucrados, incluyendo una sólida planificación financiera, humana y estratégica.
-              </p>
+                <p className="text-sm md:text-base lg:text-lg leading-relaxed">
+                  Buenimar S.A. es una empresa de venta y distribución de productos líderes en el mercado, que busca posicionarse como representante exclusivo de las mejores marcas a través de un servicio eficiente y eficaz.
+                </p>
+                <p className="text-sm md:text-base lg:text-lg leading-relaxed mt-3 md:mt-4">
+                  Desde su inicio en 1996, Buenimar tiene la creencia que sólo a través de un nexo confiable, apoyados en una ética de servicios sumamente profesional, así como lo legalmente requerido, es posible lograr el éxito sostenido y la mejora contínua.
+                </p>
+                <p className="text-sm md:text-base lg:text-lg leading-relaxed mt-3 md:mt-4">
+                  Para satisfacer los requerimientos de nuestros clientes, dependemos de la unidad de esfuerzos de muchos, es por eso que el personal competente junto a nuestros valiosos proveedores compartimos valores en común; confianza, enfoque en el cliente, valor humano, trabajo en equipo, compromiso y entrega, relacionamiento personal, soluciones y desarrollo, asegurando prosperidad a todas las partes interesadas.
+                </p>
+                <p className="text-sm md:text-base lg:text-lg leading-relaxed mt-3 md:mt-4">
+                  Logramos el éxito cuando cada decisión se basa en una planificación previa de todos los elementos involucrados, incluyendo una sólida planificación financiera, humana y estratégica.
+                </p>
+              </div>
             </ScrollReveal>
           </div>
         </ParallaxSection>

@@ -3,6 +3,7 @@ import CompanySection from "@/components/CompanySection";
 import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import CertificationBadge from "@/components/CertificationBadge";
 
 export const metadata = {
   title: "Nuestra Empresa - Historia y Valores | Buenimar Colonia",
@@ -68,6 +69,9 @@ export default function EmpresaPage() {
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
                 En el año 2012, Buenimar comenzó a trabajar en busca de la Certificación de Calidad, asumiendo el compromiso del enfoque basado en procesos, la búsqueda constante de la satisfacción del cliente y la mejora continua. En Octubre de 2013 después de un arduo trabajo de todo su equipo y colaboradores se logró el objetivo promovido por la dirección de la empresa, la certificación en la norma ISO 9001:2008.
               </p>
+              <div className="flex justify-center my-6 md:my-8">
+                <CertificationBadge />
+              </div>
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
                 Con este objetivo cumplido, el compromiso por el cliente, proveedores y sus colaboradores se acrecienta día a día.
               </p>

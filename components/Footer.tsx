@@ -1,10 +1,11 @@
 import Link from "next/link";
+import CertificationBadge from "./CertificationBadge";
 
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-red-600 to-red-700 text-white py-12 md:py-16">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
           {/* Columna 1: Marca y eslogan */}
           <div className="text-center md:text-left space-y-3">
             <h2 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR</h2>
@@ -29,6 +30,11 @@ export default function Footer() {
               <Link href="/contacto" className="hover:underline hover:text-orange-300 transition-colors">Contacto</Link>
               <Link href="/politica-privacidad" className="hover:underline hover:text-orange-300 transition-colors">Política de Privacidad</Link>
             </nav>
+          </div>
+
+          {/* Columna 4: Certificación */}
+          <div className="flex justify-center md:justify-end items-start">
+            <CertificationBadge />
           </div>
         </div>
 

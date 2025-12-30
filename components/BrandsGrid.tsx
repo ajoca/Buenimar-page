@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import type { Brand } from "@/lib/types";
+import ScrollReveal from "./ScrollReveal";
 
 export default function BrandsGrid({ brands }: { brands: Brand[] }) {
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
@@ -26,10 +27,10 @@ export default function BrandsGrid({ brands }: { brands: Brand[] }) {
     <section className="pb-[var(--section-gap)]">
       <div className="container-x">
         <div className="grid grid-cols-2 gap-3 md:gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {brands.map((b) => (
-            <div
-              key={b.id}
-              onClick={() => setSelectedBrand(b)}
+          {brands.map((b, index) => (
+            <ScrollReveal key={b.id} animation="zoom" delay={index * 30}>
+              <div
+                onClick={() => setSelectedBrand(b)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
@@ -58,6 +59,7 @@ export default function BrandsGrid({ brands }: { brands: Brand[] }) {
                 </span>
               )}
             </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

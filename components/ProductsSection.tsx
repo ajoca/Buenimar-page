@@ -63,13 +63,12 @@ export default function ProductsSection({
                     e.preventDefault();
                     setSelectedProduct(p);
                   }
-                }
-              }}
-              tabIndex={0}
-              role="button"
-              aria-label={`Ver detalles de ${p.name}${p.subtitle ? `, ${p.subtitle}` : ''}${p.code ? `, c\u00f3digo ${p.code}` : ''}`}
-              className="panel overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 flex flex-col"
-            >
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`Ver detalles de ${p.name}${p.subtitle ? `, ${p.subtitle}` : ''}${p.code ? `, código ${p.code}` : ''}`}
+                className="panel overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 flex flex-col"
+              >
               <div
                 className="flex items-center justify-center flex-shrink-0"
                 style={{
@@ -127,6 +126,7 @@ export default function ProductsSection({
                 )}
               </div>
             </article>
+            </ScrollReveal>
           ))}
         </div>
 

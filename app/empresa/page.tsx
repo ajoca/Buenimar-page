@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CertificationBadge from "@/components/CertificationBadge";
+import ScrollReveal from "@/components/ScrollReveal";
+import ParallaxSection from "@/components/ParallaxSection";
 
 export const metadata = {
   title: "Nuestra Empresa - Historia y Valores | Buenimar Colonia",
@@ -46,20 +48,15 @@ export default function EmpresaPage() {
           paragraphs={SITE.companyParagraphs}
         />
 
-        <section className="relative pb-12 pt-0">
-          {/* Background image layer with grayscale */}
-          <div
-            className="absolute inset-0 bg-center bg-cover"
-            style={{
-              backgroundImage: "url('/img/2070a6_8e37e4c151464366bcebb084f5bfc667~mv2.avif')",
-              filter: 'grayscale(100%)',
-            }}
-          />
+        <ParallaxSection speed={0.3} className="relative pb-12 pt-0" backgroundImage="/img/2070a6_8e37e4c151464366bcebb084f5bfc667~mv2.avif">
           {/* Soft dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/40 z-[1]" style={{ filter: 'grayscale(100%)' }} />
           <div className="relative z-10 max-w-5xl mx-auto px-4 text-white pt-6 md:pt-10 pb-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-6 md:mb-8 drop-shadow-2xl">NUESTRA HISTORIA</h2>
-            <div className="bg-white/90 text-black p-4 md:p-8 rounded-lg shadow-lg">
+            <ScrollReveal animation="slide-up">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-6 md:mb-8 drop-shadow-2xl">NUESTRA HISTORIA</h2>
+            </ScrollReveal>
+            <ScrollReveal animation="fade" delay={200}>
+              <div className="bg-white/90 text-black p-4 md:p-8 rounded-lg shadow-lg">
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
                 Buenimar comienza su historia a mediados del año 1996, abocado a la fabricación y distribución de "HIELOS COOL". Es en sus comienzos que incorpora una innovadora línea de panes y bizcochos ultra congelados "PAGNIFIQUE", confiando en el producto y apostando a un trabajo a largo plazo, marcando así un método diferente de trabajo que lo llevaría a consolidarse como distribuidora líder en el Departamento de Colonia.
               </p>
@@ -81,8 +78,12 @@ export default function EmpresaPage() {
                 </p>
               </div>
             </div>
-            <h3 className="mt-6 md:mt-10 text-2xl sm:text-3xl font-bold text-center mb-4 md:mb-6 text-white">CULTURA DE CALIDAD</h3>
-            <div className="bg-white/90 text-black p-4 md:p-8 rounded-lg shadow-lg">
+            </ScrollReveal>
+            <ScrollReveal animation="slide-up" delay={300}>
+              <h3 className="mt-6 md:mt-10 text-2xl sm:text-3xl font-bold text-center mb-4 md:mb-6 text-white">CULTURA DE CALIDAD</h3>
+            </ScrollReveal>
+            <ScrollReveal animation="fade" delay={400}>
+              <div className="bg-white/90 text-black p-4 md:p-8 rounded-lg shadow-lg">
               <p className="text-sm md:text-base lg:text-lg leading-relaxed">
                 Buenimar S.A. es una empresa de venta y distribución de productos líderes en el mercado, que busca posicionarse como representante exclusivo de las mejores marcas a través de un servicio eficiente y eficaz.
               </p>
@@ -95,9 +96,9 @@ export default function EmpresaPage() {
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mt-3 md:mt-4">
                 Logramos el éxito cuando cada decisión se basa en una planificación previa de todos los elementos involucrados, incluyendo una sólida planificación financiera, humana y estratégica.
               </p>
-            </div>
+            </ScrollReveal>
           </div>
-        </section>
+        </ParallaxSection>
       </main>
       <Footer />
     </div>

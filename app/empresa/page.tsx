@@ -63,20 +63,19 @@ export default function EmpresaPage() {
                 Buenimar comienza su historia a mediados del año 1996, abocado a la fabricación y distribución de "HIELOS COOL". Es en sus comienzos que incorpora una innovadora línea de panes y bizcochos ultra congelados "PAGNIFIQUE", confiando en el producto y apostando a un trabajo a largo plazo, marcando así un método diferente de trabajo que lo llevaría a consolidarse como distribuidora líder en el Departamento de Colonia.
               </p>
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
-                A finales del 2002 a pesar del difícil momento económico que atravesaba nuestro país, Buenimar siguió apostando al futuro con la incorporación de marcas líderes tales como ALMENA S.A (Don Pascual, Terma, S. Teresa; entre tantas), FORT MASIS (lácteos Danone), UNILEVER FOOD SOLUTION (Hellmans, Knorr), SUC. CARLOS SCHNECK Y LA ESPECIALISTA.
-              </p>
-              <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
-                De ahí en más se han ido sumando a este ambicioso proyecto otras significativos proveedores como SAMU (arroz y derivados), MOLINO AMERICANO (harinas y derivados), LISLEY S.A (cervezas) y GRABA S.A(prod. Congelados), empresas que confiaron el compromiso que Buenimar tiene frente al cliente.
-              </p>
-              <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
                 Buenimar consciente de la importancia de sus Recursos Humanos se ha preocupado por desarrollar al personal, estimulando sus aportes y capacitándolos constantemente para la adecuada ejecución de su tarea. Siempre sosteniendo el fin de brindar a cada uno de los clientes el servicio que merecen, y agradecerles así la confianza depositada día a día en la empresa.
               </p>
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
                 En el año 2012, Buenimar comenzó a trabajar en busca de la Certificación de Calidad, asumiendo el compromiso del enfoque basado en procesos, la búsqueda constante de la satisfacción del cliente y la mejora continua. En Octubre de 2013 después de un arduo trabajo de todo su equipo y colaboradores se logró el objetivo promovido por la dirección de la empresa, la certificación en la norma ISO 9001:2008.
               </p>
               <p className="text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6">
-                Con este objetivo cumplido, el compromiso por el cliente, proveedores y sus colaboradores se acrecienta día a día. Buenimar, 30 años entregando servicio.
+                Con este objetivo cumplido, el compromiso por el cliente, proveedores y sus colaboradores se acrecienta día a día.
               </p>
+              <div className="mt-8 md:mt-12 text-center">
+                <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary drop-shadow-lg">
+                  Buenimar, 30 años entregando servicio.
+                </p>
+              </div>
             </div>
             <h3 className="mt-6 md:mt-10 text-2xl sm:text-3xl font-bold text-center mb-4 md:mb-6 text-white">CULTURA DE CALIDAD</h3>
             <div className="bg-white/90 text-black p-4 md:p-8 rounded-lg shadow-lg">

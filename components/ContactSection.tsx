@@ -32,7 +32,8 @@ export default function ContactSection({
     e.preventDefault();
     setSubmitting(true);
     setResult(null);
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const payload = {
       firstName: String(fd.get("first-name") || ""),
       lastName: String(fd.get("last-name") || ""),
@@ -52,7 +53,7 @@ export default function ContactSection({
       const json = await res.json();
       if (!res.ok || !json?.ok) throw new Error(json?.error || "Error");
       setResult({ ok: true, msg: "Mensaje enviado. ¡Gracias por contactarnos!" });
-      e.currentTarget.reset();
+      form?.reset();
     } catch (err: any) {
       setResult({ ok: false, msg: err?.message || "No se pudo enviar el mensaje" });
     } finally {

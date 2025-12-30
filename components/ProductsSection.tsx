@@ -53,7 +53,7 @@ export default function ProductsSection({
           </h2>
         </ScrollReveal>
 
-        <div className="mt-4 grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4" role="list" aria-label="Lista de productos destacados">
+        <div className="mt-4 grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr" role="list" aria-label="Lista de productos destacados">
           {displayProducts.map((p, index) => (
             <ScrollReveal key={p.id} animation="zoom" delay={index * 50}>
               <article
@@ -67,7 +67,7 @@ export default function ProductsSection({
                 tabIndex={0}
                 role="button"
                 aria-label={`Ver detalles de ${p.name}${p.subtitle ? `, ${p.subtitle}` : ''}${p.code ? `, código ${p.code}` : ''}`}
-                className="panel overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 flex flex-col"
+                className="panel overflow-hidden hover:scale-105 hover:shadow-xl active:scale-100 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-red-500 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 flex flex-col h-full"
               >
               <div
                 className="flex items-center justify-center flex-shrink-0"
@@ -98,32 +98,23 @@ export default function ProductsSection({
                 )}
               </div>
 
-              <div className="p-2 md:p-3 flex-grow">
-                <h3 className="text-xs md:text-sm font-semibold leading-snug line-clamp-2">
+              <div className="p-2 md:p-3 flex-grow flex flex-col">
+                <h3 className="text-xs md:text-sm font-semibold leading-snug line-clamp-2 min-h-[32px]">
                   {p.name}
                 </h3>
-                {!!p.subtitle && (
-                  <div
-                    className="text-[11px] md:text-xs mt-1 line-clamp-1"
-                    style={{ color: "rgb(var(--muted))" }}
-                  >
-                    {p.subtitle}
-                  </div>
-                )}
-                {!!p.code && (
-                  <div
-                    className="mt-1 md:mt-2 text-[11px] md:text-xs"
-                    style={{ color: "rgb(var(--muted))" }}
-                  >
-                    Código:{" "}
-                    <span
-                      className="font-semibold"
-                      style={{ color: "rgb(var(--text))" }}
-                    >
-                      {p.code}
-                    </span>
-                  </div>
-                )}
+                <div className="text-[11px] md:text-xs mt-1 line-clamp-1 min-h-[16px]" style={{ color: "rgb(var(--muted))" }}>
+                  {p.subtitle || '\u00A0'}
+                </div>
+                <div className="mt-1 md:mt-2 text-[11px] md:text-xs min-h-[20px]" style={{ color: "rgb(var(--muted))" }}>
+                  {p.code && (
+                    <>
+                      Código:{" "}
+                      <span className="font-semibold" style={{ color: "rgb(var(--text))" }}>
+                        {p.code}
+                      </span>
+                    </>
+                  )}
+                </div>
               </div>
             </article>
             </ScrollReveal>

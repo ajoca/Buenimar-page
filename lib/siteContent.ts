@@ -43,7 +43,7 @@ export const SITE: {
     { id: "prod8", name: "9 de Oro", subtitle: "Galletitas agridulces", code: "BIZ0005", image: "/productos/9deoro-BIZ0005.jpg" },
     { id: "prod9", name: "Nuggets", subtitle: "Sadia", code: "6529", image: "/productos/nuggetssadia-6529.jpg" },
     { id: "prod10", name: "Sur 34 Gin", subtitle: "Gin artesanal", code: "GINS34", image: "/productos/ginsur34-GINS34.jpg" },
-    { id: "prod11", name: "Hellmann's", subtitle: "Mayonesa clásica", code: "6883872", image: "/productos/mayonesahellmans-6883872.jpg" },
+    { id: "prod11", name: "Hellmann's", subtitle: "Mayonesa clásica", code: "68833872", image: "/productos/mayonesahellmans-68833872.jpg" },
     { id: "prod12", name: "Olaso", subtitle: "Ramona dulce de leche", code: "2000", image: "/productos/olasopostre-2000.jpg" },
     { id: "prod13", name: "Ravioles", subtitle: "5 Estrellas", code: "5101", image: "/productos/ravioles5estrellas-5101.jpg" },
     { id: "prod14", name: "Papas Fritas", subtitle: "Lamb Weston 9mm", code: "436", image: "/productos/papaslaweston-436.jpg" },

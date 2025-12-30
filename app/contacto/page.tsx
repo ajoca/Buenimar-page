@@ -36,8 +36,10 @@ export default function ContactoPage() {
   return (
     <div className="min-h-screen bg-pattern" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
-      <Breadcrumbs items={[{ label: "Contacto" }]} />
-      <main className="py-[var(--section-gap)]">
+      <div className="relative z-20">
+        <Breadcrumbs items={[{ label: "Contacto" }]} />
+      </div>
+      <main className="py-[var(--section-gap)] relative">
 
         <ContactSection
           title={SITE.contactTitle}

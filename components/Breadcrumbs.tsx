@@ -9,18 +9,18 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
     <nav 
       aria-label="Breadcrumb" 
-      className="py-4 md:py-5 border-b"
+      className="py-4 md:py-5 border-b relative z-10"
       style={{ 
         borderColor: "rgb(var(--line))",
         background: "linear-gradient(to bottom, rgb(var(--bg)), rgba(var(--bg), 0.98))"
       }}
     >
       <div className="container-x">
-        <ol className="flex items-center space-x-2 md:space-x-3 text-sm md:text-base flex-wrap">
+        <ol className="flex items-center space-x-2 md:space-x-3 text-sm md:text-base flex-wrap gap-y-2">
           <li className="flex items-center">
             <Link 
               href="/" 
-              className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-red-50 transition-all duration-200 group"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-red-50 transition-all duration-200 group cursor-pointer"
             >
               <svg 
                 className="w-4 h-4 text-red-600 group-hover:scale-110 transition-transform" 

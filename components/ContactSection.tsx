@@ -30,9 +30,9 @@ export default function ContactSection({
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setSubmitting(true);
     setResult(null);
-    const form = e.currentTarget;
     const fd = new FormData(form);
     const payload = {
       firstName: String(fd.get("first-name") || ""),
@@ -53,7 +53,7 @@ export default function ContactSection({
       const json = await res.json();
       if (!res.ok || !json?.ok) throw new Error(json?.error || "Error");
       setResult({ ok: true, msg: "Mensaje enviado. ¡Gracias por contactarnos!" });
-      form?.reset();
+      if (form) form.reset();
     } catch (err: any) {
       setResult({ ok: false, msg: err?.message || "No se pudo enviar el mensaje" });
     } finally {

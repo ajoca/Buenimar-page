@@ -53,7 +53,10 @@ export default function ContactSection({
       const json = await res.json();
       if (!res.ok || !json?.ok) throw new Error(json?.error || "Error");
       setResult({ ok: true, msg: "Mensaje enviado. ¡Gracias por contactarnos!" });
-      if (form) form.reset();
+      // Reset form after successful submission
+      setTimeout(() => {
+        if (form) form.reset();
+      }, 100);
     } catch (err: any) {
       setResult({ ok: false, msg: err?.message || "No se pudo enviar el mensaje" });
     } finally {

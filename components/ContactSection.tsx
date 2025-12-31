@@ -292,8 +292,8 @@ export default function ContactSection({
         </div>
 
         <div className="mt-8">
-          <h3 className="text-xl font-semibold mb-4" style={{ color: "rgb(var(--text))" }}>Síguenos</h3>
-          <div className="flex flex-wrap gap-3">
+          <h3 className="text-base md:text-xl font-semibold mb-3" style={{ color: "rgb(var(--text))" }}>Síguenos</h3>
+          <div className="flex flex-wrap gap-2">
             {socials.map((s) => {
               const Icon = iconMap[s.id] ?? null;
               const isExternal = s.href.startsWith("http");
@@ -304,7 +304,7 @@ export default function ContactSection({
                   href={s.href}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noreferrer" : undefined}
-                  className="inline-flex items-center gap-3 rounded-full border px-4 py-2 text-base font-medium shadow-sm transition hover:scale-105 focus:outline-none focus:ring-2"
+                  className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm md:text-base font-medium shadow-sm transition hover:scale-105 focus:outline-none focus:ring-2"
                   style={{
                     background: "rgb(var(--panel))",
                     borderColor: "rgb(var(--line))",
@@ -313,15 +313,15 @@ export default function ContactSection({
                   }}
                 >
                   <span
-                    className="grid h-10 w-10 place-items-center rounded-full"
+                    className="grid h-7 w-7 md:h-9 md:w-9 place-items-center rounded-full"
                     style={{
                       background: "transparent",
                       color: "#dc2626",
                     }}
                   >
-                    {Icon ? <Icon className="text-[28px]" /> : null}
+                    {Icon ? <Icon className="text-lg md:text-2xl" /> : null}
                   </span>
-                  <span className="leading-none">{s.label}</span>
+                  <span className="leading-none text-sm md:text-base">{s.label}</span>
                 </a>
               );
             })}

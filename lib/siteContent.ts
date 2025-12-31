@@ -33,7 +33,7 @@ export const SITE: {
     { id: "B172048", name: "Gaseosa", subtitle: "Coca Cola", code: "B172048", image: "/productos/coca-B172048.jpg" },
     { id: "10090", name: "Vino Tannat", subtitle: "Don Pascual", code: "10090", image: "/productos/tannat-10090.jpg" },
     { id: "LE214", name: "Pizza Muzzarella", subtitle: "La Especialista", code: "LE214", image: "/productos/pizzamuzza - LE214.png" },
-    { id: "prod1", name: "Frutillas en Chocolate", subtitle: "Franui Negro", code: "16", image: "/productos/franui-16.jpg" },
+    { id: "prod1", name: "Frambuesas en Chocolate", subtitle: "Franui Negro", code: "16", image: "/productos/franui-16.jpg" },
     { id: "prod2", name: "Bebida Energética", subtitle: "Speed Unlimited", code: "1002", image: "/productos/speedlata-1002.jpg" },
     { id: "prod3", name: "Dulce de Leche", subtitle: "La Paila Premium", code: "D001", image: "/productos/lapaila-D001.jpg" },
     { id: "prod4", name: "Helado", subtitle: "El Faro chocolate almendras", code: "2010", image: "/productos/elfarohelado-2010.jpg" },

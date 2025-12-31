@@ -69,7 +69,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             />
             
             {/* Contenido debajo de la imagen */}
-            <div className="p-6 bg-gradient-to-b from-gray-900 to-black text-white">
+            <div className="p-6 bg-gradient-to-b from-gray-900 to-black text-white relative z-20">
               <p className="text-xs font-bold tracking-widest opacity-90 mb-2" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR COLONIA</p>
               <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
                 Distribución y logística con confianza
@@ -79,7 +79,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
               </p>
 
               {/* Botones en columna para mobile */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 relative z-30">
                 <a
                   href="#productos"
                   className="rounded-full bg-white/95 px-5 py-3 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 active:scale-95 shadow-lg text-center touch-manipulation"

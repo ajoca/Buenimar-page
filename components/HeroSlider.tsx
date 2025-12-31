@@ -40,7 +40,11 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
               <div className="flex flex-wrap gap-3">
                 <a
                   href="#productos"
-                  className="rounded-full bg-white/95 px-5 py-2.5 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="rounded-full bg-white/95 px-5 py-2.5 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
                 >
                   Ver productos destacados
                 </a>
@@ -78,8 +82,21 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
               <div className="flex flex-col gap-3">
                 <a
                   href="#productos"
-                  className="rounded-full bg-white/95 text-center px-5 py-3 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 shadow-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="rounded-full bg-white/95 px-5 py-3 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 hover:scale-105 hover:shadow-lg text-center"
                 >
+                  Ver productos destacados
+                </a>
+                <a
+                  href="/marcas"
+                  className="rounded-full bg-red-600/95 px-5 py-3 text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 hover:scale-105 hover:shadow-lg text-center"
+                >
+                  Catálogos
+                </a>
+              </div>
                   Ver productos destacados
                 </a>
                 <a

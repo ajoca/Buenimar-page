@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       { userAgent: "*", allow: "/", disallow: ["/api/"] },
     ],
-    sitemap: "https://www.buenimar.com/sitemap.xml",
-    host: "https://www.buenimar.com",
+    sitemap: "https://www.buenimarcolonia.com/sitemap.xml",
+    host: "https://www.buenimarcolonia.com",
   };
 }

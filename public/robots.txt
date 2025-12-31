@@ -1,0 +1,6 @@
+# robots.txt para Buenimar Distribuciones
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.buenimarcolonia.com/sitemap.xml

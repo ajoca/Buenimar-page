@@ -42,8 +42,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_UY",
     url: "https://www.buenimarcolonia.com",
-    siteName: "Buenimar",
-    title: "Buenimar | Distribución mayorista",
+    siteName: "Buenimar Colonia",
+    title: "Buenimar Colonia | Distribución mayorista",
     description:
       "Distribuidora mayorista en Colonia del Sacramento. Más de 100 marcas líderes, catálogos y pedidos por WhatsApp.",
     images: [
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Buenimar | Distribución mayorista",
+    title: "Buenimar Colonia | Distribución mayorista",
     description: "Más de 100 marcas líderes, catálogos y pedidos por WhatsApp.",
     images: ["/og-buenimar.png"],
   },
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
 const jsonLdWebsite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Buenimar",
+  name: "Buenimar Colonia",
   alternateName: "Buenimar Distribuciones Colonia",
   url: "https://www.buenimarcolonia.com"
 };
@@ -74,7 +74,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "@id": "https://www.buenimarcolonia.com/#organization",
-  name: "Buenimar",
+  name: "Buenimar Colonia",
   alternateName: "Buenimar Distribuciones",
   description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
   url: "https://www.buenimarcolonia.com",

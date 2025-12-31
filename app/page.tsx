@@ -6,14 +6,14 @@ import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
 
 export const metadata = {
-  title: "Buenimar | Distribuciones en Colonia del Sacramento",
-  description: "Buenimar. Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio.",
+  title: "Buenimar Colonia | Distribuciones en Colonia del Sacramento",
+  description: "Buenimar Colonia. Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio.",
   keywords: "buenimar colonia, distribuidora colonia sacramento, productos alimenticios uruguay, conaprole colonia, distribución mayorista",
   openGraph: {
-    title: "Buenimar | Distribuciones en Colonia del Sacramento",
+    title: "Buenimar Colonia | Distribuciones en Colonia del Sacramento",
     description: "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio.",
     url: "https://www.buenimarcolonia.com",
-    siteName: "Buenimar",
+    siteName: "Buenimar Colonia",
     images: [
       {
         url: "/og-buenimar.png",
@@ -27,7 +27,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Buenimar | Distribuciones en Colonia del Sacramento",
+    title: "Buenimar Colonia | Distribuciones en Colonia del Sacramento",
     description: "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas.",
     images: ["/og-buenimar.png"],
   },

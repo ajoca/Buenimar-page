@@ -6,20 +6,20 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { SITE } from "@/lib/siteContent";
 
 export const metadata = {
-  title: "Marcas y Catálogos - Buenimar Distribuciones Colonia",
-  description: "Trabajamos con más de 100 marcas líderes del mercado uruguayo. Descarga nuestros catálogos de Conaprole, La Especialista, Pagnifique, Almena y muchas más. Distribución en Colonia del Sacramento.",
+  title: "Marcas",
+  description: "Conocé las marcas que forman parte de Buenimar: alimentos, bebidas y productos de consumo de las principales compañías del mercado.",
   keywords: "marcas buenimar, catálogos productos uruguay, conaprole, la especialista, pagnifique, marcas distribuidora colonia",
   openGraph: {
-    title: "Más de 100 Marcas Líderes - Buenimar Colonia",
-    description: "Catálogos completos de las mejores marcas del mercado uruguayo. Descarga y consulta nuestros productos.",
-    url: "https://www.buenimar.com/marcas",
-    siteName: "Buenimar Distribuciones",
+    title: "Marcas",
+    description: "Conocé las marcas que forman parte de Buenimar: alimentos, bebidas y productos de consumo de las principales compañías del mercado.",
+    url: "https://www.buenimarcolonia.com/marcas",
+    siteName: "Buenimar Colonia",
     images: [
       {
         url: "/img/marcas/001.png",
         width: 1200,
         height: 630,
-        alt: "Marcas Buenimar Distribuciones",
+        alt: "Marcas Buenimar Colonia",
       },
     ],
     locale: "es_UY",
@@ -27,8 +27,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Marcas y Catálogos - Buenimar",
-    description: "Más de 100 marcas líderes disponibles",
+    title: "Marcas",
+    description: "Conocé las marcas que forman parte de Buenimar: alimentos, bebidas y productos de consumo.",
     images: ["/img/marcas/001.png"],
   },
 };

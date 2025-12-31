@@ -5,20 +5,20 @@ import { SITE } from "@/lib/siteContent";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata = {
-  title: "Contacto - Buenimar Distribuciones | Colonia del Sacramento",
-  description: "Contactá con Buenimar Distribuciones en Colonia del Sacramento. Dirección: Pablo Zufriategui 374. Tel: +598 4522 4091. WhatsApp: +598 97 557 366. Email: pedidos@buenimar.com",
+  title: "Contacto",
+  description: "Pablo Zufriategui 374, Colonia del Sacramento. Tel: +598 4522 4091 | WhatsApp: +598 97 557 366 | Email: pedidos@buenimar.com",
   keywords: "contacto buenimar, distribuidora colonia dirección, teléfono buenimar, pedidos buenimar",
   openGraph: {
-    title: "Contacto - Buenimar Distribuciones Colonia",
-    description: "Encontranos en Pablo Zufriategui 374, Colonia del Sacramento. Teléfono: +598 4522 4091 | WhatsApp: +598 97 557 366",
-    url: "https://www.buenimar.com/contacto",
-    siteName: "Buenimar Distribuciones",
+    title: "Contacto",
+    description: "Pablo Zufriategui 374, Colonia del Sacramento. Tel: +598 4522 4091 | WhatsApp: +598 97 557 366",
+    url: "https://www.buenimarcolonia.com/contacto",
+    siteName: "Buenimar Colonia",
     images: [
       {
         url: "/img/Logo.png",
         width: 1200,
         height: 630,
-        alt: "Contacto Buenimar Distribuciones",
+        alt: "Contacto Buenimar Colonia",
       },
     ],
     locale: "es_UY",
@@ -26,8 +26,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contacto - Buenimar",
-    description: "Pablo Zufriategui 374, Colonia del Sacramento",
+    title: "Contacto",
+    description: "Pablo Zufriategui 374, Colonia del Sacramento. Tel: +598 4522 4091",
     images: ["/img/Logo.png"],
   },
 };

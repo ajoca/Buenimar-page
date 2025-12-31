@@ -7,20 +7,20 @@ import CertificationBadge from "@/components/CertificationBadge";
 import ParallaxSection from "@/components/ParallaxSection";
 
 export const metadata = {
-  title: "Nuestra Empresa - Historia y Valores | Buenimar Colonia",
-  description: "Conocé la historia de Buenimar Distribuciones en Colonia del Sacramento. Más de años de experiencia brindando calidad, servicio, vocación, logística, rapidez y confianza a nuestros clientes.",
+  title: "Empresa",
+  description: "Distribuidora líder en Colonia del Sacramento. Más de 30 años brindando calidad, servicio, vocación, logística, rapidez y confianza.",
   keywords: "buenimar historia, empresa distribuidora colonia, cultura calidad, logística uruguay",
   openGraph: {
-    title: "Nuestra Historia - Buenimar Distribuciones",
-    description: "Empresa líder en distribución con años de trayectoria en Colonia del Sacramento. Conocé nuestra historia y valores.",
-    url: "https://www.buenimar.com/empresa",
-    siteName: "Buenimar Distribuciones",
+    title: "Empresa",
+    description: "Distribuidora líder en Colonia del Sacramento. Más de 30 años brindando calidad, servicio, vocación, logística, rapidez y confianza.",
+    url: "https://www.buenimarcolonia.com/empresa",
+    siteName: "Buenimar Colonia",
     images: [
       {
         url: "/img/BUENIMAR-2.avif",
         width: 1200,
         height: 630,
-        alt: "Buenimar Distribuciones - Nuestra Empresa",
+        alt: "Buenimar Colonia - Empresa",
       },
     ],
     locale: "es_UY",
@@ -28,8 +28,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nuestra Empresa - Buenimar",
-    description: "Historia y valores de Buenimar Distribuciones",
+    title: "Empresa",
+    description: "Distribuidora líder en Colonia del Sacramento. Más de 30 años brindando calidad, servicio, vocación, logística, rapidez y confianza.",
     images: ["/img/BUENIMAR-2.avif"],
   },
 };

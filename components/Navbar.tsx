@@ -7,6 +7,7 @@ import { LuSunMedium, LuMoon } from "react-icons/lu";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const saved = (typeof window !== "undefined" && (localStorage.getItem("theme") as "dark" | "light" | null)) || "dark";
@@ -15,6 +16,13 @@ export default function Navbar() {
     if (typeof document !== "undefined") {
       document.documentElement.dataset.theme = initial === "light" ? "light" : "dark";
     }
+
+    // Scroll effect
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleTheme = () => {
@@ -25,8 +33,16 @@ export default function Navbar() {
       localStorage.setItem("theme", next);
     }
   };
+  
   return (
-    <header className="bg-red-600 shadow-md sticky top-0 z-50 md:relative" role="banner">
+    <header 
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-red-600/95 backdrop-blur-lg shadow-2xl' 
+          : 'bg-red-600 shadow-md md:relative'
+      }`} 
+      role="banner"
+    >
       <div className="max-w-6xl mx-auto flex justify-between items-center p-4 md:p-6">
         <Link href="/" className="block" aria-label="Buenimar Distribuciones - Ir a inicio">
           <img

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import type { Product } from "@/lib/types";
+import ProductSkeleton from "./ProductSkeleton";
 
 export default function ProductsSection({
   title,
@@ -13,6 +14,7 @@ export default function ProductsSection({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Detectar si es móvil después de montar el componente
   useEffect(() => {
@@ -23,6 +25,12 @@ export default function ProductsSection({
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Simular loading inicial
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
   }, []);
 
   // Cerrar modal con Escape
@@ -51,10 +59,16 @@ export default function ProductsSection({
         </h2>
 
         <div className="mt-4 grid grid-cols-2 gap-3 md:gap-4 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr" role="list" aria-label="Lista de productos destacados">
-          {displayProducts.map((p, index) => (
-            <article
-              key={p.id}
-              onClick={() => setSelectedProduct(p)}
+          {isLoading ? (
+            // Mostrar skeletons mientras carga
+            Array.from({ length: 8 }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))
+          ) : (
+            displayProducts.map((p, index) => (
+              <article
+                key={p.id}
+                onClick={() => setSelectedProduct(p)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -114,7 +128,8 @@ export default function ProductsSection({
                 </div>
               </div>
             </article>
-          ))}
+            ))
+          )}
         </div>
 
         {/* Ver más button for mobile */}

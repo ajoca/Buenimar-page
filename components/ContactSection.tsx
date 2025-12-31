@@ -268,7 +268,7 @@ export default function ContactSection({
         )}
       </form>
 
-      {/* Map and Social Links */}
+      {/* Social Links */}
       <div className="mx-auto max-w-2xl mt-16 sm:mt-20">
         <div className="panel rounded-lg p-6">
           <h3 className="text-xl font-semibold mb-4" style={{ color: "rgb(var(--text))" }}>Encuéntranos</h3>
@@ -276,18 +276,6 @@ export default function ContactSection({
             {lines.map((l, i) => (
               <div key={i} dangerouslySetInnerHTML={{ __html: l }} />
             ))}
-          </div>
-          
-          <div className="mt-4 rounded-lg overflow-hidden">
-            <iframe
-              src="https://maps.google.com/maps?q=-34.450576,-57.8405131&output=embed"
-              width="100%"
-              height="300"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              title="Ubicación en Google Maps"
-            />
           </div>
         </div>
 

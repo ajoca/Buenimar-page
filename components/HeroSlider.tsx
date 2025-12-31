@@ -97,15 +97,6 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
                   Catálogos
                 </a>
               </div>
-                  Ver productos destacados
-                </a>
-                <a
-                  href="/marcas"
-                  className="rounded-full bg-red-600/95 text-center px-5 py-3 text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 shadow-lg"
-                >
-                  Catálogos
-                </a>
-              </div>
             </div>
           </div>
         </div>

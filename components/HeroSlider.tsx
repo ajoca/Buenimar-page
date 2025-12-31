@@ -28,7 +28,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
 
             {/* Contenido encima de la imagen */}
             <div className="absolute inset-0 flex flex-col justify-center left-12 max-w-xl text-white z-20 p-4">
-              <p className="text-sm font-bold tracking-widest opacity-90 mb-2" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR COLONIA</p>
+              <h1 className="text-sm font-bold tracking-widest opacity-90 mb-2" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR</h1>
               <h2 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
                 Distribución y logística con confianza
               </h2>

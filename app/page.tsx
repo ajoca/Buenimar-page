@@ -6,20 +6,20 @@ import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
 
 export const metadata = {
-  title: "Buenimar Colonia - Calidad, Servicio y Confianza",
-  description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
+  title: "Buenimar | Distribuciones en Colonia del Sacramento",
+  description: "Buenimar. Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio.",
   keywords: "buenimar colonia, distribuidora colonia sacramento, productos alimenticios uruguay, conaprole colonia, distribución mayorista",
   openGraph: {
-    title: "Buenimar Colonia - Calidad, Servicio y Confianza",
-    description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
+    title: "Buenimar | Distribuciones en Colonia del Sacramento",
+    description: "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio.",
     url: "https://www.buenimarcolonia.com",
-    siteName: "Buenimar Colonia",
+    siteName: "Buenimar",
     images: [
       {
-        url: "/img/Buenimar.png",
+        url: "/og-buenimar.png",
         width: 1200,
         height: 630,
-        alt: "Buenimar Distribuciones - Colonia del Sacramento",
+        alt: "Buenimar Colonia - Distribución mayorista",
       },
     ],
     locale: "es_UY",
@@ -27,9 +27,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Buenimar Colonia - Calidad, Servicio y Confianza",
-    description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
-    images: ["/img/Buenimar.png"],
+    title: "Buenimar | Distribuciones en Colonia del Sacramento",
+    description: "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas.",
+    images: ["/og-buenimar.png"],
   },
 };
 

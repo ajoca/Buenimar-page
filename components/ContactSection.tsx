@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { SocialLink } from "@/lib/types";
-import { FaTwitter, FaInstagram, FaFacebookF } from "react-icons/fa";
+import { FaTwitter, FaInstagram, FaFacebookF, FaMapMarkerAlt, FaPhone, FaWhatsapp, FaEnvelope, FaExternalLinkAlt, FaCopy, FaCheck } from "react-icons/fa";
 
 export default function ContactSection({
   title,
@@ -21,6 +21,17 @@ export default function ContactSection({
 
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { ok: boolean; msg: string }>(null);
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("pedidos@buenimar.com");
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
+    } catch (err) {
+      console.error("Error copying email:", err);
+    }
+  };
 
   const fieldStyle = {
     background: "rgb(var(--panel))",
@@ -270,21 +281,161 @@ export default function ContactSection({
 
       {/* Social Links */}
       <div className="mx-auto max-w-2xl mt-16 sm:mt-20">
-        <div className="panel rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4" style={{ color: "rgb(var(--text))" }}>Encuéntranos</h3>
-          <div className="space-y-3 text-base mb-4" style={{ color: "rgb(var(--text))" }}>
-            {lines.map((l, i) => (
-              <div key={i} dangerouslySetInnerHTML={{ __html: l }} />
-            ))}
+        <div className="panel rounded-2xl p-6 md:p-8 shadow-lg border" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
+          <div className="mb-6">
+            <h3 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "rgb(var(--text))" }}>Encuéntranos</h3>
+            <p className="text-sm md:text-base" style={{ color: "rgb(var(--muted))" }}>Contacto rápido</p>
+          </div>
+          
+          <div className="space-y-3">
+            {/* Dirección - Clickeable con Maps */}
+            <a
+              href="https://www.google.com/maps?q=Pablo+Zufriategui+374,+Colonia+del+Sacramento,+Uruguay"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+              style={{ 
+                background: "rgba(var(--accent), 0.05)", 
+                borderColor: "rgba(var(--accent), 0.2)",
+              }}
+            >
+              <div 
+                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0"
+                style={{ background: "rgba(var(--accent), 0.15)" }}
+              >
+                <FaMapMarkerAlt className="text-lg md:text-xl" style={{ color: "rgb(var(--accent))" }} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm md:text-base font-semibold" style={{ color: "rgb(var(--text))" }}>
+                  Pablo Zufriategui 374 · Colonia del Sacramento
+                </div>
+              </div>
+              <FaExternalLinkAlt className="text-sm opacity-50 group-hover:opacity-100 transition-opacity shrink-0" style={{ color: "rgb(var(--accent))" }} />
+            </a>
+
+            {/* WhatsApp - Botón Principal */}
+            <a
+              href="https://wa.me/59897557366"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+              style={{ 
+                background: "#25D366",
+                borderColor: "#20BA5A",
+              }}
+            >
+              <div 
+                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0 bg-white/20"
+              >
+                <FaWhatsapp className="text-2xl md:text-3xl text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm md:text-base font-bold text-white">
+                  Escribir por WhatsApp
+                </div>
+                <div className="text-xs md:text-sm text-white/80">
+                  +598 97 557 366
+                </div>
+              </div>
+              <FaExternalLinkAlt className="text-sm text-white/70 group-hover:text-white transition-colors shrink-0" />
+            </a>
+
+            {/* Teléfono - Chip con ícono */}
+            <a
+              href="tel:+59845224091"
+              className="group flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+              style={{ 
+                background: "rgb(var(--panel))", 
+                borderColor: "rgb(var(--line))",
+              }}
+            >
+              <div 
+                className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0"
+                style={{ background: "rgba(var(--accent), 0.1)" }}
+              >
+                <FaPhone className="text-lg md:text-xl" style={{ color: "rgb(var(--accent))" }} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm md:text-base font-semibold" style={{ color: "rgb(var(--text))" }}>
+                  +598 4522 4091
+                </div>
+                <div className="text-xs md:text-sm" style={{ color: "rgb(var(--muted))" }}>
+                  Llamar
+                </div>
+              </div>
+            </a>
+
+            {/* Email - Con botón copiar */}
+            <div className="flex gap-2">
+              <a
+                href="mailto:pedidos@buenimar.com?subject=Consulta%20-%20Buenimar"
+                className="group flex-1 flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+                style={{ 
+                  background: "rgb(var(--panel))", 
+                  borderColor: "rgb(var(--line))",
+                }}
+              >
+                <div 
+                  className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full shrink-0"
+                  style={{ background: "rgba(var(--accent), 0.1)" }}
+                >
+                  <FaEnvelope className="text-lg md:text-xl" style={{ color: "rgb(var(--accent))" }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm md:text-base font-semibold truncate" style={{ color: "rgb(var(--text))" }}>
+                    pedidos@buenimar.com
+                  </div>
+                  <div className="text-xs md:text-sm" style={{ color: "rgb(var(--muted))" }}>
+                    Enviar email
+                  </div>
+                </div>
+              </a>
+              <button
+                onClick={copyEmail}
+                className="flex items-center justify-center w-12 h-auto rounded-xl border transition-all duration-200 hover:scale-105 active:scale-95"
+                style={{ 
+                  background: emailCopied ? "rgba(34, 197, 94, 0.1)" : "rgb(var(--panel))", 
+                  borderColor: emailCopied ? "rgba(34, 197, 94, 0.3)" : "rgb(var(--line))",
+                }}
+                title="Copiar email"
+              >
+                {emailCopied ? (
+                  <FaCheck className="text-green-500" />
+                ) : (
+                  <FaCopy className="text-base" style={{ color: "rgb(var(--muted))" }} />
+                )}
+              </button>
+            </div>
+
+            {/* Ver en Google Maps - Botón secundario */}
+            <a
+              href="https://www.google.com/maps?q=Pablo+Zufriategui+374,+Colonia+del+Sacramento,+Uruguay"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-center gap-3 p-3 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+              style={{ 
+                background: "rgb(var(--panel))", 
+                borderColor: "rgb(var(--line))",
+              }}
+            >
+              <FaMapMarkerAlt className="text-base" style={{ color: "rgb(var(--accent))" }} />
+              <span className="text-sm md:text-base font-semibold" style={{ color: "rgb(var(--text))" }}>
+                Ver ubicación en Google Maps
+              </span>
+              <FaExternalLinkAlt className="text-xs opacity-50 group-hover:opacity-100 transition-opacity" style={{ color: "rgb(var(--accent))" }} />
+            </a>
           </div>
         </div>
 
         <div className="mt-8">
-          <h3 className="text-base md:text-xl font-semibold mb-3" style={{ color: "rgb(var(--text))" }}>Síguenos</h3>
-          <div className="flex flex-wrap gap-2">
+          <h3 className="text-base md:text-xl font-semibold mb-4" style={{ color: "rgb(var(--text))" }}>Síguenos</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {socials.map((s) => {
               const Icon = iconMap[s.id] ?? null;
               const isExternal = s.href.startsWith("http");
+              
+              // Actualizar el label de Twitter a X
+              const displayLabel = s.label === "Twitter" ? "X (Twitter)" : s.label;
 
               return (
                 <a
@@ -292,24 +443,23 @@ export default function ContactSection({
                   href={s.href}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noreferrer" : undefined}
-                  className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm md:text-base font-medium shadow-sm transition hover:scale-105 focus:outline-none focus:ring-2"
+                  className="flex items-center justify-center gap-3 rounded-xl border px-4 py-3 font-semibold transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
                   style={{
                     background: "rgb(var(--panel))",
                     borderColor: "rgb(var(--line))",
                     color: "rgb(var(--text))",
-                    boxShadow: "var(--shadow)",
                   }}
                 >
                   <span
-                    className="grid h-7 w-7 md:h-9 md:w-9 place-items-center rounded-full"
+                    className="flex items-center justify-center h-8 w-8 rounded-full shrink-0"
                     style={{
-                      background: "transparent",
-                      color: "#dc2626",
+                      background: "rgba(var(--accent), 0.1)",
+                      color: "rgb(var(--accent))",
                     }}
                   >
-                    {Icon ? <Icon className="text-lg md:text-2xl" /> : null}
+                    {Icon ? <Icon className="text-lg" /> : null}
                   </span>
-                  <span className="leading-none text-sm md:text-base">{s.label}</span>
+                  <span className="text-sm md:text-base">{displayLabel}</span>
                 </a>
               );
             })}

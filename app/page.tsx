@@ -6,14 +6,14 @@ import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
 
 export const metadata = {
-  title: "Buenimar Colonia",
-  description: "Buenimar Colonia - Calidad, Servicio y Confianza en Colonia del Sacramento. Distribuidora líder con más de 100 marcas. Productos de primeras marcas: Conaprole, La Especialista, Pagnifique y más.",
+  title: "Buenimar Colonia - Calidad, Servicio y Confianza",
+  description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
   keywords: "buenimar colonia, distribuidora colonia sacramento, productos alimenticios uruguay, conaprole colonia, distribución mayorista",
   openGraph: {
-    title: "Buenimar Distribuciones",
-    description: "Distribuidora líder en Colonia del Sacramento con más de 100 marcas reconocidas. Calidad y servicio garantizado.",
+    title: "Buenimar Colonia - Calidad, Servicio y Confianza",
+    description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
     url: "https://www.buenimarcolonia.com",
-    siteName: "Buenimar Distribuciones",
+    siteName: "Buenimar Colonia",
     images: [
       {
         url: "/img/Buenimar.png",
@@ -27,8 +27,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Buenimar Distribuciones",
-    description: "Distribuidora líder en Colonia del Sacramento",
+    title: "Buenimar Colonia - Calidad, Servicio y Confianza",
+    description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
     images: ["/img/Buenimar.png"],
   },
 };

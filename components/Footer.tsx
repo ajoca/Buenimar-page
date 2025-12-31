@@ -3,7 +3,7 @@ import Link from "next/link";
 import CertificationBadge from "./CertificationBadge";
 import { FaMapMarkerAlt, FaPhone, FaWhatsapp, FaEnvelope } from "react-icons/fa";
 
-export default function Footer() {
+export default function Footer({ hideCertification = false }: { hideCertification?: boolean }) {
   return (
     <footer className="relative overflow-hidden">
       {/* Separador diagonal suave */}
@@ -25,7 +25,7 @@ export default function Footer() {
       
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           {/* Grid 12 columnas mejorado */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-6 mb-12 items-start">
+          <div className={`grid grid-cols-1 gap-8 md:gap-6 mb-12 items-start ${hideCertification ? 'md:grid-cols-10' : 'md:grid-cols-12'}`}>
             {/* Columna 1: Marca (4 cols) */}
             <div className="md:col-span-4 text-center md:text-left space-y-3">
               {/* Glow detrás del logo */}
@@ -102,11 +102,13 @@ export default function Footer() {
             </div>
 
             {/* Columna 4: ISO con efecto glass (2 cols) - stack abajo en mobile */}
-            <div className="md:col-span-2 flex justify-center md:justify-end order-last md:order-none">
-              <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 shadow-2xl md:hover:bg-white/15 transition-all md:hover:scale-105 w-fit mx-auto md:mx-0 md:mr-4">
-                <CertificationBadge />
+            {!hideCertification && (
+              <div className="md:col-span-2 flex justify-center md:justify-end order-last md:order-none">
+                <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 shadow-2xl md:hover:bg-white/15 transition-all md:hover:scale-105 w-fit mx-auto md:mx-0 md:mr-4">
+                  <CertificationBadge />
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Mapa a full width con separador mejorado */}

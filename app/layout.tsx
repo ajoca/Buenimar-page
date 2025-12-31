@@ -65,19 +65,63 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
+  "@id": "https://www.buenimarcolonia.com/#organization",
   name: "Buenimar Colonia",
+  alternateName: "Buenimar Distribuciones",
+  description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
   url: "https://www.buenimarcolonia.com",
+  logo: "https://www.buenimarcolonia.com/img/Buenimar.png",
+  image: "https://www.buenimarcolonia.com/img/BUENIMAR-2.avif",
   telephone: "+59845224091",
   email: "pedidos@buenimar.com",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Pablo Zufriategui 374",
     addressLocality: "Colonia del Sacramento",
+    addressRegion: "Colonia",
+    postalCode: "70000",
     addressCountry: "UY",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: "-34.4631",
+    longitude: "-57.8400"
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "08:00",
+      closes: "18:00"
+    }
+  ],
+  areaServed: {
+    "@type": "GeoCircle",
+    geoMidpoint: {
+      "@type": "GeoCoordinates",
+      latitude: "-34.4631",
+      longitude: "-57.8400"
+    },
+    geoRadius: "300000"
+  },
+  slogan: "Calidad, Servicio y Confianza",
+  foundingDate: "1996",
+  knowsAbout: [
+    "Distribución mayorista",
+    "Productos alimenticios",
+    "Logística",
+    "Servicio al cliente"
+  ],
   sameAs: [
     "https://wa.me/59897557366"
   ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+59897557366",
+    contactType: "customer service",
+    availableLanguage: "Spanish",
+    areaServed: "UY"
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

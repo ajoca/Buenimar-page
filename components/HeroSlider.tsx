@@ -80,18 +80,22 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
 
               {/* Botones en columna para mobile */}
               <div className="flex flex-col gap-3">
-                <button
+                <a
+                  href="#productos"
+                  className="rounded-full bg-white/95 px-5 py-3 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 active:scale-95 shadow-lg text-center touch-manipulation"
                   onClick={(e) => {
                     e.preventDefault();
-                    document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth' });
+                    const productosSection = document.getElementById('productos');
+                    if (productosSection) {
+                      productosSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                   }}
-                  className="rounded-full bg-white/95 px-5 py-3 text-sm font-bold text-gray-900 hover:bg-white transition-all duration-300 active:scale-95 shadow-lg text-center cursor-pointer"
                 >
                   Ver productos destacados
-                </button>
+                </a>
                 <a
                   href="/marcas"
-                  className="rounded-full bg-red-600/95 px-5 py-3 text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 active:scale-95 shadow-lg text-center"
+                  className="rounded-full bg-red-600/95 px-5 py-3 text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 active:scale-95 shadow-lg text-center touch-manipulation"
                 >
                   Catálogos
                 </a>

@@ -19,7 +19,7 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.buenimar.com"),
+  metadataBase: new URL("https://www.buenimarcolonia.com"),
   title: {
     default: "Buenimar Colonia | Distribución mayorista en Colonia del Sacramento",
     template: "%s | Buenimar Colonia",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_UY",
-    url: "https://www.buenimar.com",
+    url: "https://www.buenimarcolonia.com",
     siteName: "Buenimar Colonia",
     title: "Buenimar Colonia | Distribución mayorista",
     description:
@@ -66,7 +66,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "Buenimar Colonia",
-  url: "https://www.buenimar.com",
+  url: "https://www.buenimarcolonia.com",
   telephone: "+59845224091",
   email: "pedidos@buenimar.com",
   address: {

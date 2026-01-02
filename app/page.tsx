@@ -16,7 +16,7 @@ export const metadata = {
     siteName: "Buenimar Colonia",
     images: [
       {
-        url: "/og-buenimar.png",
+        url: "https://www.buenimarcolonia.com/og-buenimar.png",
         width: 1200,
         height: 630,
         alt: "Buenimar Colonia - Distribución mayorista",
@@ -29,7 +29,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Buenimar Colonia | Distribuciones en Colonia del Sacramento",
     description: "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas.",
-    images: ["/og-buenimar.png"],
+    images: ["https://www.buenimarcolonia.com/og-buenimar.png"],
   },
 };
 

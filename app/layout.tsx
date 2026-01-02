@@ -47,17 +47,20 @@ export const metadata: Metadata = {
     description:
       "Distribuidora mayorista en Colonia del Sacramento. Más de 100 marcas líderes, catálogos y pedidos por WhatsApp.",
     images: [
-      { url: "/og-buenimar.png", width: 1200, height: 630, alt: "Buenimar Colonia - Distribución mayorista" },
+      { url: "https://www.buenimarcolonia.com/og-buenimar.png", width: 1200, height: 630, alt: "Buenimar Colonia - Distribución mayorista" },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Buenimar Colonia | Distribución mayorista",
     description: "Más de 100 marcas líderes, catálogos y pedidos por WhatsApp.",
-    images: ["/og-buenimar.png"],
+    images: ["https://www.buenimarcolonia.com/og-buenimar.png"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "48x48" },
+    ],
     apple: "/apple-touch-icon.png",
   },
 };

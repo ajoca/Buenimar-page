@@ -9,6 +9,9 @@ export const metadata = {
   title: "Marcas",
   description: "Conocé las marcas que forman parte de Buenimar: alimentos, bebidas y productos de consumo de las principales compañías del mercado.",
   keywords: "marcas buenimar, catálogos productos uruguay, conaprole, la especialista, pagnifique, marcas distribuidora colonia",
+  alternates: {
+    canonical: "https://www.buenimarcolonia.com/marcas",
+  },
   openGraph: {
     title: "Marcas",
     description: "Conocé las marcas que forman parte de Buenimar: alimentos, bebidas y productos de consumo de las principales compañías del mercado.",
@@ -16,7 +19,7 @@ export const metadata = {
     siteName: "Buenimar Colonia",
     images: [
       {
-        url: "/img/marcas/001.png",
+        url: "https://www.buenimarcolonia.com/img/marcas/001.png",
         width: 1200,
         height: 630,
         alt: "Marcas Buenimar Colonia",
@@ -29,7 +32,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Marcas",
     description: "Conocé las marcas que forman parte de Buenimar: alimentos, bebidas y productos de consumo.",
-    images: ["/img/marcas/001.png"],
+    images: ["https://www.buenimarcolonia.com/img/marcas/001.png"],
   },
 };
 

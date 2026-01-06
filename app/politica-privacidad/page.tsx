@@ -5,6 +5,9 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 export const metadata = {
   title: "Política de Privacidad - Buenimar Distribuciones",
   description: "Política de privacidad y protección de datos de Buenimar Distribuciones en Colonia del Sacramento",
+  alternates: {
+    canonical: "https://www.buenimarcolonia.com/politica-privacidad",
+  },
 };
 
 export default function PoliticaPrivacidadPage() {

@@ -10,6 +10,9 @@ export const metadata = {
   title: "Empresa",
   description: "Distribuidora líder en Colonia del Sacramento. Más de 30 años brindando calidad, servicio, vocación, logística, rapidez y confianza.",
   keywords: "buenimar historia, empresa distribuidora colonia, cultura calidad, logística uruguay",
+  alternates: {
+    canonical: "https://www.buenimarcolonia.com/empresa",
+  },
   openGraph: {
     title: "Empresa",
     description: "Distribuidora líder en Colonia del Sacramento. Más de 30 años brindando calidad, servicio, vocación, logística, rapidez y confianza.",
@@ -17,7 +20,7 @@ export const metadata = {
     siteName: "Buenimar Colonia",
     images: [
       {
-        url: "/img/BUENIMAR-2.avif",
+        url: "https://www.buenimarcolonia.com/img/BUENIMAR-2.avif",
         width: 1200,
         height: 630,
         alt: "Buenimar Colonia - Empresa",
@@ -30,7 +33,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Empresa",
     description: "Distribuidora líder en Colonia del Sacramento. Más de 30 años brindando calidad, servicio, vocación, logística, rapidez y confianza.",
-    images: ["/img/BUENIMAR-2.avif"],
+    images: ["https://www.buenimarcolonia.com/img/BUENIMAR-2.avif"],
   },
 };
 

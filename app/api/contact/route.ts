@@ -54,8 +54,15 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       host,
       port,
-      secure: port === 465,
+      secure: port === 465, // true para puerto 465 (SSL), false para 587 (TLS)
       auth: { user, pass },
+      connectionTimeout: 15000, // 15 segundos para SSL
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+      tls: {
+        // No rechazar certificados no autorizados (algunos servidores lo necesitan)
+        rejectUnauthorized: false,
+      },
     });
 
     const subject = `Contacto Web: ${firstName} ${lastName}`.trim();
@@ -79,8 +86,21 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {
+    console.error("Error enviando email:", err);
+    
+    // Mensajes más específicos según el tipo de error
+    let errorMsg = "Error al enviar el mensaje";
+    
+    if (err?.code === "ETIMEDOUT" || err?.code === "ESOCKET") {
+      errorMsg = "Timeout al conectar con el servidor SMTP. Por favor, contactanos por WhatsApp.";
+    } else if (err?.code === "EAUTH") {
+      errorMsg = "Error de autenticación SMTP";
+    } else if (err?.message) {
+      errorMsg = err.message;
+    }
+    
     return NextResponse.json(
-      { ok: false, error: err?.message ?? "Error inesperado" },
+      { ok: false, error: errorMsg },
       { status: 500 }
     );
   }

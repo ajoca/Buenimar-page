@@ -7,6 +7,21 @@ const nextConfig: NextConfig = {
     workerThreads: false,
     cpus: 1,
   },
+  
+  // Asegurar que todas las versiones usen la canónica https://www.buenimarcolonia.com
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'all',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

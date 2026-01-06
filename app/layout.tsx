@@ -69,8 +69,8 @@ const jsonLdWebsite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Buenimar Colonia",
-  alternateName: "Buenimar Distribuciones Colonia",
-  url: "https://www.buenimarcolonia.com"
+  alternateName: ["Buenimar Distribuciones", "Buenimar Colonia del Sacramento"],
+  url: "https://www.buenimarcolonia.com/"
 };
 
 const jsonLd = {

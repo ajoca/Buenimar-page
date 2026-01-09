@@ -113,7 +113,7 @@ export default function EmpresaPage() {
                   
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 border-2 border-red-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-xs">2025</span>
+                      <span className="text-white font-bold text-xs">2026</span>
                     </div>
                     <div>
                       <h3 className="text-white font-semibold text-base mb-0.5">30 Años de Servicio</h3>

@@ -146,7 +146,7 @@ export default function PoliticaPrivacidadPage() {
 
             {/* Fecha actualización */}
             <div className="text-center text-sm md:text-base pt-4" style={{ color: "rgb(var(--muted))" }}>
-              <p>Última actualización: Diciembre 2025</p>
+              <p>Última actualización: Enero 2026</p>
             </div>
           </div>
         </div>

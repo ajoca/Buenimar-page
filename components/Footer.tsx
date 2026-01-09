@@ -137,7 +137,7 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             <div className="text-center space-y-2">
               <p className="text-sm opacity-80 font-medium tracking-wide">
-                Copyright © 2025 Buenimar SA. All rights reserved.
+                Copyright © 2026 Buenimar SA. All rights reserved.
               </p>
               <p className="text-xs opacity-50">
                 Desarrollado por{' '}

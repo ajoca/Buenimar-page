@@ -21,11 +21,11 @@ const raleway = Raleway({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.buenimarcolonia.com"),
   title: {
-    default: "Buenimar Colonia | Distribución mayorista en Colonia del Sacramento",
+    default: "Buenimar Colonia",
     template: "%s | Buenimar Colonia",
   },
   description:
-    "Distribuidora mayorista en Colonia del Sacramento. Más de 100 marcas líderes, catálogos descargables, pedidos por WhatsApp y atención personalizada. Calidad, servicio y confianza.",
+    "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio en Colonia del Sacramento.",
   keywords: "distribuidora colonia, buenimar, productos alimenticios uruguay, distribución mayorista, logística colonia, catálogos productos",
   robots: {
     index: true,
@@ -57,10 +57,7 @@ export const metadata: Metadata = {
     images: ["https://www.buenimarcolonia.com/og-buenimar.png"],
   },
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon.ico", type: "image/x-icon", sizes: "48x48" },
-    ],
+    icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 };
@@ -139,6 +136,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" data-scroll-behavior="smooth">
       <head>
+        <meta property="og:site_name" content="Buenimar Colonia" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>

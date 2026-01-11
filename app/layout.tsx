@@ -57,7 +57,10 @@ export const metadata: Metadata = {
     images: ["https://www.buenimarcolonia.com/og-buenimar.png"],
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-48x48.png", type: "image/png", sizes: "48x48" },
+    ],
     apple: "/apple-touch-icon.png",
   },
 };
@@ -138,6 +141,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta property="og:site_name" content="Buenimar Colonia" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${montserrat.variable} ${raleway.variable} ${montserrat.className} min-h-screen antialiased`}>

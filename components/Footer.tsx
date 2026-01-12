@@ -92,6 +92,9 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
                 <Link href="/marcas" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
                   → Marcas
                 </Link>
+                <Link href="/cobertura" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
+                  → Cobertura
+                </Link>
                 <Link href="/contacto" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
                   → Contacto
                 </Link>
@@ -109,28 +112,6 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Mapa a full width con separador mejorado */}
-          <div className="relative -mx-4 md:mx-0">
-            {/* Separador diagonal suave con sombra */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-            <div className="absolute -top-px left-0 right-0 h-12 bg-gradient-to-b from-black/30 via-black/10 to-transparent" />
-            
-            {/* Contenedor del mapa con altura fija */}
-            <div className="mt-12 overflow-hidden shadow-2xl border-y border-white/10 md:rounded-2xl md:border">
-              <iframe
-                src="https://www.google.com/maps?q=Pablo+Zufriategui+374,+Colonia+del+Sacramento,+Uruguay&output=embed"
-                width="100%"
-                height="280"
-                style={{ border: 0, height: '280px' }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Ubicación de Buenimar en Google Maps"
-                className="grayscale-[0.15] md:hover:grayscale-0 transition-all duration-500 w-full md:h-[400px]"
-              />
-            </div>
           </div>
 
           {/* Copyright con separador */}

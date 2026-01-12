@@ -120,6 +120,17 @@ export default function Navbar() {
             }`} />
           </Link>
           <Link
+            href="/cobertura"
+            className={`relative px-2 py-1 tracking-wide transition-all duration-200 hover:opacity-100 group ${
+              isActive('/cobertura') ? 'opacity-100' : 'opacity-80'
+            }`}
+          >
+            COBERTURA
+            <span className={`absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300 ${
+              isActive('/cobertura') ? 'w-full' : 'w-0 group-hover:w-full'
+            }`} />
+          </Link>
+          <Link
             href="/contacto"
             className={`relative px-2 py-1 tracking-wide transition-all duration-200 hover:opacity-100 group ${
               isActive('/contacto') ? 'opacity-100' : 'opacity-80'
@@ -203,6 +214,15 @@ export default function Navbar() {
             }`}
           >
             CONTACTO
+          </Link>
+          <Link
+            href="/cobertura"
+            onClick={()=>setOpen(false)}
+            className={`rounded-lg px-4 py-3 transition-all duration-200 hover:bg-white/10 ${
+              isActive('/cobertura') ? 'bg-white/15 font-semibold' : ''
+            }`}
+          >
+            COBERTURA
           </Link>
           
           <div className="h-px bg-white/10 my-2" />

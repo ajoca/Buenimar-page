@@ -120,7 +120,7 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
             {/* Contenedor del mapa con altura fija */}
             <div className="mt-12 overflow-hidden shadow-2xl border-y border-white/10 md:rounded-2xl md:border">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3286.721!2d-57.84!3d-34.463!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDI3JzQ3LjIiUyA1N8KwNTAnMjQuMCJX!5e0!3m2!1ses!2s!4v1736698800000!5m2!1ses!2s&q=Buenimar+SA,+Pablo+Zufriategui+374,+Colonia+del+Sacramento,+Uruguay"
+                src="https://www.google.com/maps?q=Pablo+Zufriategui+374,+Colonia+del+Sacramento,+Uruguay&output=embed"
                 width="100%"
                 height="280"
                 style={{ border: 0, height: '280px' }}

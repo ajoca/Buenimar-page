@@ -22,6 +22,11 @@ export default function ContactSection({
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { ok: boolean; msg: string }>(null);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [fileError, setFileError] = useState<string>("");
+
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_TOTAL_SIZE = 10 * 1024 * 1024; // 10MB total
 
   const copyEmail = async () => {
     try {
@@ -31,6 +36,33 @@ export default function ContactSection({
     } catch (err) {
       console.error("Error copying email:", err);
     }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileError("");
+    const selectedFiles = Array.from(e.target.files || []);
+    
+    // Validar tamaño individual
+    const oversizedFile = selectedFiles.find(f => f.size > MAX_FILE_SIZE);
+    if (oversizedFile) {
+      setFileError(`El archivo "${oversizedFile.name}" excede el límite de 5MB`);
+      e.target.value = "";
+      return;
+    }
+
+    // Validar tamaño total
+    const totalSize = selectedFiles.reduce((sum, f) => sum + f.size, 0);
+    if (totalSize > MAX_TOTAL_SIZE) {
+      setFileError(`El tamaño total de los archivos excede 10MB`);
+      e.target.value = "";
+      return;
+    }
+
+    setFiles(selectedFiles);
+  };
+
+  const removeFile = (index: number) => {
+    setFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   const fieldStyle = {
@@ -45,6 +77,24 @@ export default function ContactSection({
     setSubmitting(true);
     setResult(null);
     const fd = new FormData(form);
+    
+    // Convertir archivos a base64
+    const attachments = await Promise.all(
+      files.map(file => new Promise<{ filename: string; content: string; contentType: string }>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = (reader.result as string).split(',')[1];
+          resolve({
+            filename: file.name,
+            content: base64,
+            contentType: file.type,
+          });
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      }))
+    );
+    
     const payload = {
       firstName: String(fd.get("first-name") || ""),
       lastName: String(fd.get("last-name") || ""),
@@ -54,6 +104,7 @@ export default function ContactSection({
       phoneNumber: String(fd.get("phone-number") || ""),
       message: String(fd.get("message") || ""),
       agree: fd.get("agree-to-policies") === "on",
+      attachments,
     };
     try {
       const res = await fetch("/api/contact", {
@@ -67,6 +118,7 @@ export default function ContactSection({
       // Reset form after successful submission
       setTimeout(() => {
         if (form) form.reset();
+        setFiles([]);
       }, 100);
     } catch (err: any) {
       setResult({ ok: false, msg: err?.message || "No se pudo enviar el mensaje" });
@@ -222,6 +274,48 @@ export default function ContactSection({
                 className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
+            </div>
+          </div>
+
+          {/* File attachments */}
+          <div className="sm:col-span-2">
+            <label htmlFor="attachments" className="block text-sm leading-6 font-semibold" style={{ color: "rgb(var(--text))" }}>
+              Archivos adjuntos (opcional)
+            </label>
+            <div className="mt-2.5">
+              <input
+                id="attachments"
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="block w-full text-sm rounded-md px-3.5 py-2 outline outline-1 -outline-offset-1 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                style={fieldStyle}
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.zip"
+              />
+              <p className="mt-1 text-xs" style={{ color: "rgb(var(--muted))" }}>
+                Máximo 5MB por archivo, 10MB total. Formatos: PDF, Word, Excel, imágenes, ZIP
+              </p>
+              {fileError && (
+                <p className="mt-2 text-sm text-red-600">{fileError}</p>
+              )}
+              {files.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  {files.map((file, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 rounded-md bg-gray-50" style={{ background: "rgb(var(--panel))" }}>
+                      <span className="text-sm truncate" style={{ color: "rgb(var(--text))" }}>
+                        {file.name} ({(file.size / 1024).toFixed(1)}KB)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="ml-2 text-red-600 hover:text-red-800 text-sm font-semibold"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

@@ -4,6 +4,9 @@ import nodemailer from "nodemailer";
 
 export const runtime = "nodejs";
 
+// Límite de 5MB para archivos adjuntos
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB en bytes
+
 type Payload = {
   firstName?: string;
   lastName?: string;
@@ -13,6 +16,11 @@ type Payload = {
   phoneNumber?: string;
   message?: string;
   agree?: boolean;
+  attachments?: Array<{
+    filename: string;
+    content: string; // base64
+    contentType: string;
+  }>;
 };
 
 export async function POST(req: NextRequest) {
@@ -28,6 +36,7 @@ export async function POST(req: NextRequest) {
       phoneNumber = "",
       message = "",
       agree = false,
+      attachments = [],
     } = data || {};
 
     if (!firstName && !lastName && !email && !message) {
@@ -66,23 +75,97 @@ export async function POST(req: NextRequest) {
     });
 
     const subject = `Contacto Web: ${firstName} ${lastName}`.trim();
+    
+    // Reply-To: el email del cliente para poder responder directamente
+    const replyTo = email || undefined;
 
     const html = `
-      <h2>Nuevo contacto desde la web</h2>
-      <p><strong>Nombre:</strong> ${firstName} ${lastName}</p>
-      <p><strong>Empresa:</strong> ${company}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>País:</strong> ${country}</p>
-      <p><strong>Teléfono:</strong> ${phoneNumber}</p>
-      <p><strong>Acepta políticas:</strong> ${agree ? "Sí" : "No"}</p>
-      <hr />
-      <p><strong>Mensaje:</strong></p>
-      <p style="white-space: pre-wrap;">${message}</p>
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background-color: #dc2626; color: white; padding: 15px; border-radius: 5px 5px 0 0; }
+          .content { background-color: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; }
+          .field { margin-bottom: 15px; }
+          .label { font-weight: bold; color: #374151; }
+          .value { color: #1f2937; margin-left: 10px; }
+          .message-box { background-color: white; padding: 15px; border-left: 4px solid #dc2626; margin-top: 20px; }
+          .email-highlight { background-color: #fef2f2; padding: 10px; border-radius: 5px; margin: 10px 0; }
+          .email-highlight a { color: #dc2626; text-decoration: none; font-weight: bold; }
+          .attachments { background-color: #f0f9ff; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h2 style="margin: 0;">Nuevo contacto desde www.buenimarcolonia.com</h2>
+          </div>
+          <div class="content">
+            <div class="field">
+              <span class="label">Nombre:</span>
+              <span class="value">${firstName} ${lastName}</span>
+            </div>
+            ${company ? `<div class="field">
+              <span class="label">Empresa:</span>
+              <span class="value">${company}</span>
+            </div>` : ''}
+            <div class="email-highlight">
+              <span class="label">Email:</span>
+              <span class="value"><a href="mailto:${email}">${email}</a></span>
+            </div>
+            ${phoneNumber ? `<div class="field">
+              <span class="label">Teléfono:</span>
+              <span class="value">${phoneNumber}</span>
+            </div>` : ''}
+            ${country ? `<div class="field">
+              <span class="label">País:</span>
+              <span class="value">${country}</span>
+            </div>` : ''}
+            ${attachments.length > 0 ? `<div class="attachments">
+              <span class="label">Archivos adjuntos:</span> ${attachments.length} archivo(s)
+            </div>` : ''}
+            <div class="message-box">
+              <div class="label" style="margin-bottom: 10px;">Mensaje:</div>
+              <div style="white-space: pre-wrap; color: #1f2937;">${message}</div>
+            </div>
+            <div style="margin-top: 20px; padding: 10px; background-color: #ecfdf5; border-radius: 5px; font-size: 12px; color: #059669;">
+              Puedes responder directamente a este correo para contactar al cliente
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
     `;
 
-    const text = `Nuevo contacto desde la web\n\nNombre: ${firstName} ${lastName}\nEmpresa: ${company}\nEmail: ${email}\nPaís: ${country}\nTeléfono: ${phoneNumber}\nAcepta políticas: ${agree ? "Sí" : "No"}\n\nMensaje:\n${message}`;
+    const text = `Nuevo contacto desde www.buenimarcolonia.com
 
-    await transporter.sendMail({ from, to, subject, html, text });
+Nombre: ${firstName} ${lastName}
+${company ? `Empresa: ${company}\n` : ''}Email: ${email}
+${phoneNumber ? `Teléfono: ${phoneNumber}\n` : ''}${country ? `País: ${country}\n` : ''}${attachments.length > 0 ? `Archivos adjuntos: ${attachments.length} archivo(s)\n` : ''}
+Mensaje:
+${message}
+
+---
+Puedes responder directamente a este correo para contactar al cliente.`;
+
+    // Convertir attachments de base64 a Buffer para nodemailer
+    const mailAttachments = attachments.map(att => ({
+      filename: att.filename,
+      content: Buffer.from(att.content, 'base64'),
+      contentType: att.contentType,
+    }));
+
+    await transporter.sendMail({ 
+      from, 
+      to, 
+      replyTo,
+      subject, 
+      html, 
+      text,
+      attachments: mailAttachments,
+    });
 
     return NextResponse.json({ ok: true });
   } catch (err: any) {

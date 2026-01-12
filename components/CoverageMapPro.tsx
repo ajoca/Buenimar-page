@@ -55,8 +55,10 @@ export default function CoverageMapPro() {
         ],
       },
       center: mapCenter,
-      zoom: mapZoom,
+      zoom: isMobile ? mapZoom - 0.5 : mapZoom,
       attributionControl: false,
+      touchZoomRotate: true,
+      touchPitch: false,
     });
 
     map.current.addControl(new maplibregl.NavigationControl(), "top-right");
@@ -310,11 +312,12 @@ export default function CoverageMapPro() {
     };
     animateDash();
 
-    // Ajustar vista
+    // Ajustar vista con padding adaptativo
     const bounds = new maplibregl.LngLatBounds();
     bounds.extend(buenimarLocation);
     bounds.extend(locality.coordinates);
-    map.current.fitBounds(bounds, { padding: 100, duration: 1000 });
+    const padding = isMobile ? { top: 100, bottom: 200, left: 50, right: 50 } : 100;
+    map.current.fitBounds(bounds, { padding, duration: 1000 });
 
     // Animar camión después de un delay
     setTimeout(() => animateTruck(routeLine), 500);
@@ -540,7 +543,7 @@ export default function CoverageMapPro() {
         <div className="lg:col-span-2">
           <div 
             ref={mapContainer} 
-            className="w-full h-[70vh] md:h-[650px] rounded-2xl shadow-2xl overflow-hidden relative animate-fade-in-scale hover:shadow-3xl transition-all duration-500 hover:scale-[1.01]"
+            className="w-full h-[55vh] md:h-[650px] rounded-2xl shadow-2xl overflow-hidden relative animate-fade-in-scale hover:shadow-3xl transition-all duration-500 md:hover:scale-[1.01]"
           />
         </div>
 
@@ -559,7 +562,7 @@ export default function CoverageMapPro() {
                   key={locality.id}
                   onClick={() => selectLocality(locality)}
                   style={{ animationDelay: `${index * 0.03}s` }}
-                  className={`w-full text-left p-3 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-md active:scale-95 animate-fade-in ${
+                        className={`w-full text-left p-4 rounded-xl transition-all duration-200 active:scale-[0.98] animate-fade-in touch-manipulation ${
                     selectedLocality?.id === locality.id
                       ? "bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-500 shadow-lg"
                       : "bg-gray-50 dark:bg-gray-900 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700"
@@ -584,7 +587,7 @@ export default function CoverageMapPro() {
           {/* Mobile: Botón flotante para abrir lista */}
           <button
             onClick={() => setShowMobileList(true)}
-            className="lg:hidden fixed bottom-6 right-6 z-30 bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-2 transition-all duration-300 hover:scale-110 active:scale-95 animate-pulse-glow animate-bounce-in"
+            className="lg:hidden fixed bottom-8 right-6 z-30 bg-red-600 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-2 transition-all duration-200 active:scale-90 animate-pulse-glow animate-bounce-in touch-manipulation"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M4 6h16M4 12h16M4 18h16"/>
@@ -602,17 +605,20 @@ export default function CoverageMapPro() {
               />
               
               {/* Panel drawer */}
-              <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl max-h-[80vh] flex flex-col animate-slide-up">
+              <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl max-h-[65vh] flex flex-col animate-slide-up">
                 {/* Header con handle */}
                 <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-gray-700">
-                  <div className="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-4 animate-pulse hover:scale-110 transition-transform duration-300"></div>
+                  <div 
+                    onClick={() => setShowMobileList(false)}
+                    className="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-4 cursor-pointer active:scale-110 transition-transform duration-300"
+                  ></div>
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                       Localidades ({filteredLocalities.length})
                     </h3>
                     <button
                       onClick={() => setShowMobileList(false)}
-                      className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-110 active:scale-90 hover:rotate-90"
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-lg active:bg-gray-200 dark:active:bg-gray-600 transition-all duration-200 active:scale-90 touch-manipulation"
                     >
                       ✕
                     </button>
@@ -620,17 +626,17 @@ export default function CoverageMapPro() {
                 </div>
                 
                 {/* Lista scrolleable */}
-                <div className="flex-1 overflow-y-auto p-4">
-                  <div className="space-y-2 pb-6">
+                <div className="flex-1 overflow-y-auto p-4 overscroll-contain" style={{WebkitOverflowScrolling: 'touch'}}>
+                  <div className="space-y-3 pb-8">
                     {filteredLocalities.map((locality, index) => (
                       <button
                         key={locality.id}
                         onClick={() => selectLocality(locality)}
                         style={{ animationDelay: `${index * 0.03}s` }}
-                        className={`w-full text-left p-3 rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-md active:scale-95 animate-fade-in ${
+                        className={`w-full text-left p-4 rounded-xl transition-all duration-200 active:scale-[0.98] animate-fade-in touch-manipulation ${
                           selectedLocality?.id === locality.id
                             ? "bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-500 shadow-lg"
-                            : "bg-gray-50 dark:bg-gray-900 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700"
+                            : "bg-gray-50 dark:bg-gray-900 border-2 border-transparent active:border-gray-300 dark:active:border-gray-700"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">

@@ -66,6 +66,8 @@ export default function CoverageMapPro() {
       interactive: !isMobile,
       pitchWithRotate: false,
       boxZoom: false,
+      renderWorldCopies: false,
+      maxBounds: [[-59, -36], [-53, -32]],
     });
 
     map.current.addControl(new maplibregl.NavigationControl(), "top-right");
@@ -176,14 +178,15 @@ export default function CoverageMapPro() {
         layout: {
           "text-field": ["get", "name"],
           "text-font": ["Open Sans Semibold"],
-          "text-size": 12,
-          "text-variable-anchor": ["left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"],
-          "text-radial-offset": 0.8,
+          "text-size": 11,
+          "text-variable-anchor": ["top", "bottom", "left", "right"],
+          "text-radial-offset": 1,
           "text-justify": "auto",
-          "text-padding": 10,
+          "text-padding": 15,
           "text-allow-overlap": false,
-          "text-optional": false,
-          "text-max-width": 10,
+          "text-optional": true,
+          "text-max-width": 8,
+          "text-keep-upright": true,
         },
         paint: {
           "text-color": "#FFFFFF",
@@ -508,11 +511,6 @@ export default function CoverageMapPro() {
                 <span className="px-2 md:px-3 py-1 bg-white dark:bg-gray-800 rounded-full text-gray-700 dark:text-gray-300 font-medium animate-slide-in-left hover:scale-105 transition-transform duration-200" style={{animationDelay: '0.1s'}}>
                   📏 {calculateDistance(buenimarLocation, selectedLocality.coordinates).toFixed(1)} km
                 </span>
-                {selectedLocality.population && (
-                  <span className="px-2 md:px-3 py-1 bg-white dark:bg-gray-800 rounded-full text-gray-700 dark:text-gray-300 font-medium animate-slide-in-left hover:scale-105 transition-transform duration-200" style={{animationDelay: '0.2s'}}>
-                    👥 {selectedLocality.population.toLocaleString()} hab.
-                  </span>
-                )}
               </div>
             </div>
             <button
@@ -589,8 +587,8 @@ export default function CoverageMapPro() {
         <div className="lg:col-span-1">
           {/* Desktop: Panel normal */}
           <div className="hidden lg:block animate-slide-in-right bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 h-[650px] overflow-y-auto hover:shadow-2xl transition-shadow duration-300">
-            <div className="sticky top-0 bg-white dark:bg-gray-800 pb-3 mb-3 border-b border-gray-200 dark:border-gray-700 z-20 -mx-4 px-4 pt-0">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 pt-0">
+            <div className="pb-3 mb-3 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                 Localidades ({filteredLocalities.length})
               </h3>
             </div>
@@ -606,17 +604,12 @@ export default function CoverageMapPro() {
                       : "bg-gray-50 dark:bg-gray-900 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700"
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center justify-between">
                     <h4 className="font-bold text-gray-900 dark:text-gray-100">{locality.name}</h4>
                     <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300">
                       {locality.distance.toFixed(0)} km
                     </span>
                   </div>
-                  {locality.population && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {locality.population.toLocaleString()} habitantes
-                    </p>
-                  )}
                 </button>
               ))}
             </div>
@@ -679,17 +672,12 @@ export default function CoverageMapPro() {
                             : "bg-gray-50 dark:bg-gray-900 border-2 border-transparent active:border-gray-300 dark:active:border-gray-700"
                         }`}
                       >
-                        <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center justify-between">
                           <h4 className="font-bold text-gray-900 dark:text-gray-100">{locality.name}</h4>
                           <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300">
                             {locality.distance.toFixed(0)} km
                           </span>
                         </div>
-                        {locality.population && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {locality.population.toLocaleString()} habitantes
-                          </p>
-                        )}
                       </button>
                     ))}
                   </div>

@@ -47,6 +47,18 @@ export default function CoberturaPage() {
             <p className="text-base md:text-xl opacity-80 max-w-3xl mx-auto px-4">
               Servicio de distribución en todo el departamento de Colonia
             </p>
+            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-3">
+              Si tu localidad no aparece, consultanos igual
+            </p>
+            <a 
+              href="/contacto"
+              className="inline-flex items-center gap-2 mt-3 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              Contactar
+            </a>
           </div>
 
           {/* Mapa interactivo */}

@@ -323,8 +323,12 @@ export default function CoverageMapPro() {
     const bounds = new maplibregl.LngLatBounds();
     bounds.extend(buenimarLocation);
     bounds.extend(locality.coordinates);
-    const padding = isMobile ? { top: 120, bottom: 220, left: 60, right: 60 } : 100;
-    map.current.fitBounds(bounds, { padding, duration: 1000 });
+    const padding = isMobile ? { top: 140, bottom: 250, left: 80, right: 80 } : 120;
+    map.current.fitBounds(bounds, { 
+      padding, 
+      duration: 1000,
+      maxZoom: isMobile ? 9.5 : 10
+    });
 
     // Animar camión después de un delay
     setTimeout(() => animateTruck(routeLine), 500);

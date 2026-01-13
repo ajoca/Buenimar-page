@@ -167,7 +167,7 @@ export default function CoverageMapPro() {
         },
       });
 
-      // Etiquetas de localidades con offset a la izquierda
+      // Etiquetas de localidades con posicionamiento automático inteligente
       map.current.addLayer({
         id: "locality-labels",
         type: "symbol",
@@ -176,18 +176,19 @@ export default function CoverageMapPro() {
         layout: {
           "text-field": ["get", "name"],
           "text-font": ["Open Sans Semibold"],
-          "text-size": 11,
-          "text-offset": [0, 0],
-          "text-anchor": "left",
-          "text-justify": "left",
-          "text-padding": 2,
+          "text-size": 12,
+          "text-variable-anchor": ["left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"],
+          "text-radial-offset": 0.8,
+          "text-justify": "auto",
+          "text-padding": 10,
           "text-allow-overlap": false,
-          "text-optional": true,
+          "text-optional": false,
+          "text-max-width": 10,
         },
         paint: {
           "text-color": "#FFFFFF",
           "text-halo-color": "#1F2937",
-          "text-halo-width": 2,
+          "text-halo-width": 2.5,
           "text-halo-blur": 1,
         },
       });
@@ -344,15 +345,15 @@ export default function CoverageMapPro() {
     };
     animateDash();
 
-    // Ajustar vista con padding adaptativo
+    // Ajustar vista con padding adaptativo (considerando el panel de información)
     const bounds = new maplibregl.LngLatBounds();
     bounds.extend(buenimarLocation);
     bounds.extend(locality.coordinates);
-    const padding = isMobile ? { top: 60, bottom: 100, left: 40, right: 40 } : { top: 80, bottom: 100, left: 150, right: 150 };
+    const padding = isMobile ? { top: 240, bottom: 140, left: 50, right: 50 } : { top: 260, bottom: 140, left: 200, right: 200 };
     map.current.fitBounds(bounds, { 
       padding, 
       duration: 1000,
-      maxZoom: isMobile ? 9 : 9.5
+      maxZoom: isMobile ? 8.5 : 9
     });
 
     // Animar camión después de un delay

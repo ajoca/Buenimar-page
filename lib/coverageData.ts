@@ -14,7 +14,7 @@ export const buenimarLocation: [number, number] = [-57.8400, -34.4631];
 export const localities: Locality[] = [
   // Departamento de Colonia
   { id: "col-1", name: "Colonia del Sacramento", department: "Colonia", coordinates: [-57.8400, -34.4631], population: 26231, description: "Capital departamental" },
-  { id: "col-2", name: "Carmelo", department: "Colonia", coordinates: [-58.2839, -33.9856], population: 17248, description: "Puerto sobre el Río Uruguay" },
+  { id: "col-2", name: "Carmelo", department: "Colonia", coordinates: [-58.28402, -34.00023], population: 17248, description: "Puerto sobre el Río Uruguay" },
   { id: "col-3", name: "Juan Lacaze", department: "Colonia", coordinates: [-57.4461, -34.4286], population: 12907, description: "Ciudad industrial" },
   { id: "col-4", name: "Rosario", department: "Colonia", coordinates: [-57.3461, -34.3142], population: 8679, description: "Centro agrícola-ganadero" },
   { id: "col-5", name: "Nueva Helvecia", department: "Colonia", coordinates: [-57.2144, -34.2828], population: 10360, description: "Colonia suiza" },

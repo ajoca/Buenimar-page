@@ -57,12 +57,15 @@ export default function CoverageMapPro() {
       center: mapCenter,
       zoom: isMobile ? mapZoom - 0.5 : mapZoom,
       attributionControl: false,
-      touchZoomRotate: isMobile ? false : true,
+      touchZoomRotate: false,
       touchPitch: false,
       dragRotate: false,
-      dragPan: !isMobile || selectedLocality === null,
+      dragPan: !isMobile,
       scrollZoom: !isMobile,
-      doubleClickZoom: true,
+      doubleClickZoom: !isMobile,
+      interactive: !isMobile,
+      pitchWithRotate: false,
+      boxZoom: false,
     });
 
     map.current.addControl(new maplibregl.NavigationControl(), "top-right");
@@ -320,7 +323,7 @@ export default function CoverageMapPro() {
     const bounds = new maplibregl.LngLatBounds();
     bounds.extend(buenimarLocation);
     bounds.extend(locality.coordinates);
-    const padding = isMobile ? { top: 100, bottom: 200, left: 50, right: 50 } : 100;
+    const padding = isMobile ? { top: 120, bottom: 220, left: 60, right: 60 } : 100;
     map.current.fitBounds(bounds, { padding, duration: 1000 });
 
     // Animar camión después de un delay
@@ -548,7 +551,7 @@ export default function CoverageMapPro() {
           <div 
             ref={mapContainer} 
             className="w-full h-[50vh] md:h-[650px] rounded-2xl shadow-2xl overflow-hidden relative animate-fade-in-scale hover:shadow-3xl transition-all duration-500 md:hover:scale-[1.01]"
-            style={{touchAction: 'pan-x pan-y'}}
+            style={{touchAction: isMobile ? 'none' : 'auto', pointerEvents: isMobile ? 'none' : 'auto'}}
           />
         </div>
 

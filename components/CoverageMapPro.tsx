@@ -167,6 +167,31 @@ export default function CoverageMapPro() {
         },
       });
 
+      // Etiquetas de localidades con offset a la izquierda
+      map.current.addLayer({
+        id: "locality-labels",
+        type: "symbol",
+        source: "localidades",
+        filter: ["!", ["has", "point_count"]],
+        layout: {
+          "text-field": ["get", "name"],
+          "text-font": ["Open Sans Semibold"],
+          "text-size": 11,
+          "text-offset": [0, 0],
+          "text-anchor": "left",
+          "text-justify": "left",
+          "text-padding": 2,
+          "text-allow-overlap": false,
+          "text-optional": true,
+        },
+        paint: {
+          "text-color": "#FFFFFF",
+          "text-halo-color": "#1F2937",
+          "text-halo-width": 2,
+          "text-halo-blur": 1,
+        },
+      });
+
       // Marcador de Buenimar (hub central)
       const buenimarEl = document.createElement("div");
       buenimarEl.style.width = "48px";
@@ -323,11 +348,11 @@ export default function CoverageMapPro() {
     const bounds = new maplibregl.LngLatBounds();
     bounds.extend(buenimarLocation);
     bounds.extend(locality.coordinates);
-    const padding = isMobile ? { top: 140, bottom: 250, left: 80, right: 80 } : 120;
+    const padding = isMobile ? { top: 60, bottom: 100, left: 40, right: 40 } : { top: 80, bottom: 100, left: 150, right: 150 };
     map.current.fitBounds(bounds, { 
       padding, 
       duration: 1000,
-      maxZoom: isMobile ? 9.5 : 10
+      maxZoom: isMobile ? 9 : 9.5
     });
 
     // Animar camión después de un delay
@@ -563,8 +588,8 @@ export default function CoverageMapPro() {
         <div className="lg:col-span-1">
           {/* Desktop: Panel normal */}
           <div className="hidden lg:block animate-slide-in-right bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 h-[650px] overflow-y-auto hover:shadow-2xl transition-shadow duration-300">
-            <div className="sticky top-0 bg-white dark:bg-gray-800 pb-3 mb-3 border-b border-gray-200 dark:border-gray-700 z-10">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+            <div className="sticky top-0 bg-white dark:bg-gray-800 pb-3 mb-3 border-b border-gray-200 dark:border-gray-700 z-20 -mx-4 px-4 pt-0">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 pt-0">
                 Localidades ({filteredLocalities.length})
               </h3>
             </div>

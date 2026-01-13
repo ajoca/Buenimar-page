@@ -26,7 +26,7 @@ export default function CoverageSection() {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
+    return R * c * 1.35; // Factor de ruta
   };
 
   return (
@@ -59,7 +59,7 @@ export default function CoverageSection() {
         {/* Lista de localidades */}
         <div className="lg:col-span-1">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 h-[400px] md:h-[600px] overflow-y-auto">
-            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100 sticky top-0 bg-white dark:bg-gray-800 pb-2 z-10">
+            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100 pb-2">
               Localidades ({filtered.length})
             </h3>
 
@@ -78,11 +78,6 @@ export default function CoverageSection() {
                     <div>
                       <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base">{l.name}</h4>
                       <p className="text-sm text-gray-600 dark:text-gray-400">{l.department}</p>
-                      {l.population && (
-                        <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                          {l.population.toLocaleString()} hab.
-                        </p>
-                      )}
                     </div>
                     <div className="text-sm md:text-xs text-red-600 dark:text-red-400 font-semibold">
                       {calculateDistance(buenimarLocation, l.coordinates).toFixed(0)} km

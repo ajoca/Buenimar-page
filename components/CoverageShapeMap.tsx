@@ -94,14 +94,14 @@ export default function CoverageShapeMap({
   return (
     <div
       ref={ref}
-      className="w-full h-[500px] md:h-[600px] rounded-xl overflow-hidden relative shadow-2xl touch-none"
+      className="w-full h-[500px] md:h-[600px] rounded-xl relative shadow-2xl touch-none"
       style={{
         background:
           "radial-gradient(1200px 600px at 30% 25%, rgba(225,29,72,0.10), transparent 55%), linear-gradient(180deg, #0B1220, #070B13)",
       }}
     >
-      {/* SVG */}
-      <svg width="100%" height="100%" viewBox={`0 0 ${size.w} ${size.h}`}>
+      {/* SVG con overflow visible para labels */}
+      <svg width="100%" height="100%" viewBox={`0 0 ${size.w} ${size.h}`} style={{ overflow: "visible" }}>
         {/* Silueta Colonia */}
         <path
           d={coloniaPath}
@@ -178,15 +178,21 @@ export default function CoverageShapeMap({
                   strokeWidth={2}
                 />
 
-                {/* Label solo para seleccionado (limpio) */}
+                {/* Label solo para seleccionado (mejorado) */}
                 {isSel && (
                   <text
-                    x={xy[0] + 14}
-                    y={xy[1] - 14}
+                    x={xy[0]}
+                    y={xy[1] - 20}
                     fontSize="14"
-                    fontWeight="600"
-                    fill="rgba(255,255,255,0.92)"
-                    style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}
+                    fontWeight="700"
+                    fill="rgba(255,255,255,0.95)"
+                    textAnchor="middle"
+                    style={{ 
+                      textShadow: "0 2px 12px rgba(0,0,0,0.8), 0 0 8px rgba(225,29,72,0.4)",
+                      paintOrder: "stroke fill",
+                      stroke: "rgba(0,0,0,0.5)",
+                      strokeWidth: "3px"
+                    }}
                   >
                     {l.name}
                   </text>
@@ -208,12 +214,18 @@ export default function CoverageShapeMap({
             />
             <circle cx={hubXY[0]} cy={hubXY[1]} r={6} fill="rgba(255,255,255,0.92)" />
             <text
-              x={hubXY[0] + 18}
-              y={hubXY[1] + 5}
-              fontSize="14"
-              fontWeight="600"
-              fill="rgba(255,255,255,0.85)"
-              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}
+              x={hubXY[0]}
+              y={hubXY[1] - 20}
+              fontSize="15"
+              fontWeight="700"
+              fill="rgba(255,255,255,0.95)"
+              textAnchor="middle"
+              style={{ 
+                textShadow: "0 2px 12px rgba(0,0,0,0.8), 0 0 8px rgba(225,29,72,0.5)",
+                paintOrder: "stroke fill",
+                stroke: "rgba(0,0,0,0.5)",
+                strokeWidth: "3px"
+              }}
             >
               {hub.name}
             </text>

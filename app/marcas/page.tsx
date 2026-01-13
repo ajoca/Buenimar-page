@@ -13,13 +13,13 @@ export const metadata = {
     canonical: "https://www.buenimarcolonia.com/marcas",
   },
   openGraph: {
-    title: "Marcas",
-    description: "Conocé las marcas que forman parte de Buenimar: alimentos, bebidas y productos de consumo de las principales compañías del mercado.",
+    title: "Marcas | Buenimar Colonia",
+    description: "Más de 100 marcas líderes en alimentos, bebidas y productos de consumo. Conaprole, La Especialista, Pagnifique y muchas más.",
     url: "https://www.buenimarcolonia.com/marcas",
     siteName: "Buenimar Colonia",
     images: [
       {
-        url: "https://www.buenimarcolonia.com/img/marcas/001.png",
+        url: "https://www.buenimarcolonia.com/og-buenimar.png",
         width: 1200,
         height: 630,
         alt: "Marcas Buenimar Colonia",

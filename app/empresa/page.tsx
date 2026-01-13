@@ -14,13 +14,13 @@ export const metadata = {
     canonical: "https://www.buenimarcolonia.com/empresa",
   },
   openGraph: {
-    title: "Empresa",
-    description: "Distribuidora líder en Colonia del Sacramento. Más de 30 años brindando calidad, servicio, vocación, logística, rapidez y confianza.",
+    title: "Nuestra Empresa | Buenimar Colonia",
+    description: "Más de 30 años siendo la distribuidora líder en Colonia del Sacramento. Calidad, servicio, vocación, logística y confianza.",
     url: "https://www.buenimarcolonia.com/empresa",
     siteName: "Buenimar Colonia",
     images: [
       {
-        url: "https://www.buenimarcolonia.com/img/BUENIMAR-2.avif",
+        url: "https://www.buenimarcolonia.com/og-buenimar.png",
         width: 1200,
         height: 630,
         alt: "Buenimar Colonia - Empresa",

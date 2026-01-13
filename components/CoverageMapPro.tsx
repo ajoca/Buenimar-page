@@ -57,8 +57,12 @@ export default function CoverageMapPro() {
       center: mapCenter,
       zoom: isMobile ? mapZoom - 0.5 : mapZoom,
       attributionControl: false,
-      touchZoomRotate: true,
+      touchZoomRotate: isMobile ? false : true,
       touchPitch: false,
+      dragRotate: false,
+      dragPan: !isMobile || selectedLocality === null,
+      scrollZoom: !isMobile,
+      doubleClickZoom: true,
     });
 
     map.current.addControl(new maplibregl.NavigationControl(), "top-right");
@@ -448,7 +452,7 @@ export default function CoverageMapPro() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6" style={{touchAction: 'pan-y'}}>
       {/* Panel de información de ruta activa */}
       {selectedLocality && (
         <div className="animate-bounce-in bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border border-blue-200 dark:border-blue-700/50 rounded-2xl p-4 md:p-6 backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-300">
@@ -543,7 +547,8 @@ export default function CoverageMapPro() {
         <div className="lg:col-span-2">
           <div 
             ref={mapContainer} 
-            className="w-full h-[55vh] md:h-[650px] rounded-2xl shadow-2xl overflow-hidden relative animate-fade-in-scale hover:shadow-3xl transition-all duration-500 md:hover:scale-[1.01]"
+            className="w-full h-[50vh] md:h-[650px] rounded-2xl shadow-2xl overflow-hidden relative animate-fade-in-scale hover:shadow-3xl transition-all duration-500 md:hover:scale-[1.01]"
+            style={{touchAction: 'pan-x pan-y'}}
           />
         </div>
 
@@ -587,12 +592,13 @@ export default function CoverageMapPro() {
           {/* Mobile: Botón flotante para abrir lista */}
           <button
             onClick={() => setShowMobileList(true)}
-            className="lg:hidden fixed bottom-8 right-6 z-30 bg-red-600 text-white px-6 py-4 rounded-full shadow-2xl font-bold flex items-center gap-2 transition-all duration-200 active:scale-90 animate-pulse-glow animate-bounce-in touch-manipulation"
+            className="lg:hidden fixed bottom-6 right-4 z-30 bg-red-600 text-white px-5 py-3 rounded-full shadow-2xl font-bold flex items-center gap-2 transition-all duration-200 active:scale-90 animate-pulse-glow animate-bounce-in touch-manipulation"
+            style={{touchAction: 'manipulation'}}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
-            Ver Localidades
+            <span className="text-sm">Ver Localidades</span>
           </button>
 
           {/* Mobile: Drawer desde abajo */}
@@ -602,23 +608,24 @@ export default function CoverageMapPro() {
               <div 
                 className="lg:hidden fixed inset-0 bg-black/60 z-40 backdrop-blur-sm animate-fade-in"
                 onClick={() => setShowMobileList(false)}
+                style={{touchAction: 'none'}}
               />
               
               {/* Panel drawer */}
-              <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl max-h-[65vh] flex flex-col animate-slide-up">
+              <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 rounded-t-3xl shadow-2xl max-h-[70vh] flex flex-col animate-slide-up" style={{touchAction: 'pan-y'}}>
                 {/* Header con handle */}
-                <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex-shrink-0 p-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                   <div 
                     onClick={() => setShowMobileList(false)}
-                    className="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-4 cursor-pointer active:scale-110 transition-transform duration-300"
+                    className="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-3 cursor-pointer active:scale-110 transition-transform duration-300"
                   ></div>
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                    <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
                       Localidades ({filteredLocalities.length})
                     </h3>
                     <button
                       onClick={() => setShowMobileList(false)}
-                      className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-lg active:bg-gray-200 dark:active:bg-gray-600 transition-all duration-200 active:scale-90 touch-manipulation"
+                      className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-base active:bg-gray-200 dark:active:bg-gray-600 transition-all duration-200 active:scale-90 touch-manipulation"
                     >
                       ✕
                     </button>
@@ -626,8 +633,8 @@ export default function CoverageMapPro() {
                 </div>
                 
                 {/* Lista scrolleable */}
-                <div className="flex-1 overflow-y-auto p-4 overscroll-contain" style={{WebkitOverflowScrolling: 'touch'}}>
-                  <div className="space-y-3 pb-8">
+                <div className="flex-1 overflow-y-auto px-4 pt-2 pb-4 overscroll-contain" style={{WebkitOverflowScrolling: 'touch', touchAction: 'pan-y'}}>
+                  <div className="space-y-2 pb-6">
                     {filteredLocalities.map((locality, index) => (
                       <button
                         key={locality.id}

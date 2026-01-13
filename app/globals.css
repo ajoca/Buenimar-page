@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Optimizaciones para scroll móvil */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+  
+  body {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
 /* Screen reader only utility */
 .sr-only {
   position: absolute;

@@ -43,11 +43,16 @@ export const metadata: Metadata = {
     locale: "es_UY",
     url: "https://www.buenimarcolonia.com",
     siteName: "Buenimar Colonia",
-    title: "Buenimar Colonia | Distribución mayorista",
+    title: "Buenimar Colonia | Distribución mayorista en Colonia del Sacramento",
     description:
-      "Distribuidora mayorista en Colonia del Sacramento. Más de 100 marcas líderes, catálogos y pedidos por WhatsApp.",
+      "Distribuidora mayorista líder en Colonia del Sacramento. Más de 100 marcas, logística rápida y atención personalizada. 30 años de confianza.",
     images: [
-      { url: "https://www.buenimarcolonia.com/og-buenimar.png", width: 1200, height: 630, alt: "Buenimar Colonia - Distribución mayorista" },
+      { 
+        url: "https://www.buenimarcolonia.com/og-buenimar.png", 
+        width: 1200, 
+        height: 630, 
+        alt: "Buenimar Colonia - Distribución mayorista" 
+      },
     ],
   },
   twitter: {
@@ -104,6 +109,12 @@ const jsonLd = {
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
       opens: "08:00",
       closes: "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "08:00",
+      closes: "13:00"
     }
   ],
   areaServed: {

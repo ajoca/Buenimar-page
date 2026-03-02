@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CoverageSection from "@/components/CoverageSection";
 
+import NewProductsCarousel from "@/components/NewProductsCarousel";
+
 export const metadata: Metadata = {
   title: "Zona de Cobertura",
   description: "Cobertura de entregas en Colonia del Sacramento y todas las localidades del departamento. Más de 16 localidades atendidas con logística rápida y confiable.",
@@ -60,6 +62,9 @@ export default function CoberturaPage() {
               Contactar
             </a>
           </div>
+
+          {/* Carrusel de nuevos productos */}
+          <NewProductsCarousel />
 
           {/* Mapa interactivo */}
           <CoverageSection />

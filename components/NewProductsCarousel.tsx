@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import path from 'path';
 
 // Lista de imágenes en public/img new/
 const productImages = [
@@ -22,7 +21,7 @@ export default function NewProductsCarousel() {
   if (total === 0) return <div>No hay productos nuevos.</div>;
 
   const imageName = productImages[current];
-  const productCode = path.parse(imageName).name;
+  const productCode = imageName.split('.')[0];
 
   return (
     <div className="w-full flex flex-col items-center py-8">

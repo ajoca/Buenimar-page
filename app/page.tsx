@@ -4,6 +4,7 @@ import ProductsSection from "@/components/ProductsSection";
 import PortalSection from "@/components/PortalSection";
 import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
+import NewProductsCarousel from "@/components/NewProductsCarousel";
 
 export const metadata = {
   title: "Buenimar Colonia | Distribuciones en Colonia del Sacramento",
@@ -52,6 +53,9 @@ export default function HomePage() {
 
       <main id="main-content" role="main" aria-label="Contenido principal">
         <HeroSlider slides={SITE.heroSlides} />
+
+        {/* Carrusel de nuevos productos */}
+        <NewProductsCarousel />
 
         <ProductsSection title={SITE.productsTitle} products={SITE.products} />
 

@@ -1,55 +1,125 @@
 "use client";
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-// Lista de imágenes en public/img new/
-const productImages = [
-  'SCH5090.png',
-  'SCH5094.png',
-  'SCH5096.png',
-  'SCH5100.png',
-  'SCH5102.png',
-  'SCH9264.png',
+// Nuevos productos (imagen en public/img new/)
+const products = [
+  { code: 'SCH5090', image: 'SCH5090.png', name: 'Morcilla Salada' },
+  { code: 'SCH5094', image: 'SCH5094.png', name: 'Morcilla Dulce' },
+  { code: 'SCH5096', image: 'SCH5096.png', name: 'Morcilla Queso + Aceitunas' },
+  { code: 'SCH5100', image: 'SCH5100.png', name: 'Chorizo Provolone + Albahaca' },
+  { code: 'SCH5102', image: 'SCH5102.png', name: 'Chorizo Cheddar + Morrón' },
+  { code: 'SCH9264', image: 'SCH9264.png', name: 'Hamburguesas Parrilleras' },
 ];
 
 export default function NewProductsCarousel() {
   const [current, setCurrent] = useState(0);
-  const total = productImages.length;
+  const [showModal, setShowModal] = useState(false);
+  const [modalIndex, setModalIndex] = useState<number | null>(null);
+  const total = products.length;
 
-  const prev = () => setCurrent((current - 1 + total) % total);
-  const next = () => setCurrent((current + 1) % total);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % total);
+    }, 3000); // más lento para que se vea bien
+    return () => clearInterval(interval);
+  }, [total]);
 
   if (total === 0) return <div>No hay productos nuevos.</div>;
 
-  const imageName = productImages[current];
-  const productCode = imageName.split('.')[0];
+  const openModal = (index: number) => {
+    setModalIndex(index);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setModalIndex(null);
+  };
 
   return (
     <div className="w-full flex flex-col items-center py-8">
       <h2 className="text-2xl font-bold mb-4">Nuevos Productos</h2>
-      <div className="relative w-80 h-80 flex items-center justify-center">
-        <Image
-          src={`/img new/${imageName}`}
-          alt={productCode}
-          width={320}
-          height={320}
-          className="object-contain rounded shadow-lg"
-        />
-        <button
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow"
-          onClick={prev}
-        >
-          &#8592;
-        </button>
-        <button
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-2 shadow"
-          onClick={next}
-        >
-          &#8594;
-        </button>
+      <div className="w-full flex flex-col items-center">
+        <div className="flex gap-4 justify-center items-end w-full overflow-x-auto pb-4">
+          {products.map((product, idx) => (
+            <div
+              key={product.code}
+              className={`transition-transform duration-700 ${idx === current ? 'scale-105 shadow-xl z-10' : 'scale-95 opacity-70'} flex flex-col items-center cursor-pointer`}
+              style={{ minWidth: 160 }}
+              onClick={() => openModal(idx)}
+            >
+              <Image
+                src={`/img new/${product.image}`}
+                alt={product.name}
+                width={idx === current ? 190 : 150}
+                height={idx === current ? 190 : 150}
+                className="object-contain rounded-lg bg-white"
+              />
+              <div className="mt-1 text-xs font-semibold text-center max-w-[180px] leading-snug">
+                {product.name}
+              </div>
+              <div className="text-[11px] text-gray-500">Código: {product.code}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 text-sm text-gray-500">{current + 1} de {total}</div>
       </div>
-      <div className="mt-4 text-lg font-semibold">Código: {productCode}</div>
-      <div className="mt-2 text-sm text-gray-500">{current + 1} de {total}</div>
+
+      {/* Modal tipo lightbox */}
+      {showModal && modalIndex !== null && (
+        (() => {
+          const product = products[modalIndex];
+          if (!product) return null;
+          return (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={closeModal}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="relative w-full max-w-xs rounded-lg overflow-hidden shadow-2xl"
+            style={{ background: "rgb(var(--panel))" }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all"
+              aria-label="Cerrar"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <div className="flex flex-col items-center p-3">
+              {/* Image */}
+              <div className="flex items-center justify-center bg-white rounded p-2 w-full mb-2">
+                <Image
+                  src={`/img new/${product.image}`}
+                  alt={product.name}
+                  width={120}
+                  height={120}
+                  className="object-contain"
+                />
+              </div>
+
+              {/* Info */}
+              <div className="text-center text-xs">
+                <p style={{ color: "rgb(var(--text))" }} className="font-semibold mb-1">
+                  {product.name}
+                </p>
+                <p style={{ color: "rgb(var(--muted))" }}>
+                  Código: <span className="font-bold text-red-600">{product.code}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+          );
+        })()
+      )}
     </div>
   );
 }

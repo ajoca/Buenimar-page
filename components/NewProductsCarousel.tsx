@@ -49,13 +49,15 @@ export default function NewProductsCarousel() {
               style={{ minWidth: 160 }}
               onClick={() => openModal(idx)}
             >
-              <Image
-                src={`/img new/${product.image}`}
-                alt={product.name}
-                width={idx === current ? 190 : 150}
-                height={idx === current ? 190 : 150}
-                className="object-contain rounded-lg bg-white"
-              />
+              <div className="w-36 h-36 md:w-40 md:h-40 bg-white rounded-2xl flex items-center justify-center overflow-hidden">
+                <Image
+                  src={`/img new/${product.image}`}
+                  alt={product.name}
+                  width={180}
+                  height={180}
+                  className="object-contain"
+                />
+              </div>
               <div className="mt-1 text-xs font-semibold text-center max-w-[180px] leading-snug">
                 {product.name}
               </div>

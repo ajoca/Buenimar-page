@@ -81,40 +81,45 @@ export default function NewProductsCarousel() {
           aria-modal="true"
         >
           <div
-            className="relative w-full max-w-xs rounded-lg overflow-hidden shadow-2xl"
+            className="relative max-w-4xl w-full rounded-lg overflow-hidden shadow-2xl"
             style={{ background: "rgb(var(--panel))" }}
             onClick={e => e.stopPropagation()}
           >
             <button
               onClick={closeModal}
-              className="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all"
+              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-white"
               aria-label="Cerrar"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
-            <div className="flex flex-col items-center p-3">
+            <div className="grid md:grid-cols-2 gap-6 p-6 md:p-8">
               {/* Image */}
-              <div className="flex items-center justify-center bg-white rounded p-2 w-full mb-2">
+              <div className="flex items-center justify-center bg-white rounded-lg p-6">
                 <Image
                   src={`/img new/${product.image}`}
                   alt={product.name}
-                  width={120}
-                  height={120}
-                  className="object-contain"
+                  width={300}
+                  height={300}
+                  className="max-h-[400px] w-full object-contain"
                 />
               </div>
 
               {/* Info */}
-              <div className="text-center text-xs">
-                <p style={{ color: "rgb(var(--text))" }} className="font-semibold mb-1">
+              <div className="flex flex-col justify-center space-y-6">
+                <h3 className="text-3xl md:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
                   {product.name}
-                </p>
-                <p style={{ color: "rgb(var(--muted))" }}>
-                  Código: <span className="font-bold text-red-600">{product.code}</span>
-                </p>
+                </h3>
+                {product.code && (
+                  <div className="text-lg md:text-xl" style={{ color: "rgb(var(--text))" }}>
+                    <span style={{ color: "rgb(var(--muted))" }}>Código:</span>{" "}
+                    <span className="font-bold text-2xl md:text-3xl text-red-600">
+                      {product.code}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

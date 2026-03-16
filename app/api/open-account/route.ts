@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
       const user = process.env.SMTP_USER ?? "";
       const pass = process.env.SMTP_PASS ?? "";
       const to = process.env.MAIL_TO ?? "pedidos@buenimar.com";
-      const from = process.env.MAIL_FROM ?? `Web Buenimar <${user || "no-reply@buenimar.com"}>`;
+      const from = process.env.MAIL_FROM ?? `Web Buenimar <no-reply@buenimar.com>`;
 
       if (!host || !user || !pass) {
         return NextResponse.json(
@@ -237,12 +237,16 @@ export async function POST(req: NextRequest) {
       `;
 
       if (email) {
-        await transporter.sendMail({
-          from,
-          to: email,
-          subject: "Solicitud de Apertura de Cuenta Recibida",
-          html: confirmationEmail,
-        });
+        try {
+          await transporter.sendMail({
+            from,
+            to: email,
+            subject: "Solicitud UNITE recibida",
+            html: confirmationEmail,
+          });
+        } catch (confirmationError) {
+          console.error("Error enviando confirmación UNITE cliente:", confirmationError);
+        }
       }
 
       return NextResponse.json({ ok: true });
@@ -270,7 +274,7 @@ export async function POST(req: NextRequest) {
       const user = process.env.SMTP_USER ?? "";
       const pass = process.env.SMTP_PASS ?? "";
       const to = process.env.PROVIDER_MAIL_TO ?? "pablo.barrotti@buenimar.com";
-      const from = process.env.MAIL_FROM ?? `Web Buenimar <${user || "no-reply@buenimar.com"}>`;
+      const from = process.env.MAIL_FROM ?? `Web Buenimar <no-reply@buenimar.com>`;
 
       if (!host || !user || !pass) {
         return NextResponse.json(
@@ -342,12 +346,16 @@ export async function POST(req: NextRequest) {
       `;
 
       if (email) {
-        await transporter.sendMail({
-          from,
-          to: email,
-          subject: "Solicitud de Registro de Proveedor Recibida",
-          html: confirmationEmail,
-        });
+        try {
+          await transporter.sendMail({
+            from,
+            to: email,
+            subject: "Solicitud UNITE recibida",
+            html: confirmationEmail,
+          });
+        } catch (confirmationError) {
+          console.error("Error enviando confirmación UNITE proveedor:", confirmationError);
+        }
       }
 
       return NextResponse.json({ ok: true });
@@ -357,10 +365,21 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error en API de apertura de cuenta:", error);
+
+    let errorMsg = "Error al procesar la solicitud";
+
+    if (error?.code === "ETIMEDOUT" || error?.code === "ESOCKET") {
+      errorMsg = "Timeout al conectar con el servidor SMTP. Por favor, contactanos por WhatsApp.";
+    } else if (error?.code === "EAUTH") {
+      errorMsg = "Error de autenticación SMTP";
+    } else if (error?.message) {
+      errorMsg = error.message;
+    }
+
     return NextResponse.json(
-      { ok: false, error: "Error al procesar la solicitud" },
+      { ok: false, error: errorMsg },
       { status: 500 }
     );
   }

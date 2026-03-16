@@ -10,6 +10,8 @@ export const SITE: {
   companyTitle: string;
   companySlides: Slide[];
   companyParagraphs: string[];
+  openAccountTitle: string;
+  openAccountSubtitle: string;
   contactTitle: string;
   contactLines: string[];
   socials: SocialLink[];
@@ -67,6 +69,9 @@ export const SITE: {
     "Párrafo 2 de descripción.",
     "Párrafo 3 de descripción.",
   ],
+
+  openAccountTitle: "Quiero ser cliente",
+  openAccountSubtitle: "Abre tu cuenta hoy y comienza a disfrutar de nuestros servicios. Completa el formulario y nos pondremos en contacto para procesar tu solicitud.",
 
   contactTitle: "Cómo encontrarnos",
 contactLines: [

@@ -141,6 +141,17 @@ export default function Navbar() {
               isActive('/contacto') ? 'w-full' : 'w-0 group-hover:w-full'
             }`} />
           </Link>
+          <Link
+            href="/abrir-cuenta"
+            className={`relative px-2 py-1 tracking-wide transition-all duration-200 hover:opacity-100 group font-bold ${
+              isActive('/abrir-cuenta') ? 'opacity-100' : 'opacity-80'
+            }`}
+          >
+            ABRIR CUENTA
+            <span className={`absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300 ${
+              isActive('/abrir-cuenta') ? 'w-full' : 'w-0 group-hover:w-full'
+            }`} />
+          </Link>
           
           {/* Separador */}
           <div className="h-6 w-px bg-white/20" />
@@ -214,6 +225,15 @@ export default function Navbar() {
             }`}
           >
             CONTACTO
+          </Link>
+          <Link
+            href="/abrir-cuenta"
+            onClick={()=>setOpen(false)}
+            className={`rounded-lg px-4 py-3 transition-all duration-200 hover:bg-white/10 font-bold ${
+              isActive('/abrir-cuenta') ? 'bg-white/15 font-semibold' : ''
+            }`}
+          >
+            ABRIR CUENTA
           </Link>
           <Link
             href="/cobertura"

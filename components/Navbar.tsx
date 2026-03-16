@@ -54,7 +54,7 @@ export default function Navbar() {
       role="banner"
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center px-4 py-3 md:py-4">
-        <Link href="/" className="block" aria-label="Buenimar Distribuciones - Ir a inicio">
+        <Link href="/" className="block mr-8 md:mr-12 flex-shrink-0" aria-label="Buenimar Distribuciones - Ir a inicio">
           <img
             src="/img/Logo.png"
             alt="Logo Buenimar Distribuciones"

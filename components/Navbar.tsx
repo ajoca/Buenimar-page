@@ -63,18 +63,18 @@ export default function Navbar() {
         </Link>
         
         {/* Mobile: Solo hamburguesa y CTA */}
-        <div className="md:hidden flex items-center gap-3">
+        <div className="md:hidden flex items-center gap-2 sm:gap-3">
           <a
             href="https://wa.me/59897557366"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-white text-red-600 px-3 py-1.5 text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105"
+            className="inline-flex items-center gap-1.5 rounded-full bg-white text-red-600 px-3 py-1.5 text-xs sm:text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105"
           >
-            <FaWhatsapp className="text-base" />
+            <FaWhatsapp className="text-sm sm:text-base" />
             <span className="text-xs">Chat</span>
           </a>
           <button 
-            className="text-white text-2xl p-1" 
+            className="text-white text-2xl sm:text-3xl p-2 sm:p-2.5 rounded-lg hover:bg-white/10 transition-colors" 
             onClick={()=>setOpen(!open)}
             aria-label={open ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
             aria-expanded={open}
@@ -85,7 +85,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 text-white font-medium text-sm" role="navigation" aria-label="Navegación principal">
+        <nav className="hidden md:flex items-center gap-6 pr-3 lg:pr-4 text-white font-medium text-sm" role="navigation" aria-label="Navegación principal">
           <Link
             href="/"
             className={`relative px-2 py-1 tracking-wide transition-all duration-200 hover:opacity-100 group ${
@@ -147,7 +147,7 @@ export default function Navbar() {
               isActive('/abrir-cuenta') ? 'opacity-100' : 'opacity-80'
             }`}
           >
-            ABRIR CUENTA
+            UNITE
             <span className={`absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300 ${
               isActive('/abrir-cuenta') ? 'w-full' : 'w-0 group-hover:w-full'
             }`} />
@@ -171,7 +171,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm w-9 h-9 transition-all duration-200 hover:bg-white/20 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+            className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm w-9 h-9 mr-1 lg:mr-2 transition-all duration-200 hover:bg-white/20 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label="Cambiar tema"
             title={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
           >
@@ -233,7 +233,7 @@ export default function Navbar() {
               isActive('/abrir-cuenta') ? 'bg-white/15 font-semibold' : ''
             }`}
           >
-            ABRIR CUENTA
+            UNITE
           </Link>
           <Link
             href="/cobertura"

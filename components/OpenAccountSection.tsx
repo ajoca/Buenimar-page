@@ -84,7 +84,7 @@ export default function OpenAccountSection({
 
   return (
     <section
-      className="isolate px-6 py-24 sm:py-32 lg:px-8"
+      className="isolate px-4 sm:px-6 py-16 sm:py-24 md:py-32 lg:px-8"
       id="abrir-cuenta"
       style={{
         background:
@@ -109,24 +109,24 @@ export default function OpenAccountSection({
       {/* Header */}
       <div className="mx-auto max-w-2xl text-center">
         <h2
-          className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
+          className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl md:text-5xl"
           style={{ color: "rgb(var(--text))" }}
         >
           {title}
         </h2>
         <p
-          className="mt-2 text-lg leading-8"
+          className="mt-2 text-sm sm:text-base lg:text-lg leading-6 sm:leading-8"
           style={{ color: "rgb(var(--muted))" }}
         >
           {subtitle}
         </p>
 
         {/* Toggle Cliente/Proveedor */}
-        <div className="mt-8 flex justify-center gap-4">
+        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => setAccountType("cliente")}
-            className={`px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
+            className={`px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-200 flex-1 sm:flex-none ${
               accountType === "cliente"
                 ? "bg-red-600 text-white shadow-lg"
                 : "bg-white/10 text-white hover:bg-white/20"
@@ -145,7 +145,7 @@ export default function OpenAccountSection({
           <button
             type="button"
             onClick={() => setAccountType("proveedor")}
-            className={`px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
+            className={`px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-200 flex-1 sm:flex-none ${
               accountType === "proveedor"
                 ? "bg-red-600 text-white shadow-lg"
                 : "bg-white/10 text-white hover:bg-white/20"
@@ -165,7 +165,7 @@ export default function OpenAccountSection({
       </div>
 
       {/* Form */}
-      <form onSubmit={onSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form onSubmit={onSubmit} className="mx-auto mt-10 sm:mt-16 max-w-xl sm:mt-20 px-2 sm:px-0">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           {/* CAMPOS PARA CLIENTE */}
           {accountType === "cliente" && (
@@ -174,19 +174,19 @@ export default function OpenAccountSection({
               <div className="sm:col-span-2">
                 <label
                   htmlFor="commerce"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Nombre del Comercio *
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2">
                   <input
                     id="commerce"
                     type="text"
                     name="commerce"
                     required
                     placeholder="Ej: Almacén La Esquina"
-                    className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                     style={fieldStyle}
                   />
                 </div>
@@ -196,19 +196,19 @@ export default function OpenAccountSection({
               <div className="sm:col-span-2">
                 <label
                   htmlFor="address"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Dirección *
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2">
                   <input
                     id="address"
                     type="text"
                     name="address"
                     required
                     placeholder="Calle y número"
-                    className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                     style={fieldStyle}
                   />
                 </div>
@@ -218,16 +218,16 @@ export default function OpenAccountSection({
               <div>
                 <label
                   htmlFor="category"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Rubro/Categoría
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2">
                   <select
                     id="category"
                     name="category"
-                    className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                     style={fieldStyle}
                   >
                     <option value="">Seleccionar categoría</option>
@@ -247,7 +247,7 @@ export default function OpenAccountSection({
               <div>
                 <label
                   htmlFor="volume"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Volumen Estimado
@@ -277,19 +277,19 @@ export default function OpenAccountSection({
               <div className="sm:col-span-2">
                 <label
                   htmlFor="company-name"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Nombre de la Empresa/Marca *
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2">
                   <input
                     id="company-name"
                     type="text"
                     name="company-name"
                     required
                     placeholder="Ej: Productos Artesanales XYZ"
-                    className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                     style={fieldStyle}
                   />
                 </div>
@@ -299,19 +299,19 @@ export default function OpenAccountSection({
               <div className="sm:col-span-2">
                 <label
                   htmlFor="product-type"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Tipo de Producto *
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2">
                   <input
                     id="product-type"
                     type="text"
                     name="product-type"
                     required
                     placeholder="Ej: Alimentos, Bebidas, Electrónica, etc."
-                    className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                     style={fieldStyle}
                   />
                 </div>
@@ -321,18 +321,18 @@ export default function OpenAccountSection({
               <div className="sm:col-span-2">
                 <label
                   htmlFor="product-description"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Descripción del Producto
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2">
                   <textarea
                     id="product-description"
                     name="product-description"
-                    rows={4}
+                    rows={3}
                     placeholder="Describe brevemente tu producto y sus características"
-                    className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 resize-none"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 resize-none"
                     style={fieldStyle}
                   />
                 </div>
@@ -342,16 +342,16 @@ export default function OpenAccountSection({
               <div>
                 <label
                   htmlFor="product-volume"
-                  className="block text-sm leading-6 font-semibold"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
                   style={{ color: "rgb(var(--text))" }}
                 >
                   Volumen de Producción
                 </label>
-                <div className="mt-2.5">
+                <div className="mt-2">
                   <select
                     id="product-volume"
                     name="product-volume"
-                    className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                     style={fieldStyle}
                   >
                     <option value="">Seleccionar volumen</option>
@@ -369,18 +369,18 @@ export default function OpenAccountSection({
           <div className="sm:col-span-2">
             <label
               htmlFor="contact-name"
-              className="block text-sm leading-6 font-semibold"
+              className="block text-xs sm:text-sm leading-6 font-semibold"
               style={{ color: "rgb(var(--text))" }}
             >
               Nombre del Contacto
             </label>
-            <div className="mt-2.5">
+            <div className="mt-2">
               <input
                 id="contact-name"
                 type="text"
                 name="contact-name"
                 placeholder="Tu nombre"
-                className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
             </div>
@@ -390,19 +390,19 @@ export default function OpenAccountSection({
           <div className="sm:col-span-2">
             <label
               htmlFor="email"
-              className="block text-sm leading-6 font-semibold"
+              className="block text-xs sm:text-sm leading-6 font-semibold"
               style={{ color: "rgb(var(--text))" }}
             >
               Email *
             </label>
-            <div className="mt-2.5">
+            <div className="mt-2">
               <input
                 id="email"
                 type="email"
                 name="email"
                 required
                 placeholder="tu@email.com"
-                className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
             </div>
@@ -412,26 +412,26 @@ export default function OpenAccountSection({
           <div className="sm:col-span-2">
             <label
               htmlFor="phone-number"
-              className="block text-sm leading-6 font-semibold"
+              className="block text-xs sm:text-sm leading-6 font-semibold"
               style={{ color: "rgb(var(--text))" }}
             >
               Teléfono
             </label>
-            <div className="mt-2.5">
+            <div className="mt-2">
               <input
                 id="phone-number"
                 type="tel"
                 name="phone-number"
                 autoComplete="tel"
                 placeholder="+598 99 999 999"
-                className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
             </div>
           </div>
 
           {/* Checkbox */}
-          <div className="flex gap-x-4 sm:col-span-2">
+          <div className="flex gap-x-3 sm:gap-x-4 sm:col-span-2">
             <div className="flex h-6 items-center">
               <input
                 id="agree-to-policies"
@@ -447,7 +447,7 @@ export default function OpenAccountSection({
             </div>
             <label
               htmlFor="agree-to-policies"
-              className="text-sm leading-6"
+              className="text-xs sm:text-sm leading-6"
               style={{ color: "rgb(var(--muted))" }}
             >
               Acepto los{" "}
@@ -468,7 +468,7 @@ export default function OpenAccountSection({
         {/* Message */}
         {result && (
           <div
-            className={`mt-8 p-4 rounded-lg flex items-center gap-3 ${
+            className={`mt-8 p-3 sm:p-4 rounded-lg flex items-center gap-2 sm:gap-3 text-sm sm:text-base ${
               result.ok
                 ? "bg-green-50"
                 : "bg-red-50"
@@ -480,9 +480,9 @@ export default function OpenAccountSection({
             }}
           >
             {result.ok ? (
-              <FaCheckCircle className="text-green-600 text-xl flex-shrink-0" />
+              <FaCheckCircle className="text-green-600 text-lg sm:text-xl flex-shrink-0" />
             ) : (
-              <FaExclamationCircle className="text-red-600 text-xl flex-shrink-0" />
+              <FaExclamationCircle className="text-red-600 text-lg sm:text-xl flex-shrink-0" />
             )}
             <p
               style={{
@@ -495,11 +495,11 @@ export default function OpenAccountSection({
         )}
 
         {/* Submit Button */}
-        <div className="mt-10">
+        <div className="mt-8 sm:mt-10">
           <button
             type="submit"
             disabled={submitting}
-            className="block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            className="block w-full rounded-md px-3 sm:px-3.5 py-2 sm:py-2.5 text-center text-sm sm:text-base font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
             style={{ background: "#dc2626" }}
           >
             {submitting ? "Procesando..." : accountType === "cliente" ? "Abrir Cuenta" : "Registrarse como Proveedor"}

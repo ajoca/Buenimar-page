@@ -159,5 +159,8 @@ brandsTitle: "Marcas con las que trabajamos",
     { id: "098", name: "Marca 098", image: "/img/marcas/103_400x400_white.png" },
     { id: "099", name: "Marca 099", image: "/img/marcas/Logo glace.png" },
     { id: "100", name: "Gin 34", image: "/img/marcas/gin34.png" },
+    { id: "115", name: "Marca 115", image: "/img/marcas/115.jpeg" },
+    { id: "116", name: "Marca 116", image: "/img/marcas/116.jpeg" },
+    { id: "117", name: "Marca 117", image: "/img/marcas/117.jpeg" },
   ],
 };

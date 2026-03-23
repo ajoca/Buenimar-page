@@ -20,6 +20,7 @@ const raleway = Raleway({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.buenimarcolonia.com"),
+  applicationName: "BUENIMAR COLONIA",
   title: {
     default: "BUENIMAR COLONIA",
     template: "%s | BUENIMAR COLONIA",
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     locale: "es_UY",
     url: "https://www.buenimarcolonia.com",
     siteName: "BUENIMAR COLONIA",
-    title: "Buenimar Colonia | Distribución mayorista en Colonia del Sacramento",
+    title: "BUENIMAR COLONIA",
     description:
       "Distribuidora mayorista líder en Colonia del Sacramento. Más de 100 marcas, logística rápida y atención personalizada. 30 años de confianza.",
     images: [
@@ -73,9 +74,13 @@ export const metadata: Metadata = {
 const jsonLdWebsite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://www.buenimarcolonia.com/#website",
   name: "BUENIMAR COLONIA",
   alternateName: ["Buenimar Colonia", "Buenimar Distribuciones", "Buenimar Colonia del Sacramento"],
-  url: "https://www.buenimarcolonia.com/"
+  url: "https://www.buenimarcolonia.com/",
+  publisher: {
+    "@id": "https://www.buenimarcolonia.com/#organization"
+  }
 };
 
 const jsonLd = {
@@ -151,6 +156,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es" data-scroll-behavior="smooth">
       <head>
         <meta property="og:site_name" content="BUENIMAR COLONIA" />
+        <meta name="application-name" content="BUENIMAR COLONIA" />
+        <meta name="apple-mobile-web-app-title" content="BUENIMAR COLONIA" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

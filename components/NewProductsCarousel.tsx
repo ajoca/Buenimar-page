@@ -4,6 +4,10 @@ import { useState, useEffect } from 'react';
 
 // Nuevos productos (imagen en public/img new/)
 const products = [
+  { code: 'ALM12263', image: 'ALM12263.png', name: 'Aceite de oliva O-LIVE 450 ml' },
+  { code: 'ALM12264', image: 'ALM12264.png', name: 'Aceite de oliva O-LIVE 1 Litro' },
+  { code: 'ALM12265', image: 'ALM12265.png', name: 'Aceite de oliva Santiago Premium 250 ml' },
+  { code: 'ALM12266', image: 'ALM12266.png', name: 'Aceite de oliva Santiago Premium 5 Litros' },
   { code: 'SCH5090', image: 'SCH5090.png', name: 'Morcilla Salada' },
   { code: 'SCH5094', image: 'SCH5094.png', name: 'Morcilla Dulce' },
   { code: 'SCH5096', image: 'SCH5096.png', name: 'Morcilla Queso + Aceitunas' },

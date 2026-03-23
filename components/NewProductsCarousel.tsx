@@ -42,30 +42,30 @@ export default function NewProductsCarousel() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-8">
-      <h2 className="text-2xl font-bold mb-4">Nuevos Productos</h2>
-      <div className="w-full flex flex-col items-center">
-        <div className="flex gap-4 justify-center items-end w-full overflow-x-auto pb-4">
+    <div className="w-full flex flex-col items-center py-6 sm:py-8 px-3 sm:px-4 overflow-hidden">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-center">Nuevos Productos</h2>
+      <div className="w-full flex flex-col items-center max-w-7xl">
+        <div className="flex gap-3 sm:gap-4 justify-start sm:justify-center items-stretch w-full overflow-x-auto pb-4 px-1 sm:px-2 snap-x snap-mandatory scroll-smooth">
           {products.map((product, idx) => (
             <div
               key={product.code}
-              className={`transition-transform duration-700 ${idx === current ? 'scale-105 shadow-xl z-10' : 'scale-95 opacity-70'} flex flex-col items-center cursor-pointer`}
-              style={{ minWidth: 160 }}
+              className={`shrink-0 snap-center min-w-[74vw] sm:min-w-[220px] md:min-w-[240px] transition-transform duration-700 ${idx === current ? 'scale-[1.02] sm:scale-105 shadow-xl z-10' : 'scale-100 sm:scale-95 opacity-85 sm:opacity-70'} flex flex-col items-center cursor-pointer`}
               onClick={() => openModal(idx)}
             >
-              <div className="w-36 h-36 md:w-40 md:h-40 bg-white rounded-2xl flex items-center justify-center overflow-hidden">
+              <div className="w-full h-52 sm:h-56 md:h-60 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-3 sm:p-4">
                 <Image
                   src={`/img new/${product.image}`}
                   alt={product.name}
-                  width={180}
-                  height={180}
-                  className="object-contain"
+                  width={480}
+                  height={480}
+                  sizes="(max-width: 640px) 74vw, (max-width: 768px) 220px, 240px"
+                  className="w-full h-full object-contain"
                 />
               </div>
-              <div className="mt-1 text-xs font-semibold text-center max-w-[180px] leading-snug">
+              <div className="mt-2 text-sm sm:text-base font-semibold text-center w-full leading-snug px-1">
                 {product.name}
               </div>
-              <div className="text-[11px] text-gray-500">Código: {product.code}</div>
+              <div className="text-xs sm:text-sm text-gray-500">Código: {product.code}</div>
             </div>
           ))}
         </div>
@@ -99,27 +99,28 @@ export default function NewProductsCarousel() {
               </svg>
             </button>
 
-            <div className="grid md:grid-cols-2 gap-6 p-6 md:p-8">
+            <div className="grid md:grid-cols-2 gap-4 md:gap-6 p-4 sm:p-6 md:p-8">
               {/* Image */}
-              <div className="flex items-center justify-center bg-white rounded-lg p-6">
+              <div className="flex items-center justify-center bg-white rounded-lg p-4 sm:p-6 min-h-[300px] sm:min-h-[380px]">
                 <Image
                   src={`/img new/${product.image}`}
                   alt={product.name}
-                  width={300}
-                  height={300}
-                  className="max-h-[400px] w-full object-contain"
+                  width={700}
+                  height={700}
+                  sizes="(max-width: 768px) 90vw, 50vw"
+                  className="max-h-[420px] w-full object-contain"
                 />
               </div>
 
               {/* Info */}
-              <div className="flex flex-col justify-center space-y-6">
-                <h3 className="text-3xl md:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
+              <div className="flex flex-col justify-center space-y-4 sm:space-y-6">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
                   {product.name}
                 </h3>
                 {product.code && (
-                  <div className="text-lg md:text-xl" style={{ color: "rgb(var(--text))" }}>
+                  <div className="text-base sm:text-lg md:text-xl" style={{ color: "rgb(var(--text))" }}>
                     <span style={{ color: "rgb(var(--muted))" }}>Código:</span>{" "}
-                    <span className="font-bold text-2xl md:text-3xl text-red-600">
+                    <span className="font-bold text-xl sm:text-2xl md:text-3xl text-red-600">
                       {product.code}
                     </span>
                   </div>

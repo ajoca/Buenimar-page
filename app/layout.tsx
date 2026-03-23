@@ -21,8 +21,8 @@ const raleway = Raleway({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.buenimarcolonia.com"),
   title: {
-    default: "Buenimar Colonia",
-    template: "%s | Buenimar Colonia",
+    default: "BUENIMAR COLONIA",
+    template: "%s | BUENIMAR COLONIA",
   },
   description:
     "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio en Colonia del Sacramento.",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_UY",
     url: "https://www.buenimarcolonia.com",
-    siteName: "Buenimar Colonia",
+    siteName: "BUENIMAR COLONIA",
     title: "Buenimar Colonia | Distribución mayorista en Colonia del Sacramento",
     description:
       "Distribuidora mayorista líder en Colonia del Sacramento. Más de 100 marcas, logística rápida y atención personalizada. 30 años de confianza.",
@@ -73,8 +73,8 @@ export const metadata: Metadata = {
 const jsonLdWebsite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Buenimar Colonia",
-  alternateName: ["Buenimar Distribuciones", "Buenimar Colonia del Sacramento"],
+  name: "BUENIMAR COLONIA",
+  alternateName: ["Buenimar Colonia", "Buenimar Distribuciones", "Buenimar Colonia del Sacramento"],
   url: "https://www.buenimarcolonia.com/"
 };
 
@@ -82,7 +82,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "@id": "https://www.buenimarcolonia.com/#organization",
-  name: "Buenimar Colonia",
+  name: "BUENIMAR COLONIA",
   alternateName: "Buenimar Distribuciones",
   description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
   url: "https://www.buenimarcolonia.com",
@@ -150,7 +150,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" data-scroll-behavior="smooth">
       <head>
-        <meta property="og:site_name" content="Buenimar Colonia" />
+        <meta property="og:site_name" content="BUENIMAR COLONIA" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

@@ -55,7 +55,7 @@ export default function NewProductsCarousel() {
     <div className="w-full flex flex-col items-center py-6 sm:py-8 px-3 sm:px-4 overflow-hidden">
       <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-center">Nuevos Productos</h2>
       <div className="w-full flex flex-col items-center max-w-7xl">
-        <div className="flex gap-3 sm:gap-4 justify-start sm:justify-center items-stretch w-full overflow-x-auto pb-4 px-1 sm:px-2 snap-x snap-mandatory scroll-smooth">
+        <div className="flex gap-3 sm:gap-4 justify-start items-stretch w-full overflow-x-auto pb-4 px-1 sm:px-2 snap-x snap-mandatory scroll-smooth">
           {products.map((product, idx) => (
             <div
               key={product.code}

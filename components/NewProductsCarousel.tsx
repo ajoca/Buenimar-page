@@ -49,7 +49,7 @@ export default function NewProductsCarousel() {
           {products.map((product, idx) => (
             <div
               key={product.code}
-              className={`shrink-0 snap-center min-w-[74vw] sm:min-w-[220px] md:min-w-[240px] transition-transform duration-700 ${idx === current ? 'scale-[1.02] sm:scale-105 shadow-xl z-10' : 'scale-100 sm:scale-95 opacity-85 sm:opacity-70'} flex flex-col items-center cursor-pointer`}
+              className={`shrink-0 snap-center min-w-[74vw] sm:min-w-[220px] md:min-w-[240px] min-h-[340px] sm:min-h-[360px] transition-transform duration-700 ${idx === current ? 'scale-[1.02] sm:scale-105 shadow-xl z-10' : 'scale-100 sm:scale-95 opacity-85 sm:opacity-70'} flex flex-col items-center cursor-pointer`}
               onClick={() => openModal(idx)}
             >
               <div className="w-full h-52 sm:h-56 md:h-60 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-3 sm:p-4">
@@ -62,10 +62,19 @@ export default function NewProductsCarousel() {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div className="mt-2 text-sm sm:text-base font-semibold text-center w-full leading-snug px-1">
-                {product.name}
+              <div className="mt-2 h-14 sm:h-16 text-sm sm:text-base font-semibold text-center w-full leading-snug px-1 overflow-hidden flex items-start justify-center">
+                <span
+                  className="overflow-hidden"
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {product.name}
+                </span>
               </div>
-              <div className="text-xs sm:text-sm text-gray-500">Código: {product.code}</div>
+              <div className="h-6 text-xs sm:text-sm text-gray-500">Código: {product.code}</div>
             </div>
           ))}
         </div>

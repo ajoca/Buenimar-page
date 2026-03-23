@@ -18,25 +18,52 @@ const products = [
 
 export default function NewProductsCarousel() {
   const [current, setCurrent] = useState(0);
+  const [isAutoPaused, setIsAutoPaused] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalIndex, setModalIndex] = useState<number | null>(null);
   const total = products.length;
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const resumeTimeoutRef = useRef<number | null>(null);
+
+  const pauseAutoScroll = () => {
+    setIsAutoPaused(true);
+    if (resumeTimeoutRef.current) {
+      window.clearTimeout(resumeTimeoutRef.current);
+    }
+    resumeTimeoutRef.current = window.setTimeout(() => {
+      setIsAutoPaused(false);
+    }, 4000);
+  };
 
   useEffect(() => {
+    if (isAutoPaused) return;
+
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % total);
     }, 3000);
     return () => clearInterval(interval);
-  }, [total]);
+  }, [total, isAutoPaused]);
 
-  // Scroll the active card into view whenever current changes
   useEffect(() => {
-    cardRefs.current[current]?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'center',
-    });
+    return () => {
+      if (resumeTimeoutRef.current) {
+        window.clearTimeout(resumeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Move only the horizontal track to avoid scrolling the whole page
+  useEffect(() => {
+    const track = trackRef.current;
+    const card = cardRefs.current[current];
+    if (!track || !card) return;
+
+    const targetLeft = card.offsetLeft - (track.clientWidth - card.clientWidth) / 2;
+    const maxLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+    const clampedLeft = Math.max(0, Math.min(targetLeft, maxLeft));
+
+    track.scrollTo({ left: clampedLeft, behavior: 'smooth' });
   }, [current]);
 
   if (total === 0) return <div>No hay productos nuevos.</div>;
@@ -55,7 +82,13 @@ export default function NewProductsCarousel() {
     <div className="w-full flex flex-col items-center py-6 sm:py-8 px-3 sm:px-4 overflow-hidden">
       <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-center">Nuevos Productos</h2>
       <div className="w-full flex flex-col items-center max-w-7xl">
-        <div className="flex gap-3 sm:gap-4 justify-start items-stretch w-full overflow-x-auto pb-4 px-1 sm:px-2 snap-x snap-mandatory scroll-smooth">
+        <div
+          ref={trackRef}
+          onWheel={pauseAutoScroll}
+          onTouchStart={pauseAutoScroll}
+          onMouseDown={pauseAutoScroll}
+          className="flex gap-3 sm:gap-4 justify-start items-stretch w-full overflow-x-auto pb-4 px-1 sm:px-2 snap-x snap-mandatory scroll-smooth"
+        >
           {products.map((product, idx) => (
             <div
               key={product.code}

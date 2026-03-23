@@ -1,6 +1,6 @@
 "use client";
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Nuevos productos (imagen en public/img new/)
 const products = [
@@ -21,13 +21,23 @@ export default function NewProductsCarousel() {
   const [showModal, setShowModal] = useState(false);
   const [modalIndex, setModalIndex] = useState<number | null>(null);
   const total = products.length;
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % total);
-    }, 3000); // más lento para que se vea bien
+    }, 3000);
     return () => clearInterval(interval);
   }, [total]);
+
+  // Scroll the active card into view whenever current changes
+  useEffect(() => {
+    cardRefs.current[current]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    });
+  }, [current]);
 
   if (total === 0) return <div>No hay productos nuevos.</div>;
 
@@ -49,7 +59,8 @@ export default function NewProductsCarousel() {
           {products.map((product, idx) => (
             <div
               key={product.code}
-              className={`shrink-0 snap-center min-w-[74vw] sm:min-w-[220px] md:min-w-[240px] min-h-[340px] sm:min-h-[360px] transition-transform duration-700 ${idx === current ? 'scale-[1.02] sm:scale-105 shadow-xl z-10' : 'scale-100 sm:scale-95 opacity-85 sm:opacity-70'} flex flex-col items-center cursor-pointer`}
+              ref={(el) => { cardRefs.current[idx] = el; }}
+              className={`shrink-0 snap-center w-[74vw] sm:w-[220px] md:w-[240px] h-[340px] sm:h-[360px] transition-transform duration-700 ${idx === current ? 'scale-[1.02] sm:scale-105 shadow-xl z-10' : 'scale-100 sm:scale-95 opacity-85 sm:opacity-70'} flex flex-col items-center cursor-pointer`}
               onClick={() => openModal(idx)}
             >
               <div className="w-full h-52 sm:h-56 md:h-60 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-3 sm:p-4">

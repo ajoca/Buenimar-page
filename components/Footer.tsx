@@ -24,6 +24,21 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
         <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-[120px]" />
       
         <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-10">
+            {[
+              { value: "30+", label: "Años" },
+              { value: "100+", label: "Marcas" },
+              { value: "16", label: "Localidades" },
+            ].map((item) => (
+              <div key={item.label} className="rounded-xl border border-white/15 bg-white/10 px-3 py-3 text-center backdrop-blur-sm">
+                <p className="text-lg md:text-xl font-extrabold leading-none" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
+                  {item.value}
+                </p>
+                <p className="mt-1 text-[11px] md:text-xs uppercase tracking-wider opacity-80">{item.label}</p>
+              </div>
+            ))}
+          </div>
+
           {/* Grid 12 columnas mejorado */}
           <div className={`grid grid-cols-1 gap-8 md:gap-6 mb-12 items-start ${hideCertification ? 'md:grid-cols-10' : 'md:grid-cols-12'}`}>
             {/* Columna 1: Marca (4 cols) */}
@@ -86,11 +101,17 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
             <div className="md:col-span-3 text-center md:text-left">
               <h3 className="text-lg font-bold mb-4 tracking-tight">Enlaces</h3>
               <nav className="flex flex-col space-y-2.5 text-sm">
+                <Link href="/" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
+                  → Inicio
+                </Link>
                 <Link href="/empresa" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
                   → Nuestra Empresa
                 </Link>
                 <Link href="/marcas" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
                   → Marcas
+                </Link>
+                <Link href="/abrir-cuenta" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
+                  → Unite
                 </Link>
                 <Link href="/cobertura" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
                   → Cobertura
@@ -98,6 +119,9 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
                 <Link href="/contacto" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
                   → Contacto
                 </Link>
+                <a href="https://wa.me/59897557366" target="_blank" rel="noopener noreferrer" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
+                  → Portal WhatsApp
+                </a>
                 <Link href="/politica-privacidad" className="opacity-80 md:hover:opacity-100 transition-all md:hover:translate-x-1 inline-block py-1">
                   → Política de Privacidad
                 </Link>

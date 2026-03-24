@@ -158,6 +158,17 @@ a { color: inherit; }
     font-family: var(--font-raleway, system-ui);
   }
 
+  .section-eyebrow {
+    @apply text-xs md:text-sm uppercase font-semibold tracking-[0.16em];
+    color: rgba(var(--accent), 0.9);
+    font-family: var(--font-montserrat, system-ui);
+  }
+
+  .section-subtitle {
+    @apply text-sm md:text-base leading-relaxed;
+    color: rgb(var(--muted));
+  }
+
   /* Microinteracciones - hover lift consistency */
   .card-lift {
     @apply transition-all duration-300 ease-out;

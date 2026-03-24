@@ -79,8 +79,14 @@ export default function NewProductsCarousel() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-6 sm:py-8 px-3 sm:px-4 overflow-hidden">
-      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-center">Nuevos Productos</h2>
+    <div className="w-full flex flex-col items-center py-8 sm:py-10 px-3 sm:px-4 overflow-hidden">
+      <p className="section-eyebrow text-center">Lanzamientos</p>
+      <h2 className="text-2xl sm:text-3xl font-bold mt-2 mb-2 text-center" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
+        Nuevos Productos
+      </h2>
+      <p className="section-subtitle text-center mb-5 sm:mb-6 max-w-2xl">
+        Incorporaciones recientes con codigo visible para agilizar pedidos.
+      </p>
       <div className="w-full flex flex-col items-center max-w-7xl">
         <div
           ref={trackRef}
@@ -96,7 +102,10 @@ export default function NewProductsCarousel() {
               className={`shrink-0 snap-center w-[74vw] sm:w-[220px] md:w-[240px] h-[340px] sm:h-[360px] transition-transform duration-700 ${idx === current ? 'scale-[1.02] sm:scale-105 shadow-xl z-10' : 'scale-100 sm:scale-95 opacity-85 sm:opacity-70'} flex flex-col items-center cursor-pointer`}
               onClick={() => openModal(idx)}
             >
-              <div className="w-full h-52 sm:h-56 md:h-60 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-3 sm:p-4">
+              <div className="relative w-full h-52 sm:h-56 md:h-60 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-3 sm:p-4">
+                <span className="absolute left-2 top-2 rounded-full bg-red-600 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 uppercase tracking-wide">
+                  Nuevo
+                </span>
                 <Image
                   src={`/img new/${product.image}`}
                   alt={product.name}

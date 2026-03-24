@@ -1,164 +1,116 @@
 "use client";
 
-import { useState } from "react";
 import type { Catalog } from "@/lib/types";
-import { FaFilePdf, FaDownload, FaExternalLinkAlt, FaSearch } from "react-icons/fa";
+import { FaFilePdf, FaDownload, FaEye } from "react-icons/fa";
+
+// Brand accent colors for card headers
+const BRAND_COLORS: Record<string, { bg: string; accent: string }> = {
+  c1: { bg: "#003087", accent: "#0044bb" },
+  c2: { bg: "#8B1A1A", accent: "#a52020" },
+  c3: { bg: "#3d1345", accent: "#5a1e68" },
+  c4: { bg: "#1a3c5e", accent: "#1e4d78" },
+};
 
 export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  // Filtrar catálogos según búsqueda
-  const filteredCatalogs = catalogs.filter((c) =>
-    c.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Función para obtener tamaño de archivo (mock - en producción podrías obtenerlo del servidor)
-  const getFileSize = (filename: string) => {
-    const sizes: Record<string, string> = {
-      "Catalogo-Conaprole_Buenimar-Colonia_v2.pdf": "8.4 MB",
-      "Catalogo-La-Especialista_Buenimar-Colonia_v2.pdf": "5.2 MB",
-      "Catalogo-Pagnifique_Buenimar-Colonia_v2.pdf": "3.8 MB",
-      "Catalogo-Almena_Buenimar-Colonia_v2.pdf": "4.1 MB",
-    };
-    return sizes[filename] || "~5 MB";
-  };
-
-  // Función para obtener la marca del título
-  const getBrandName = (title: string) => {
-    return title.replace("Catálogo ", "");
-  };
-
   return (
     <section
       id="catalogos"
-      className="py-6 md:py-10"
-      style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}
+      className="py-14 md:py-20"
+      style={{ background: "rgb(var(--panel))" }}
     >
-      <div className="max-w-4xl mx-auto px-4">
-        {/* Header con buscador */}
-        <div className="mb-6 md:mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: "rgb(var(--text))" }}>
-            Catálogos
-          </h2>
-          <p className="text-center text-sm md:text-base mb-6" style={{ color: "rgb(var(--muted))" }}>
-            Descarga o visualiza nuestros catálogos de productos
+      <div className="container-x">
+        <div className="text-center mb-10 md:mb-14">
+          <p className="section-eyebrow mb-2">Material comercial</p>
+          <h2 className="section-title mb-3">Catálogos</h2>
+          <p className="section-subtitle max-w-xl mx-auto">
+            Descargá o visualizá nuestros catálogos de productos actualizados
           </p>
-          
-          {/* Buscador */}
-          <div className="max-w-md mx-auto relative">
-            <FaSearch 
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" 
-              style={{ color: "rgb(var(--muted))" }}
-            />
-            <input
-              type="text"
-              placeholder="Buscar catálogo..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg border text-sm md:text-base transition-all focus:outline-none focus:ring-2"
-              style={{
-                background: "rgb(var(--panel))",
-                borderColor: "rgb(var(--line))",
-                color: "rgb(var(--text))",
-              }}
-            />
-          </div>
         </div>
 
-        {/* Lista de catálogos */}
-        <div className="space-y-3">
-          {filteredCatalogs.length === 0 ? (
-            <div className="text-center py-8" style={{ color: "rgb(var(--muted))" }}>
-              No se encontraron catálogos
-            </div>
-          ) : (
-            filteredCatalogs.map((c) => {
-              const href = c.href ?? (c.file ? `/archivos/${c.file}` : "#");
-              const isExternal = href.startsWith("http");
-              const brandName = getBrandName(c.title);
-              const fileSize = c.file ? getFileSize(c.file) : "~5 MB";
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {catalogs.map((c) => {
+            const href = c.href ?? (c.file ? `/archivos/${c.file}` : "#");
+            const isExternal = href.startsWith("http");
+            const brandName = c.title.replace("Catálogo ", "");
+            const colors = BRAND_COLORS[c.id] ?? { bg: "#dc2626", accent: "#ef4444" };
 
-              return (
+            return (
+              <div
+                key={c.id}
+                className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border group"
+                style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))" }}
+              >
+                {/* Card header — brand visual banner */}
                 <div
-                  key={c.id}
-                  className="panel p-4 rounded-xl border transition-all hover:shadow-lg group"
-                  style={{
-                    background: "rgb(var(--panel))",
-                    borderColor: "rgb(var(--line))",
-                  }}
+                  className="relative h-44 flex flex-col items-center justify-center gap-2 overflow-hidden"
+                  style={{ background: colors.bg }}
                 >
-                  <div className="flex items-start gap-4">
-                    {/* Icono PDF */}
-                    <div 
-                      className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-lg shrink-0 transition-transform group-hover:scale-110"
-                      style={{ background: "rgba(220, 38, 38, 0.1)" }}
+                  {/* Decorative circles */}
+                  <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full opacity-10 bg-white pointer-events-none" />
+                  <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full opacity-10 bg-white pointer-events-none" />
+
+                  {/* Icon + Brand name */}
+                  <div className="relative z-10 flex flex-col items-center gap-2">
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+                      style={{ background: colors.accent }}
                     >
-                      <FaFilePdf className="text-2xl md:text-3xl text-red-600" />
+                      <FaFilePdf className="text-white text-2xl" />
                     </div>
+                    <span className="text-white font-bold text-lg text-center px-4 leading-tight drop-shadow">
+                      {brandName}
+                    </span>
+                  </div>
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3
-                        className="text-base md:text-lg font-bold mb-1 truncate"
-                        style={{ color: "rgb(var(--text))" }}
-                      >
-                        {brandName}
-                      </h3>
-                      <div className="flex flex-wrap items-center gap-2 text-xs md:text-sm" style={{ color: "rgb(var(--muted))" }}>
-                        <span className="font-medium">PDF</span>
-                        <span>·</span>
-                        <span>{fileSize}</span>
-                        <span>·</span>
-                        <span>Actualizado 12/2024</span>
-                      </div>
-                    </div>
+                  {/* Date badge */}
+                  <span
+                    className="absolute bottom-2.5 right-3 text-[11px] font-medium px-2 py-0.5 rounded-full"
+                    style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)" }}
+                  >
+                    12/2024
+                  </span>
+                </div>
 
-                    {/* Botones de acción */}
-                    <div className="flex flex-col sm:flex-row gap-2 shrink-0">
-                      {/* Ver online */}
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold border transition-all hover:scale-105 active:scale-95 whitespace-nowrap"
-                        style={{
-                          background: "rgb(var(--panel))",
-                          borderColor: "rgb(var(--line))",
-                          color: "rgb(var(--text))",
-                        }}
-                      >
-                        <FaExternalLinkAlt className="text-xs" />
-                        <span>Ver</span>
-                      </a>
+                {/* Card body */}
+                <div className="p-5 flex flex-col gap-4">
+                  <div>
+                    <h3 className="font-bold text-base leading-snug" style={{ color: "rgb(var(--text))" }}>
+                      {c.title}
+                    </h3>
+                    <p className="text-xs mt-1" style={{ color: "rgb(var(--muted))" }}>
+                      Actualizado · 12/2024 · PDF
+                    </p>
+                  </div>
 
-                      {/* Descargar */}
-                      <a
-                        href={href}
-                        download={!isExternal && !!c.file}
-                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105 hover:shadow-lg active:scale-95 whitespace-nowrap"
-                        style={{
-                          background: "rgb(var(--accent))",
-                          color: "white",
-                        }}
-                      >
-                        <FaDownload className="text-sm" />
-                        <span>Descargar</span>
-                      </a>
-                    </div>
+                  {/* CTAs */}
+                  <div className="flex gap-2">
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-semibold border transition-all hover:opacity-80"
+                      style={{ borderColor: "rgb(var(--accent))", color: "rgb(var(--accent))" }}
+                    >
+                      <FaEye className="text-xs" />
+                      Ver catálogo
+                    </a>
+                    <a
+                      href={href}
+                      download={!isExternal && !!c.file}
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
+                      style={{ background: "rgb(var(--accent))" }}
+                    >
+                      <FaDownload className="text-xs" />
+                      Descargar
+                    </a>
                   </div>
                 </div>
-              );
-            })
-          )}
+              </div>
+            );
+          })}
         </div>
-
-        {/* Info adicional */}
-        {filteredCatalogs.length > 0 && (
-          <div className="mt-6 text-center text-xs md:text-sm" style={{ color: "rgb(var(--muted))" }}>
-            Mostrando {filteredCatalogs.length} de {catalogs.length} catálogo{catalogs.length !== 1 ? 's' : ''}
-          </div>
-        )}
       </div>
     </section>
   );
 }
+

@@ -8,6 +8,8 @@ export const runtime = "nodejs";
 
 const MAX_MESSAGE_LENGTH = 1200;
 const WHATSAPP_URL = "https://wa.me/59897557366";
+const PHONE = "+598 4522 4091";
+const EMAIL = "pedidos@buenimar.com";
 
 function normalizeText(input: string) {
   return input
@@ -16,49 +18,137 @@ function normalizeText(input: string) {
     .toLowerCase();
 }
 
-function hasAny(text: string, words: string[]) {
-  return words.some((word) => text.includes(word));
+function pickCoverageHint(message: string) {
+  const normalized = normalizeText(message);
+  const match = localities.find((locality) =>
+    normalized.includes(normalizeText(locality.name))
+  );
+
+  if (!match) {
+    return null;
+  }
+
+  return [
+    `Si, ${match.name} esta dentro de la cobertura activa.`,
+    `Si queres, te confirmamos frecuencia y dia de reparto por WhatsApp: ${WHATSAPP_URL}`,
+  ].join("\n");
 }
+
+type Intent = {
+  id: string;
+  keywords: string[];
+  reply: (message: string) => string;
+};
+
+const LOCAL_INTENTS: Intent[] = [
+  {
+    id: "saludo",
+    keywords: ["hola", "buenas", "buen dia", "buenas tardes", "buenas noches", "que tal"],
+    reply: () =>
+      [
+        "Hola, soy el asistente de Buenimar.",
+        "En que te puedo ayudar hoy?",
+      ].join("\n"),
+  },
+  {
+    id: "catalogos",
+    keywords: ["catalogo", "catalogos", "pdf", "descargar", "descarga", "ver catalogo"],
+    reply: () => {
+      const catalogNames = SITE.catalogs
+        .map((catalog) => catalog.title.replace("Catálogo ", ""))
+        .join(", ");
+      return [
+        `Tenemos ${SITE.catalogs.length} catalogos publicados: ${catalogNames}.`,
+        "Los podes ver y descargar en la seccion Marcas.",
+        `Si queres, te paso el enlace directo por WhatsApp: ${WHATSAPP_URL}`,
+      ].join("\n");
+    },
+  },
+  {
+    id: "marcas",
+    keywords: ["marca", "marcas", "producto", "productos", "proveedor"],
+    reply: () =>
+      [
+        "Trabajamos con mas de 100 marcas lideres.",
+        `Si buscas una marca puntual, te la confirmamos por WhatsApp: ${WHATSAPP_URL}`,
+      ].join("\n"),
+  },
+  {
+    id: "cobertura",
+    keywords: ["cobertura", "zona", "zonas", "localidad", "localidades", "reparto", "entrega"],
+    reply: (message) =>
+      pickCoverageHint(message) ||
+      [
+        `Tenemos cobertura activa en ${localities.length} localidades de Colonia y alrededores.`,
+        "Decime tu localidad y te confirmo si esta cubierta.",
+        `Tambien podes confirmarlo por WhatsApp: ${WHATSAPP_URL}`,
+      ].join("\n"),
+  },
+  {
+    id: "contacto",
+    keywords: ["contacto", "telefono", "mail", "correo", "email", "whatsapp", "llamar"],
+    reply: () =>
+      [
+        `Claro, te paso los canales directos: WhatsApp +598 97 557 366, telefono ${PHONE}, email ${EMAIL}.`,
+        `Si queres respuesta rapida, escribinos por WhatsApp: ${WHATSAPP_URL}`,
+      ].join("\n"),
+  },
+  {
+    id: "horarios",
+    keywords: ["horario", "horarios", "atencion", "atienden", "abren"],
+    reply: () =>
+      [
+        "Para pasarte el horario vigente y exacto, te derivo con atencion comercial.",
+        `${WHATSAPP_URL}`,
+      ].join("\n"),
+  },
+  {
+    id: "abrir-cuenta",
+    keywords: ["abrir cuenta", "alta", "cliente", "registrar", "unite", "proveedor"],
+    reply: () =>
+      [
+        "Perfecto, te ayudo con eso.",
+        "Para abrir cuenta (cliente o proveedor), completa la seccion Unite (Abrir cuenta).",
+        `Si queres, te guiamos paso a paso por WhatsApp: ${WHATSAPP_URL}`,
+      ].join("\n"),
+  },
+  {
+    id: "comercial-sensible",
+    keywords: ["precio", "precios", "lista", "condiciones", "credito", "descuento", "plazo", "oferta"],
+    reply: () =>
+      [
+        "Para precios y condiciones comerciales te paso con ventas, asi te damos datos vigentes y exactos.",
+        `${WHATSAPP_URL}`,
+      ].join("\n"),
+  },
+];
 
 function getLocalReply(rawMessage: string) {
   const message = normalizeText(rawMessage);
-  const catalogNames = SITE.catalogs
-    .map((catalog) => catalog.title.replace("Catálogo ", ""))
-    .join(", ");
 
-  if (hasAny(message, ["hola", "buenas", "buen dia", "buenas tardes", "buenas noches"])) {
-    return "Hola, bienvenido a Buenimar Colonia. Te puedo ayudar con catálogos, marcas, cobertura, contacto y abrir cuenta. ¿Qué necesitás consultar?";
+  let bestIntent: Intent | null = null;
+  let bestScore = 0;
+
+  for (const intent of LOCAL_INTENTS) {
+    const score = intent.keywords.reduce((acc, keyword) => {
+      return acc + (message.includes(keyword) ? 1 : 0);
+    }, 0);
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestIntent = intent;
+    }
   }
 
-  if (hasAny(message, ["catalogo", "catalogos", "pdf", "descargar", "descarga"])) {
-    return `Hoy tenemos ${SITE.catalogs.length} catálogos publicados: ${catalogNames}. Los podés ver y descargar en la sección Marcas. Si querés, también te guiamos por WhatsApp: ${WHATSAPP_URL}`;
+  if (bestIntent && bestScore > 0) {
+    return bestIntent.reply(rawMessage);
   }
 
-  if (hasAny(message, ["marca", "marcas", "producto", "productos"])) {
-    return "Trabajamos con más de 100 marcas líderes. En la página Marcas podés revisar catálogos y logos disponibles. Si buscás una marca puntual, escribinos por WhatsApp y te confirmamos disponibilidad: https://wa.me/59897557366";
-  }
-
-  if (hasAny(message, ["cobertura", "zona", "zonas", "localidad", "localidades", "reparto", "entrega"])) {
-    return `Tenemos cobertura activa en ${localities.length} localidades del Departamento de Colonia y alrededores. Para confirmar tu zona exacta y frecuencia de entrega, escribinos por WhatsApp: ${WHATSAPP_URL}`;
-  }
-
-  if (hasAny(message, ["horario", "horarios", "atencion", "atienden"])) {
-    return "Podemos pasarte el horario actualizado por atención comercial para evitar información desactualizada. Escribinos por WhatsApp y te confirmamos al momento: https://wa.me/59897557366";
-  }
-
-  if (hasAny(message, ["contacto", "telefono", "mail", "correo", "email", "whatsapp"])) {
-    return "Canales de contacto: WhatsApp +598 97 557 366, teléfono +598 4522 4091 y email pedidos@buenimar.com. Si querés respuesta comercial rápida, te recomendamos WhatsApp: https://wa.me/59897557366";
-  }
-
-  if (hasAny(message, ["abrir cuenta", "alta", "cliente", "proveedor", "registrar", "unite"])) {
-    return "Para abrir cuenta como cliente o registrarte como proveedor, completá la sección Unite (Abrir cuenta) en la web. Si preferís, te acompañamos por WhatsApp paso a paso: https://wa.me/59897557366";
-  }
-
-  if (hasAny(message, ["precio", "precios", "lista", "condiciones", "credito", "descuento"])) {
-    return "Para precios, condiciones comerciales y financiación te derivamos con ventas para darte información correcta y vigente. Contacto directo por WhatsApp: https://wa.me/59897557366";
-  }
-
-  return "Te ayudo con marcas, catálogos, cobertura, contacto y abrir cuenta. Si tu consulta es comercial específica, escribinos por WhatsApp y te responde el equipo: https://wa.me/59897557366";
+  return [
+    "Gracias por escribirnos.",
+    "Contame que necesitas y te ayudo ahora mismo.",
+    `Si preferis atencion comercial directa, escribinos por WhatsApp: ${WHATSAPP_URL}`,
+  ].join("\n");
 }
 
 function buildSystemPrompt() {
@@ -75,6 +165,8 @@ function buildSystemPrompt() {
     "- Si no sabés algo con certeza, decilo y derivá a atención humana.",
     "- Si la consulta es comercial o sensible, invitá a continuar por WhatsApp: +598 97 557 366.",
     "- Mantené respuestas cortas y accionables.",
+    "- Tono calido y cercano, sin sonar robotico.",
+    "- Maximo 2 a 3 lineas por respuesta.",
     "Contexto de Buenimar:",
     "- Más de 100 marcas y más de 30 años de trayectoria.",
     `- Catálogos actualmente publicados: ${catalogNames}.`,

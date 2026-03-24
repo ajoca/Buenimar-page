@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FaComments, FaPaperPlane, FaTimes } from "react-icons/fa";
+import { FaPaperPlane, FaRobot, FaTimes } from "react-icons/fa";
 
 type ChatMessage = {
   id: string;
@@ -9,7 +9,15 @@ type ChatMessage = {
   from: "user" | "bot";
 };
 
+type ChatMode = "openai" | "local" | "local-fallback";
+
 const STORAGE_KEY = "bm_chat_session";
+const QUICK_ACTIONS = [
+  "Ver catálogos",
+  "¿Cubren mi localidad?",
+  "Abrir cuenta",
+  "Contacto comercial",
+];
 
 function createId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -30,11 +38,12 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [mode, setMode] = useState<ChatMode>("local");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: createId(),
       from: "bot",
-      text: "Hola, soy el asistente de Buenimar. Te ayudo con marcas, catálogos, cobertura y contacto comercial.",
+      text: "Hola, soy el asistente de Buenimar. ¿En qué puedo ayudarte hoy?",
     },
   ]);
 
@@ -46,8 +55,8 @@ export default function ChatWidget() {
     listRef.current.scrollTop = listRef.current.scrollHeight;
   }, [messages, isOpen]);
 
-  async function sendMessage() {
-    const text = input.trim();
+  async function sendMessage(presetText?: string) {
+    const text = (presetText ?? input).trim();
     if (!text || isSending) return;
 
     const userMessage: ChatMessage = { id: createId(), text, from: "user" };
@@ -62,10 +71,14 @@ export default function ChatWidget() {
         body: JSON.stringify({ message: text, sessionId }),
       });
 
-      const data = (await res.json()) as { reply?: string };
+      const data = (await res.json()) as { reply?: string; mode?: ChatMode };
       const botText =
         data.reply?.trim() ||
         "No pude responder ahora. Escribinos por WhatsApp al +598 97 557 366.";
+
+      if (data.mode) {
+        setMode(data.mode);
+      }
 
       setMessages((prev) => [...prev, { id: createId(), text: botText, from: "bot" }]);
     } catch (error) {
@@ -84,10 +97,16 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-20 right-4 md:bottom-24 z-50">
+    <div
+      className={`fixed z-50 ${
+        isOpen
+          ? "left-2 right-2 bottom-2 md:left-auto md:right-4 md:bottom-24"
+          : "right-4 bottom-44 md:bottom-40"
+      }`}
+    >
       {isOpen ? (
         <div
-          className="w-[min(92vw,360px)] rounded-2xl border shadow-2xl overflow-hidden"
+          className="w-full md:w-[360px] rounded-2xl border shadow-2xl overflow-hidden"
           style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}
         >
           <div
@@ -96,7 +115,9 @@ export default function ChatWidget() {
           >
             <div>
               <p className="font-semibold leading-tight">Asistente Buenimar</p>
-              <p className="text-[11px] opacity-90">Atención comercial automatizada</p>
+              <p className="text-[11px] opacity-90">
+                {mode === "openai" ? "Atención comercial automatizada" : "Modo gratis local"}
+              </p>
             </div>
             <button
               type="button"
@@ -110,9 +131,29 @@ export default function ChatWidget() {
 
           <div
             ref={listRef}
-            className="h-[360px] overflow-y-auto p-3 space-y-2"
+            className="h-[52dvh] min-h-[280px] max-h-[420px] md:h-[360px] md:min-h-0 md:max-h-none overflow-y-auto p-3 space-y-2"
             style={{ background: "rgb(var(--bg))" }}
           >
+            {messages.length <= 2 && (
+              <div className="flex flex-wrap gap-2 pb-1">
+                {QUICK_ACTIONS.map((action) => (
+                  <button
+                    key={action}
+                    type="button"
+                    onClick={() => void sendMessage(action)}
+                    className="px-2.5 py-1.5 rounded-full text-xs border leading-tight"
+                    style={{
+                      borderColor: "rgba(220, 38, 38, 0.4)",
+                      color: "rgb(var(--text))",
+                      background: "rgba(220, 38, 38, 0.12)",
+                    }}
+                  >
+                    {action}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -143,7 +184,7 @@ export default function ChatWidget() {
                   color: "rgb(var(--muted))",
                 }}
               >
-                Escribiendo...
+                Un momento, ya te respondo...
               </div>
             )}
           </div>
@@ -160,7 +201,7 @@ export default function ChatWidget() {
                   }
                 }}
                 placeholder="Escribí tu consulta..."
-                className="flex-1 px-3 py-2 rounded-xl border text-sm outline-none"
+                className="flex-1 px-3 py-2.5 rounded-xl border text-sm outline-none"
                 style={{
                   background: "rgb(var(--bg))",
                   borderColor: "rgb(var(--line))",
@@ -172,7 +213,7 @@ export default function ChatWidget() {
                 type="button"
                 onClick={() => void sendMessage()}
                 disabled={isSending || !input.trim()}
-                className="px-3 py-2 rounded-xl text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3.5 py-2.5 rounded-xl text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ background: "rgb(var(--accent))" }}
                 aria-label="Enviar consulta"
               >
@@ -189,7 +230,7 @@ export default function ChatWidget() {
           style={{ background: "rgb(var(--accent))" }}
           aria-label="Abrir asistente de Buenimar"
         >
-          <FaComments className="text-xl" />
+          <FaRobot className="text-xl" />
         </button>
       )}
     </div>

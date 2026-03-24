@@ -87,31 +87,35 @@ const productsJsonLd = {
   name: "Productos destacados de BUENIMAR COLONIA",
   itemListOrder: "https://schema.org/ItemListOrderAscending",
   numberOfItems: SITE.products.length,
-  itemListElement: SITE.products.map((product, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    item: {
-      "@type": "Product",
-      "@id": `https://www.buenimarcolonia.com/#product-${product.code}`,
-      name: product.name,
-      description: `${product.name} ${product.subtitle}`,
-      sku: product.code,
-      image: `https://www.buenimarcolonia.com${product.image}`,
-      brand: {
-        "@type": "Brand",
-        name: "BUENIMAR COLONIA",
-      },
-      offers: {
-        "@type": "Offer",
-        url: `https://www.buenimarcolonia.com/contacto?sku=${encodeURIComponent(product.code)}`,
-        priceCurrency: "UYU",
-        availability: "https://schema.org/InStock",
-        seller: {
-          "@id": "https://www.buenimarcolonia.com/#organization",
+  itemListElement: SITE.products.map((product, index) => {
+    const safeCode = product.code ?? product.id;
+
+    return {
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Product",
+        "@id": `https://www.buenimarcolonia.com/#product-${safeCode}`,
+        name: product.name,
+        description: `${product.name} ${product.subtitle}`,
+        sku: safeCode,
+        image: `https://www.buenimarcolonia.com${product.image}`,
+        brand: {
+          "@type": "Brand",
+          name: "BUENIMAR COLONIA",
+        },
+        offers: {
+          "@type": "Offer",
+          url: `https://www.buenimarcolonia.com/contacto?sku=${encodeURIComponent(safeCode)}`,
+          priceCurrency: "UYU",
+          availability: "https://schema.org/InStock",
+          seller: {
+            "@id": "https://www.buenimarcolonia.com/#organization",
+          },
         },
       },
-    },
-  })),
+    };
+  }),
 };
 
 export default function HomePage() {

@@ -212,7 +212,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ScrollToTop />
         <ChatWidget />
 
-        <div className="fixed bottom-4 right-4 z-50">
+        <div className="fixed bottom-4 right-4 z-30">
           <a
             href="https://wa.me/59897557366"
             target="_blank"

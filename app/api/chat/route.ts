@@ -11,6 +11,17 @@ const WHATSAPP_URL = "https://wa.me/59897557366";
 const PHONE = "+598 4522 4091";
 const EMAIL = "pedidos@buenimar.com";
 
+type ChatAction = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+type LocalReply = {
+  reply: string;
+  actions?: ChatAction[];
+};
+
 function normalizeText(input: string) {
   return input
     .normalize("NFD")
@@ -28,27 +39,38 @@ function pickCoverageHint(message: string) {
     return null;
   }
 
-  return [
-    `Si, ${match.name} esta dentro de la cobertura activa.`,
-    `Si queres, te confirmamos frecuencia y dia de reparto por WhatsApp: ${WHATSAPP_URL}`,
-  ].join("\n");
+  return {
+    reply: [
+      `Si, ${match.name} esta dentro de la cobertura activa.`,
+      "Si queres, te confirmamos frecuencia y dia de reparto.",
+    ].join("\n"),
+    actions: [
+      { label: "WhatsApp Comercial", href: WHATSAPP_URL, external: true },
+      { label: "Ver Cobertura", href: "/cobertura" },
+    ],
+  } satisfies LocalReply;
 }
 
 type Intent = {
   id: string;
   keywords: string[];
-  reply: (message: string) => string;
+  reply: (message: string) => LocalReply;
 };
 
 const LOCAL_INTENTS: Intent[] = [
   {
     id: "saludo",
     keywords: ["hola", "buenas", "buen dia", "buenas tardes", "buenas noches", "que tal"],
-    reply: () =>
-      [
+    reply: () => ({
+      reply: [
         "Hola, soy el asistente de Buenimar.",
         "En que te puedo ayudar hoy?",
       ].join("\n"),
+      actions: [
+        { label: "Ver Marcas", href: "/marcas" },
+        { label: "Consultar Cobertura", href: "/cobertura" },
+      ],
+    }),
   },
   {
     id: "catalogos",
@@ -57,69 +79,97 @@ const LOCAL_INTENTS: Intent[] = [
       const catalogNames = SITE.catalogs
         .map((catalog) => catalog.title.replace("Catálogo ", ""))
         .join(", ");
-      return [
-        `Tenemos ${SITE.catalogs.length} catalogos publicados: ${catalogNames}.`,
-        "Los podes ver y descargar en la seccion Marcas.",
-        `Si queres, te paso el enlace directo por WhatsApp: ${WHATSAPP_URL}`,
-      ].join("\n");
+      return {
+        reply: [
+          `Tenemos ${SITE.catalogs.length} catalogos publicados: ${catalogNames}.`,
+          "Los podes ver y descargar en la seccion Marcas.",
+        ].join("\n"),
+        actions: [
+          { label: "Ir a Marcas", href: "/marcas" },
+          { label: "Ver Catalogos", href: "/marcas#catalogos" },
+          { label: "WhatsApp", href: WHATSAPP_URL, external: true },
+        ],
+      };
     },
   },
   {
     id: "marcas",
     keywords: ["marca", "marcas", "producto", "productos", "proveedor"],
-    reply: () =>
-      [
+    reply: () => ({
+      reply: [
         "Trabajamos con mas de 100 marcas lideres.",
-        `Si buscas una marca puntual, te la confirmamos por WhatsApp: ${WHATSAPP_URL}`,
+        "Si buscas una marca puntual, te la confirmamos en el momento.",
       ].join("\n"),
+      actions: [
+        { label: "Ir a Marcas", href: "/marcas" },
+        { label: "WhatsApp Comercial", href: WHATSAPP_URL, external: true },
+      ],
+    }),
   },
   {
     id: "cobertura",
     keywords: ["cobertura", "zona", "zonas", "localidad", "localidades", "reparto", "entrega"],
     reply: (message) =>
-      pickCoverageHint(message) ||
-      [
-        `Tenemos cobertura activa en ${localities.length} localidades de Colonia y alrededores.`,
-        "Decime tu localidad y te confirmo si esta cubierta.",
-        `Tambien podes confirmarlo por WhatsApp: ${WHATSAPP_URL}`,
-      ].join("\n"),
+      pickCoverageHint(message) || {
+        reply: [
+          `Tenemos cobertura activa en ${localities.length} localidades de Colonia y alrededores.`,
+          "Decime tu localidad y te confirmo si esta cubierta.",
+        ].join("\n"),
+        actions: [
+          { label: "Ver Cobertura", href: "/cobertura" },
+          { label: "WhatsApp Comercial", href: WHATSAPP_URL, external: true },
+        ],
+      },
   },
   {
     id: "contacto",
     keywords: ["contacto", "telefono", "mail", "correo", "email", "whatsapp", "llamar"],
-    reply: () =>
-      [
-        `Claro, te paso los canales directos: WhatsApp +598 97 557 366, telefono ${PHONE}, email ${EMAIL}.`,
-        `Si queres respuesta rapida, escribinos por WhatsApp: ${WHATSAPP_URL}`,
+    reply: () => ({
+      reply: [
+        `Canales directos: WhatsApp +598 97 557 366, telefono ${PHONE}, email ${EMAIL}.`,
+        "Si queres respuesta rapida, escribinos por WhatsApp.",
       ].join("\n"),
+      actions: [
+        { label: "Abrir WhatsApp", href: WHATSAPP_URL, external: true },
+        { label: "Ir a Contacto", href: "/contacto" },
+      ],
+    }),
   },
   {
     id: "horarios",
     keywords: ["horario", "horarios", "atencion", "atienden", "abren"],
-    reply: () =>
-      [
+    reply: () => ({
+      reply: [
         "Para pasarte el horario vigente y exacto, te derivo con atencion comercial.",
-        `${WHATSAPP_URL}`,
+        "Te responden rapido por WhatsApp.",
       ].join("\n"),
+      actions: [{ label: "Consultar por WhatsApp", href: WHATSAPP_URL, external: true }],
+    }),
   },
   {
     id: "abrir-cuenta",
     keywords: ["abrir cuenta", "alta", "cliente", "registrar", "unite", "proveedor"],
-    reply: () =>
-      [
+    reply: () => ({
+      reply: [
         "Perfecto, te ayudo con eso.",
         "Para abrir cuenta (cliente o proveedor), completa la seccion Unite (Abrir cuenta).",
-        `Si queres, te guiamos paso a paso por WhatsApp: ${WHATSAPP_URL}`,
       ].join("\n"),
+      actions: [
+        { label: "Ir a Abrir Cuenta", href: "/abrir-cuenta" },
+        { label: "WhatsApp Comercial", href: WHATSAPP_URL, external: true },
+      ],
+    }),
   },
   {
     id: "comercial-sensible",
     keywords: ["precio", "precios", "lista", "condiciones", "credito", "descuento", "plazo", "oferta"],
-    reply: () =>
-      [
+    reply: () => ({
+      reply: [
         "Para precios y condiciones comerciales te paso con ventas, asi te damos datos vigentes y exactos.",
-        `${WHATSAPP_URL}`,
+        "Te atienden directo por WhatsApp.",
       ].join("\n"),
+      actions: [{ label: "Hablar con Ventas", href: WHATSAPP_URL, external: true }],
+    }),
   },
 ];
 
@@ -144,11 +194,47 @@ function getLocalReply(rawMessage: string) {
     return bestIntent.reply(rawMessage);
   }
 
-  return [
-    "Gracias por escribirnos.",
-    "Contame que necesitas y te ayudo ahora mismo.",
-    `Si preferis atencion comercial directa, escribinos por WhatsApp: ${WHATSAPP_URL}`,
-  ].join("\n");
+  return {
+    reply: [
+      "Gracias por escribirnos.",
+      "Contame que necesitas y te ayudo ahora mismo.",
+    ].join("\n"),
+    actions: [
+      { label: "Ver Marcas", href: "/marcas" },
+      { label: "WhatsApp Comercial", href: WHATSAPP_URL, external: true },
+    ],
+  } satisfies LocalReply;
+}
+
+function getSuggestedActions(rawMessage: string): ChatAction[] | undefined {
+  const message = normalizeText(rawMessage);
+
+  if (message.includes("marca") || message.includes("catalogo")) {
+    return [
+      { label: "Ir a Marcas", href: "/marcas" },
+      { label: "Ver Catalogos", href: "/marcas#catalogos" },
+    ];
+  }
+
+  if (message.includes("contact") || message.includes("whatsapp") || message.includes("telefono") || message.includes("mail")) {
+    return [
+      { label: "Abrir WhatsApp", href: WHATSAPP_URL, external: true },
+      { label: "Ir a Contacto", href: "/contacto" },
+    ];
+  }
+
+  if (message.includes("cobertura") || message.includes("zona") || message.includes("localidad")) {
+    return [
+      { label: "Ver Cobertura", href: "/cobertura" },
+      { label: "WhatsApp Comercial", href: WHATSAPP_URL, external: true },
+    ];
+  }
+
+  if (message.includes("abrir cuenta") || message.includes("cliente") || message.includes("proveedor")) {
+    return [{ label: "Ir a Abrir Cuenta", href: "/abrir-cuenta" }];
+  }
+
+  return undefined;
 }
 
 function buildSystemPrompt() {
@@ -209,7 +295,8 @@ export async function POST(req: NextRequest) {
     const canUseOpenAI = !!client && !useLocalOnly;
 
     if (!canUseOpenAI) {
-      return NextResponse.json({ ok: true, reply: getLocalReply(rawMessage), mode: "local" });
+      const local = getLocalReply(rawMessage);
+      return NextResponse.json({ ok: true, ...local, mode: "local" });
     }
 
     const tools =
@@ -236,15 +323,16 @@ export async function POST(req: NextRequest) {
 
     const reply =
       response.output_text?.trim() ||
-      getLocalReply(rawMessage);
+      getLocalReply(rawMessage).reply;
 
-    return NextResponse.json({ ok: true, reply, mode: "openai" });
+    return NextResponse.json({ ok: true, reply, actions: getSuggestedActions(rawMessage), mode: "openai" });
   } catch (error) {
     console.error("Chat API error:", error);
+    const localFallback = getLocalReply("");
     return NextResponse.json(
       {
         ok: true,
-        reply: getLocalReply(""),
+        ...localFallback,
         mode: "local-fallback",
       },
       { status: 200 }

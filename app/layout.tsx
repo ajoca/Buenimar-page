@@ -78,19 +78,54 @@ const jsonLdWebsite = {
   name: "BUENIMAR COLONIA",
   alternateName: ["Buenimar Colonia", "Buenimar Distribuciones", "Buenimar Colonia del Sacramento"],
   url: "https://www.buenimarcolonia.com/",
+  inLanguage: "es-UY",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://www.buenimarcolonia.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
   publisher: {
     "@id": "https://www.buenimarcolonia.com/#organization"
   }
 };
 
-const jsonLd = {
+const jsonLdOrganization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.buenimarcolonia.com/#organization",
+  name: "BUENIMAR COLONIA",
+  alternateName: ["Buenimar Colonia", "Buenimar Distribuciones"],
+  url: "https://www.buenimarcolonia.com",
+  logo: "https://www.buenimarcolonia.com/img/Buenimar.png",
+  image: "https://www.buenimarcolonia.com/img/BUENIMAR-2.avif",
+  email: "pedidos@buenimar.com",
+  telephone: "+59845224091",
+  sameAs: [
+    "https://www.instagram.com/buenimarcolonia",
+    "https://www.facebook.com/buenimarcolonia",
+    "https://twitter.com/buenimarcolonia",
+    "https://wa.me/59897557366"
+  ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+59897557366",
+    contactType: "customer service",
+    availableLanguage: "Spanish",
+    areaServed: "UY"
+  }
+};
+
+const jsonLdLocalBusiness = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://www.buenimarcolonia.com/#organization",
+  "@id": "https://www.buenimarcolonia.com/#localbusiness",
   name: "BUENIMAR COLONIA",
   alternateName: "Buenimar Distribuciones",
   description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
   url: "https://www.buenimarcolonia.com",
+  parentOrganization: {
+    "@id": "https://www.buenimarcolonia.com/#organization"
+  },
   logo: "https://www.buenimarcolonia.com/img/Buenimar.png",
   image: "https://www.buenimarcolonia.com/img/BUENIMAR-2.avif",
   telephone: "+59845224091",
@@ -140,15 +175,11 @@ const jsonLd = {
     "Servicio al cliente"
   ],
   sameAs: [
+    "https://www.instagram.com/buenimarcolonia",
+    "https://www.facebook.com/buenimarcolonia",
+    "https://twitter.com/buenimarcolonia",
     "https://wa.me/59897557366"
-  ],
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+59897557366",
-    contactType: "customer service",
-    availableLanguage: "Spanish",
-    areaServed: "UY"
-  }
+  ]
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -169,7 +200,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLocalBusiness) }}
         />
         {children}
 

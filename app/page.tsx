@@ -37,9 +37,90 @@ export const metadata = {
   },
 };
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: "https://www.buenimarcolonia.com/",
+    },
+  ],
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Dónde está BUENIMAR COLONIA?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Estamos en Pablo Zufriategui 374, Colonia del Sacramento, Uruguay.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Cómo puedo hacer pedidos?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Podés contactarnos por WhatsApp al +598 97 557 366, por teléfono al +598 4522 4091 o por email a pedidos@buenimar.com.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Qué tipo de productos distribuyen?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Distribuimos productos alimenticios y de consumo masivo de más de 100 marcas, con logística y atención para comercios en Colonia y alrededores.",
+      },
+    },
+  ],
+};
+
+const productsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Productos destacados de BUENIMAR COLONIA",
+  itemListOrder: "https://schema.org/ItemListOrderAscending",
+  numberOfItems: SITE.products.length,
+  itemListElement: SITE.products.map((product, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Product",
+      "@id": `https://www.buenimarcolonia.com/#product-${product.code}`,
+      name: product.name,
+      description: `${product.name} ${product.subtitle}`,
+      sku: product.code,
+      image: `https://www.buenimarcolonia.com${product.image}`,
+      brand: {
+        "@type": "Brand",
+        name: "BUENIMAR COLONIA",
+      },
+    },
+  })),
+};
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-pattern" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productsJsonLd) }}
+      />
+
       {/* Skip to main content link for keyboard/screen reader users */}
       <a
         href="#main-content"

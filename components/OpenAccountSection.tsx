@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import { FaStore, FaTruck, FaBoxes, FaUsers, FaHandshake, FaClipboardCheck } from "react-icons/fa";
 
 export default function OpenAccountSection({
   title,
@@ -122,14 +123,14 @@ export default function OpenAccountSection({
         </p>
 
         {/* Toggle Cliente/Proveedor */}
-        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+        <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => setAccountType("cliente")}
-            className={`px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-200 flex-1 sm:flex-none ${
+            className={`p-4 sm:p-5 rounded-xl text-left transition-all duration-200 border-2 ${
               accountType === "cliente"
-                ? "bg-red-600 text-white shadow-lg"
-                : "bg-white/10 text-white hover:bg-white/20"
+                ? "bg-red-600 text-white shadow-lg border-red-500"
+                : "hover:bg-white/10"
             }`}
             style={
               accountType === "cliente"
@@ -137,18 +138,27 @@ export default function OpenAccountSection({
                 : {
                     background: "rgb(var(--panel))",
                     color: "rgb(var(--text))",
+                  borderColor: "rgb(var(--line))",
                   }
             }
           >
-            Quiero ser Cliente
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: accountType === "cliente" ? "rgba(255,255,255,0.2)" : "rgba(var(--accent), 0.15)" }}>
+                <FaStore className="text-lg" />
+              </div>
+              <div>
+                <p className="font-bold text-sm sm:text-base">Quiero ser Cliente</p>
+                <p className="text-xs sm:text-sm opacity-90 mt-0.5">Accedé a catálogo, logística y atención comercial.</p>
+              </div>
+            </div>
           </button>
           <button
             type="button"
             onClick={() => setAccountType("proveedor")}
-            className={`px-4 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-200 flex-1 sm:flex-none ${
+            className={`p-4 sm:p-5 rounded-xl text-left transition-all duration-200 border-2 ${
               accountType === "proveedor"
-                ? "bg-red-600 text-white shadow-lg"
-                : "bg-white/10 text-white hover:bg-white/20"
+                ? "bg-red-600 text-white shadow-lg border-red-500"
+                : "hover:bg-white/10"
             }`}
             style={
               accountType === "proveedor"
@@ -156,16 +166,66 @@ export default function OpenAccountSection({
                 : {
                     background: "rgb(var(--panel))",
                     color: "rgb(var(--text))",
+                  borderColor: "rgb(var(--line))",
                   }
             }
           >
-            Quiero ser Proveedor
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: accountType === "proveedor" ? "rgba(255,255,255,0.2)" : "rgba(var(--accent), 0.15)" }}>
+                <FaTruck className="text-lg" />
+              </div>
+              <div>
+                <p className="font-bold text-sm sm:text-base">Quiero ser Proveedor</p>
+                <p className="text-xs sm:text-sm opacity-90 mt-0.5">Presentá tu marca y sumate a nuestra red.</p>
+              </div>
+            </div>
           </button>
         </div>
       </div>
 
+      <div className="mx-auto mt-8 sm:mt-10 max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6 px-2 sm:px-0">
+        <div className="rounded-2xl border p-5 md:p-6" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
+          <h3 className="text-xl md:text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Sumate a una red sólida</h3>
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            {[
+              { icon: FaUsers, text: "Atención personalizada" },
+              { icon: FaBoxes, text: "Más de 100 marcas" },
+              { icon: FaTruck, text: "Cobertura en Colonia" },
+              { icon: FaHandshake, text: "Relación comercial de largo plazo" },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="rounded-xl border px-3 py-3 flex items-center gap-2" style={{ borderColor: "rgba(var(--accent), 0.2)", background: "rgba(var(--accent), 0.06)" }}>
+                <Icon className="text-red-500" />
+                <span>{text}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-5 rounded-xl border p-4" style={{ borderColor: "rgb(var(--line))" }}>
+            <p className="text-xs uppercase tracking-[0.15em] font-semibold" style={{ color: "rgb(var(--accent))" }}>Paso a paso</p>
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+              <div className="flex items-start gap-2">
+                <FaClipboardCheck className="mt-0.5 text-red-500" />
+                <span>Completás tus datos</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <FaUsers className="mt-0.5 text-red-500" />
+                <span>Te contactamos</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <FaHandshake className="mt-0.5 text-red-500" />
+                <span>Activación comercial</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgb(var(--line))" }}>
+          <img src="/img/BUENIMAR-2.avif" alt="Centro logistico Buenimar" className="w-full h-full min-h-[260px] md:min-h-[360px] object-cover" />
+        </div>
+      </div>
+
       {/* Form */}
-      <form onSubmit={onSubmit} className="mx-auto mt-10 sm:mt-16 max-w-xl sm:mt-20 px-2 sm:px-0">
+      <form onSubmit={onSubmit} className="mx-auto mt-10 sm:mt-14 max-w-4xl px-2 sm:px-0">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           {/* CAMPOS PARA CLIENTE */}
           {accountType === "cliente" && (

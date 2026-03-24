@@ -28,7 +28,7 @@ export default function Footer({ hideCertification = false }: { hideCertificatio
             {[
               { value: "30+", label: "Años" },
               { value: "100+", label: "Marcas" },
-              { value: "16", label: "Localidades" },
+              { value: "16+", label: "Localidades" },
             ].map((item) => (
               <div key={item.label} className="rounded-xl border border-white/15 bg-white/10 px-3 py-3 text-center backdrop-blur-sm">
                 <p className="text-lg md:text-xl font-extrabold leading-none" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>

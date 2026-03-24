@@ -153,18 +153,20 @@ export default function ContactSection({
           className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
           style={{ color: "rgb(var(--text))" }}
         >
-          Contacto
+          Hablemos
         </h2>
         <p
           className="mt-2 text-lg leading-8"
           style={{ color: "rgb(var(--muted))" }}
         >
-          Estamos aquí para ayudarte. Completa el formulario y nos pondremos en contacto contigo.
+          Atención comercial directa para pedidos, cobertura y consultas.
         </p>
       </div>
 
+      <div className="mx-auto mt-12 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+
       {/* Form */}
-      <form onSubmit={onSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form onSubmit={onSubmit} className="w-full rounded-2xl border p-5 md:p-8 lg:order-2" style={{ borderColor: "rgb(var(--line))", background: "rgb(var(--panel))" }}>
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           {/* First name */}
           <div>
@@ -175,6 +177,7 @@ export default function ContactSection({
                 type="text"
                 name="first-name"
                 autoComplete="given-name"
+                placeholder="Tu nombre"
                 className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
@@ -190,6 +193,7 @@ export default function ContactSection({
                 type="text"
                 name="last-name"
                 autoComplete="family-name"
+                placeholder="Tu apellido"
                 className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
@@ -205,6 +209,7 @@ export default function ContactSection({
                 type="text"
                 name="company"
                 autoComplete="organization"
+                placeholder="Nombre de tu empresa"
                 className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
@@ -220,6 +225,7 @@ export default function ContactSection({
                 type="email"
                 name="email"
                 autoComplete="email"
+                placeholder="tu@email.com"
                 className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
@@ -271,6 +277,7 @@ export default function ContactSection({
                 id="message"
                 name="message"
                 rows={4}
+                placeholder="Contanos brevemente qué necesitás y cómo podemos ayudarte"
                 className="block w-full rounded-md px-3.5 py-2 text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
               />
@@ -365,8 +372,12 @@ export default function ContactSection({
 
         {result && (
           <div
-            className="mx-auto max-w-xl mt-6 text-sm"
-            style={{ color: result.ok ? "#16a34a" : "#dc2626" }}
+            className="mt-6 rounded-xl border px-4 py-3 text-sm md:text-base font-medium"
+            style={{
+              color: result.ok ? "#16a34a" : "#dc2626",
+              borderColor: result.ok ? "rgba(34, 197, 94, 0.35)" : "rgba(220, 38, 38, 0.35)",
+              background: result.ok ? "rgba(34, 197, 94, 0.08)" : "rgba(220, 38, 38, 0.08)",
+            }}
           >
             {result.msg}
           </div>
@@ -374,11 +385,11 @@ export default function ContactSection({
       </form>
 
       {/* Social Links */}
-      <div className="mx-auto max-w-2xl mt-16 sm:mt-20">
+      <div className="w-full lg:order-1">
         <div className="panel rounded-2xl p-6 md:p-8 shadow-lg border" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
           <div className="mb-6">
-            <h3 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "rgb(var(--text))" }}>Encuéntranos</h3>
-            <p className="text-sm md:text-base" style={{ color: "rgb(var(--muted))" }}>Contacto rápido</p>
+            <h3 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "rgb(var(--text))" }}>Canales directos</h3>
+            <p className="text-sm md:text-base" style={{ color: "rgb(var(--muted))" }}>WhatsApp, teléfono, email y ubicación en un solo lugar</p>
           </div>
           
           <div className="space-y-3">
@@ -412,7 +423,7 @@ export default function ContactSection({
               href="https://wa.me/59897557366"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+              className="group flex items-center gap-4 p-5 md:p-6 rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
               style={{ 
                 background: "#25D366",
                 borderColor: "#20BA5A",
@@ -424,10 +435,10 @@ export default function ContactSection({
                 <FaWhatsapp className="text-2xl md:text-3xl text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm md:text-base font-bold text-white">
+                <div className="text-base md:text-lg font-extrabold text-white">
                   Escribir por WhatsApp
                 </div>
-                <div className="text-xs md:text-sm text-white/80">
+                <div className="text-sm md:text-base text-white/90">
                   +598 97 557 366
                 </div>
               </div>
@@ -437,7 +448,7 @@ export default function ContactSection({
             {/* Teléfono - Chip con ícono */}
             <a
               href="tel:+59845224091"
-              className="group flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+              className="group flex items-center gap-4 p-4 md:p-5 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
               style={{ 
                 background: "rgb(var(--panel))", 
                 borderColor: "rgb(var(--line))",
@@ -450,7 +461,7 @@ export default function ContactSection({
                 <FaPhone className="text-lg md:text-xl" style={{ color: "rgb(var(--accent))" }} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm md:text-base font-semibold" style={{ color: "rgb(var(--text))" }}>
+                <div className="text-base md:text-lg font-bold" style={{ color: "rgb(var(--text))" }}>
                   +598 4522 4091
                 </div>
                 <div className="text-xs md:text-sm" style={{ color: "rgb(var(--muted))" }}>
@@ -463,7 +474,7 @@ export default function ContactSection({
             <div className="flex gap-2">
               <a
                 href="mailto:pedidos@buenimar.com?subject=Consulta%20-%20Buenimar"
-                className="group flex-1 flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+                className="group flex-1 flex items-center gap-4 p-4 md:p-5 rounded-xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
                 style={{ 
                   background: "rgb(var(--panel))", 
                   borderColor: "rgb(var(--line))",
@@ -476,7 +487,7 @@ export default function ContactSection({
                   <FaEnvelope className="text-lg md:text-xl" style={{ color: "rgb(var(--accent))" }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm md:text-base font-semibold truncate" style={{ color: "rgb(var(--text))" }}>
+                  <div className="text-base md:text-lg font-bold truncate" style={{ color: "rgb(var(--text))" }}>
                     pedidos@buenimar.com
                   </div>
                   <div className="text-xs md:text-sm" style={{ color: "rgb(var(--muted))" }}>
@@ -519,6 +530,16 @@ export default function ContactSection({
               <FaExternalLinkAlt className="text-xs opacity-50 group-hover:opacity-100 transition-opacity" style={{ color: "rgb(var(--accent))" }} />
             </a>
           </div>
+
+          <div className="mt-5 rounded-xl overflow-hidden border" style={{ borderColor: "rgb(var(--line))" }}>
+            <iframe
+              title="Mapa Buenimar Colonia"
+              src="https://www.google.com/maps?q=Pablo+Zufriategui+374,+Colonia+del+Sacramento,+Uruguay&output=embed"
+              className="w-full h-[220px] md:h-[260px]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
 
         <div className="mt-8">
@@ -559,6 +580,7 @@ export default function ContactSection({
             })}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

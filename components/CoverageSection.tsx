@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import CoverageShapeMap from "@/components/CoverageShapeMap";
 import { localities, buenimarLocation } from "@/lib/coverageData";
 import coloniaGeoJSON from "@/lib/geo/colonia.json";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function CoverageSection() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,6 +32,30 @@ export default function CoverageSection() {
 
   return (
     <div className="space-y-6">
+      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_auto] gap-4 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            "16 localidades ya cubiertas",
+            "Atención comercial",
+          ].map((item) => (
+            <div key={item} className="rounded-xl border px-4 py-3 text-sm font-semibold text-center" style={{ borderColor: "rgba(var(--accent), 0.25)", background: "rgba(var(--accent), 0.08)", color: "rgb(var(--text))" }}>
+              {item}
+            </div>
+          ))}
+        </div>
+
+        <a
+          href="https://wa.me/59897557366"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold text-white transition-all duration-200 shadow-lg w-full xl:w-auto whitespace-nowrap"
+          style={{ background: "#25D366" }}
+        >
+          <FaWhatsapp className="text-lg" />
+          Consultar mi zona
+        </a>
+      </div>
+
       {/* Buscador */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 md:p-6">
         <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
@@ -78,6 +103,13 @@ export default function CoverageSection() {
                     <div>
                       <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base">{l.name}</h4>
                       <p className="text-sm text-gray-600 dark:text-gray-400">{l.department}</p>
+
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <span className="text-[11px] px-2 py-1 rounded-full bg-red-100 text-red-700 font-semibold">Cobertura activa</span>
+                        <span className="text-[11px] px-2 py-1 rounded-full bg-gray-100 text-gray-700 font-semibold">
+                          {calculateDistance(buenimarLocation, l.coordinates) <= 50 ? "Frecuencia alta" : "Atención programada"}
+                        </span>
+                      </div>
                     </div>
                     <div className="text-sm md:text-xs text-red-600 dark:text-red-400 font-semibold">
                       {calculateDistance(buenimarLocation, l.coordinates).toFixed(0)} km

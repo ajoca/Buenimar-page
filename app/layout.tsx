@@ -20,10 +20,10 @@ const raleway = Raleway({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.buenimarcolonia.com"),
-  applicationName: "BUENIMAR COLONIA",
+  applicationName: "Buenimar Colonia",
   title: {
-    default: "BUENIMAR COLONIA",
-    template: "%s | BUENIMAR COLONIA",
+    default: "Buenimar Colonia",
+    template: "%s | Buenimar Colonia",
   },
   description:
     "Distribución y logística con confianza. Más de 100 marcas líderes. Atención ágil, stock completo y entregas rápidas para tu comercio en Colonia del Sacramento.",
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_UY",
     url: "https://www.buenimarcolonia.com",
-    siteName: "BUENIMAR COLONIA",
-    title: "BUENIMAR COLONIA",
+    siteName: "Buenimar Colonia",
+    title: "Buenimar Colonia",
     description:
       "Distribuidora mayorista líder en Colonia del Sacramento. Más de 100 marcas, logística rápida y atención personalizada. 30 años de confianza.",
     images: [
@@ -75,7 +75,7 @@ const jsonLdWebsite = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": "https://www.buenimarcolonia.com/#website",
-  name: "BUENIMAR COLONIA",
+  name: "Buenimar Colonia",
   alternateName: "Buenimar Colonia",
   url: "https://www.buenimarcolonia.com/",
   inLanguage: "es-UY",
@@ -93,7 +93,7 @@ const jsonLdOrganization = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": "https://www.buenimarcolonia.com/#organization",
-  name: "BUENIMAR COLONIA",
+  name: "Buenimar Colonia",
   alternateName: "Buenimar Colonia",
   url: "https://www.buenimarcolonia.com",
   logo: "https://www.buenimarcolonia.com/img/Buenimar.png",
@@ -119,7 +119,7 @@ const jsonLdLocalBusiness = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "@id": "https://www.buenimarcolonia.com/#localbusiness",
-  name: "BUENIMAR COLONIA",
+  name: "Buenimar Colonia",
   alternateName: "Buenimar Colonia",
   description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
   url: "https://www.buenimarcolonia.com",

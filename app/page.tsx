@@ -101,6 +101,15 @@ const productsJsonLd = {
         "@type": "Brand",
         name: "BUENIMAR COLONIA",
       },
+      offers: {
+        "@type": "Offer",
+        url: `https://www.buenimarcolonia.com/contacto?sku=${encodeURIComponent(product.code)}`,
+        priceCurrency: "UYU",
+        availability: "https://schema.org/InStock",
+        seller: {
+          "@id": "https://www.buenimarcolonia.com/#organization",
+        },
+      },
     },
   })),
 };

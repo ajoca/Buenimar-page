@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Montserrat, Raleway } from "next/font/google";
 import { FaWhatsapp } from "react-icons/fa";
 import ScrollToTop from "@/components/ScrollToTop";
+import ChatWidget from "@/components/ChatWidget";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -209,6 +210,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
 
         <ScrollToTop />
+        <ChatWidget />
 
         <div className="fixed bottom-4 right-4 z-50">
           <a

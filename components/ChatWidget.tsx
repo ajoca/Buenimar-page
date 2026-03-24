@@ -101,7 +101,7 @@ export default function ChatWidget() {
       className={`fixed z-50 ${
         isOpen
           ? "left-2 right-2 bottom-2 md:left-auto md:right-4 md:bottom-24"
-          : "right-4 bottom-44 md:bottom-40"
+          : "right-4 bottom-56 md:bottom-52"
       }`}
     >
       {isOpen ? (
@@ -115,9 +115,7 @@ export default function ChatWidget() {
           >
             <div>
               <p className="font-semibold leading-tight">Asistente Buenimar</p>
-              <p className="text-[11px] opacity-90">
-                {mode === "openai" ? "Atención comercial automatizada" : "Modo gratis local"}
-              </p>
+              <p className="text-[11px] opacity-90">Atención comercial automatizada</p>
             </div>
             <button
               type="button"

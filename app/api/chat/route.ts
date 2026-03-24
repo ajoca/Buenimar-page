@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { SITE } from "@/lib/siteContent";
 import { localities } from "@/lib/coverageData";
+import { CHAT_FAQS } from "@/lib/chatFaqs";
 
 export const runtime = "nodejs";
 
@@ -22,11 +23,24 @@ type LocalReply = {
   actions?: ChatAction[];
 };
 
+type KnowledgeItem = {
+  id: string;
+  keywords: string[];
+  searchableText: string;
+  reply: LocalReply;
+};
+
 function normalizeText(input: string) {
   return input
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
+}
+
+function tokenize(input: string) {
+  return normalizeText(input)
+    .split(/[^a-z0-9]+/)
+    .filter((token) => token.length > 2);
 }
 
 function pickCoverageHint(message: string) {
@@ -173,6 +187,193 @@ const LOCAL_INTENTS: Intent[] = [
   },
 ];
 
+const KNOWLEDGE_BASE: KnowledgeItem[] = [
+  ...CHAT_FAQS,
+  {
+    id: "empresa-historia",
+    keywords: ["empresa", "historia", "fundacion", "trayectoria", "anos", "1996", "2012", "2013", "2026"],
+    searchableText: "historia buenimar fundada 1996 certificacion 2012 2013 30 anos 2026 distribuidora colonia",
+    reply: {
+      reply: [
+        "Buenimar tiene mas de 30 anos de trayectoria en Colonia.",
+        "Hitos clave: fundacion en 1996, proceso ISO desde 2012 y consolidacion de calidad desde 2013.",
+      ].join("\n"),
+      actions: [{ label: "Ver Empresa", href: "/empresa" }],
+    },
+  },
+  {
+    id: "iso",
+    keywords: ["iso", "certificacion", "calidad", "9001", "auditado"],
+    searchableText: "certificacion iso 9001 sistema gestion calidad procesos auditados mejora continua",
+    reply: {
+      reply: [
+        "Si, Buenimar trabaja con enfoque de calidad y certificacion ISO 9001.",
+        "Eso respalda procesos auditados y mejora continua en el servicio.",
+      ].join("\n"),
+      actions: [{ label: "Conocer la Empresa", href: "/empresa" }],
+    },
+  },
+  {
+    id: "cultura",
+    keywords: ["cultura", "valores", "confianza", "equipo", "mejora", "profesional"],
+    searchableText: "cultura de calidad confianza enfoque cliente trabajo equipo compromiso mejora continua desarrollo profesional",
+    reply: {
+      reply: [
+        "Nuestra cultura se apoya en confianza, enfoque en el cliente y trabajo en equipo.",
+        "Tambien priorizamos compromiso, mejora continua y desarrollo profesional.",
+      ].join("\n"),
+      actions: [{ label: "Ver Empresa", href: "/empresa" }],
+    },
+  },
+  {
+    id: "productos",
+    keywords: ["productos", "destacados", "que venden", "alimentos", "bebidas"],
+    searchableText: "productos destacados alimentos bebidas congelados distribucion marcas",
+    reply: {
+      reply: [
+        `Tenemos productos de multiples categorias y mas de ${SITE.products.length} destacados en la web.`,
+        "Si queres, te guiamos por categoria o marca segun tu negocio.",
+      ].join("\n"),
+      actions: [
+        { label: "Ver Inicio", href: "/" },
+        { label: "Ir a Marcas", href: "/marcas" },
+      ],
+    },
+  },
+  {
+    id: "marcas-catalogos",
+    keywords: ["marcas", "catalogos", "conaprole", "pagnifique", "almena", "la especialista"],
+    searchableText: "mas de 100 marcas catalogos conaprole la especialista pagnifique almena",
+    reply: {
+      reply: [
+        `Trabajamos con mas de 100 marcas y hoy hay ${SITE.catalogs.length} catalogos publicados.`,
+        "Podes verlos y descargarlos desde la pagina de Marcas.",
+      ].join("\n"),
+      actions: [
+        { label: "Ir a Marcas", href: "/marcas" },
+        { label: "Ver Catalogos", href: "/marcas#catalogos" },
+      ],
+    },
+  },
+  {
+    id: "cobertura-general",
+    keywords: ["cobertura", "zona", "localidad", "departamento", "colonia", "reparto"],
+    searchableText: "cobertura activa 16 localidades departamento colonia reparto",
+    reply: {
+      reply: [
+        `Tenemos cobertura activa en ${localities.length} localidades de Colonia y alrededores.`,
+        "Si me decis tu localidad, te digo si esta cubierta.",
+      ].join("\n"),
+      actions: [{ label: "Ver Cobertura", href: "/cobertura" }],
+    },
+  },
+  {
+    id: "contacto",
+    keywords: ["contacto", "telefono", "mail", "correo", "direccion", "ubicacion", "mapa"],
+    searchableText: "contacto pablo zufriategui 374 colonia del sacramento telefono whatsapp email mapa",
+    reply: {
+      reply: [
+        `Estamos en Pablo Zufriategui 374, Colonia del Sacramento.`,
+        `Contacto: WhatsApp +598 97 557 366, telefono ${PHONE}, email ${EMAIL}.`,
+      ].join("\n"),
+      actions: [
+        { label: "Ir a Contacto", href: "/contacto" },
+        { label: "Abrir WhatsApp", href: WHATSAPP_URL, external: true },
+      ],
+    },
+  },
+  {
+    id: "abrir-cuenta",
+    keywords: ["abrir cuenta", "cliente", "proveedor", "registrarse", "unite"],
+    searchableText: "abrir cuenta cliente proveedor registrarse unite formulario",
+    reply: {
+      reply: [
+        "Podes iniciar alta como cliente o proveedor desde la seccion Unite.",
+        "Completas el formulario y el equipo comercial te contacta.",
+      ].join("\n"),
+      actions: [{ label: "Ir a Abrir Cuenta", href: "/abrir-cuenta" }],
+    },
+  },
+  {
+    id: "portal",
+    keywords: ["portal", "consulta", "consultas", "solicitudes", "seguimiento"],
+    searchableText: "portal consultas centralizadas seguimiento solicitudes atencion comercial",
+    reply: {
+      reply: [
+        "El portal esta pensado para centralizar consultas y dar seguimiento comercial agil.",
+        "Si queres, te llevo al acceso o te conecto por WhatsApp.",
+      ].join("\n"),
+      actions: [
+        { label: "Ir a Contacto", href: "/contacto" },
+        { label: "WhatsApp Comercial", href: WHATSAPP_URL, external: true },
+      ],
+    },
+  },
+  {
+    id: "politica-privacidad",
+    keywords: ["privacidad", "datos", "politica", "cookies", "informacion personal"],
+    searchableText: "politica privacidad datos personales cookies uso de informacion",
+    reply: {
+      reply: [
+        "Tenemos una seccion especifica de Politica de Privacidad con el detalle legal.",
+        "Si queres, te llevo directo a esa pagina.",
+      ].join("\n"),
+      actions: [{ label: "Ver Politica", href: "/politica-privacidad" }],
+    },
+  },
+  {
+    id: "redes",
+    keywords: ["instagram", "facebook", "twitter", "redes", "social"],
+    searchableText: "redes sociales instagram facebook twitter buenimarcolonia",
+    reply: {
+      reply: [
+        "Si, Buenimar esta en redes sociales para novedades y contacto.",
+        "Te puedo pasar los enlaces oficiales que figuran en la web.",
+      ].join("\n"),
+      actions: [
+        { label: "Instagram", href: "https://www.instagram.com/buenimarcolonia", external: true },
+        { label: "Facebook", href: "https://www.facebook.com/buenimarcolonia", external: true },
+      ],
+    },
+  },
+];
+
+function findKnowledgeReply(rawMessage: string): LocalReply | null {
+  const normalized = normalizeText(rawMessage);
+  const messageTokens = tokenize(rawMessage);
+
+  let best: KnowledgeItem | null = null;
+  let bestScore = 0;
+
+  for (const item of KNOWLEDGE_BASE) {
+    let score = 0;
+
+    for (const keyword of item.keywords) {
+      if (normalized.includes(normalizeText(keyword))) {
+        score += keyword.includes(" ") ? 4 : 2;
+      }
+    }
+
+    const itemTokens = tokenize(item.searchableText);
+    for (const token of messageTokens) {
+      if (itemTokens.includes(token)) {
+        score += 1;
+      }
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = item;
+    }
+  }
+
+  if (best && bestScore >= 3) {
+    return best.reply;
+  }
+
+  return null;
+}
+
 function getLocalReply(rawMessage: string) {
   const message = normalizeText(rawMessage);
 
@@ -192,6 +393,11 @@ function getLocalReply(rawMessage: string) {
 
   if (bestIntent && bestScore > 0) {
     return bestIntent.reply(rawMessage);
+  }
+
+  const knowledgeReply = findKnowledgeReply(rawMessage);
+  if (knowledgeReply) {
+    return knowledgeReply;
   }
 
   return {

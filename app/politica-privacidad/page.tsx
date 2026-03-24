@@ -3,8 +3,8 @@ import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata = {
-  title: "Política de Privacidad - Buenimar Distribuciones",
-  description: "Política de privacidad y protección de datos de Buenimar Distribuciones en Colonia del Sacramento",
+  title: "Política de Privacidad - BUENIMAR COLONIA",
+  description: "Política de privacidad y protección de datos de BUENIMAR COLONIA en Colonia del Sacramento",
   alternates: {
     canonical: "https://www.buenimarcolonia.com/politica-privacidad",
   },
@@ -26,7 +26,7 @@ export default function PoliticaPrivacidadPage() {
             {/* Introducción */}
             <section className="panel p-6 md:p-8">
               <p className="text-base md:text-lg leading-relaxed" style={{ color: "rgb(var(--text))" }}>
-                En <strong>Buenimar Distribuciones</strong> nos comprometemos a proteger su privacidad. Esta política describe cómo recopilamos, usamos y protegemos su información personal.
+                En <strong>BUENIMAR COLONIA</strong> nos comprometemos a proteger su privacidad. Esta política describe cómo recopilamos, usamos y protegemos su información personal.
               </p>
             </section>
 

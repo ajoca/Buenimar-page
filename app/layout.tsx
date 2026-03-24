@@ -76,7 +76,7 @@ const jsonLdWebsite = {
   "@type": "WebSite",
   "@id": "https://www.buenimarcolonia.com/#website",
   name: "BUENIMAR COLONIA",
-  alternateName: ["Buenimar Colonia", "Buenimar Distribuciones", "Buenimar Colonia del Sacramento"],
+  alternateName: "Buenimar Colonia",
   url: "https://www.buenimarcolonia.com/",
   inLanguage: "es-UY",
   potentialAction: {
@@ -94,7 +94,7 @@ const jsonLdOrganization = {
   "@type": "Organization",
   "@id": "https://www.buenimarcolonia.com/#organization",
   name: "BUENIMAR COLONIA",
-  alternateName: ["Buenimar Colonia", "Buenimar Distribuciones"],
+  alternateName: "Buenimar Colonia",
   url: "https://www.buenimarcolonia.com",
   logo: "https://www.buenimarcolonia.com/img/Buenimar.png",
   image: "https://www.buenimarcolonia.com/img/BUENIMAR-2.avif",
@@ -120,7 +120,7 @@ const jsonLdLocalBusiness = {
   "@type": "LocalBusiness",
   "@id": "https://www.buenimarcolonia.com/#localbusiness",
   name: "BUENIMAR COLONIA",
-  alternateName: "Buenimar Distribuciones",
+  alternateName: "Buenimar Colonia",
   description: "Distribuidora líder en Colonia del Sacramento. Ofrecemos productos de primeras marcas con calidad, servicio, vocación, logística, rapidez y confianza.",
   url: "https://www.buenimarcolonia.com",
   parentOrganization: {

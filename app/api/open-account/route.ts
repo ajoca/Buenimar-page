@@ -28,7 +28,49 @@ type ProveedorPayload = {
   agree?: boolean;
 };
 
-type Payload = ClientePayload | ProveedorPayload;
+type AttachmentPayload = {
+  filename: string;
+  content: string;
+  contentType: string;
+  size?: number;
+};
+
+type TrabajaPayload = {
+  type: "trabaja";
+  firstName?: string;
+  lastName?: string;
+  locality?: string;
+  email?: string;
+  phoneNumber?: string;
+  motivation?: string;
+  agree?: boolean;
+  cv?: AttachmentPayload;
+  attachments?: AttachmentPayload[];
+};
+
+type Payload = ClientePayload | ProveedorPayload | TrabajaPayload;
+
+const MAX_EXTRA_ATTACHMENTS = 5;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+const LOCALITY_MAIL_ROUTES: Record<string, string> = {
+  // TODO: Reemplazar estos destinos cuando estén definidos los correos por localidad.
+  carmelo: "pedidos@buenimar.com",
+  "nueva helvecia": "pedidos@buenimar.com",
+};
+
+function normalizeText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function resolveHiringDestination(locality: string, fallback: string) {
+  const key = normalizeText(locality);
+  return LOCALITY_MAIL_ROUTES[key] || fallback;
+}
 
 function createTransporter(options: {
   host: string;
@@ -159,6 +201,13 @@ export async function POST(req: NextRequest) {
         );
       }
 
+      if (!agree) {
+        return NextResponse.json(
+          { ok: false, error: "Debes aceptar la política de privacidad" },
+          { status: 400 }
+        );
+      }
+
       const host = process.env.SMTP_HOST ?? "";
       const port = Number(process.env.SMTP_PORT ?? 587);
       const user = process.env.SMTP_USER ?? "";
@@ -269,6 +318,13 @@ export async function POST(req: NextRequest) {
         );
       }
 
+      if (!agree) {
+        return NextResponse.json(
+          { ok: false, error: "Debes aceptar la política de privacidad" },
+          { status: 400 }
+        );
+      }
+
       const host = process.env.SMTP_HOST ?? "";
       const port = Number(process.env.SMTP_PORT ?? 587);
       const user = process.env.SMTP_USER ?? "";
@@ -357,6 +413,130 @@ export async function POST(req: NextRequest) {
           console.error("Error enviando confirmación UNITE proveedor:", confirmationError);
         }
       }
+
+      return NextResponse.json({ ok: true });
+    } else if (type === "trabaja") {
+      const {
+        firstName = "",
+        lastName = "",
+        locality = "",
+        email = "",
+        phoneNumber = "",
+        motivation = "",
+        agree = false,
+        cv,
+        attachments = [],
+      } = data as TrabajaPayload;
+
+      if (!firstName || !lastName || !locality || !email || !phoneNumber || !motivation || !cv) {
+        return NextResponse.json(
+          { ok: false, error: "Datos insuficientes para postulación" },
+          { status: 400 }
+        );
+      }
+
+      if (!agree) {
+        return NextResponse.json(
+          { ok: false, error: "Debes aceptar la política de privacidad" },
+          { status: 400 }
+        );
+      }
+
+      if ((attachments?.length || 0) > MAX_EXTRA_ATTACHMENTS) {
+        return NextResponse.json(
+          { ok: false, error: `Máximo ${MAX_EXTRA_ATTACHMENTS} archivos adicionales` },
+          { status: 400 }
+        );
+      }
+
+      if ((cv.size ?? 0) > MAX_FILE_SIZE) {
+        return NextResponse.json(
+          { ok: false, error: "El archivo de CV supera el tamaño permitido (5MB)" },
+          { status: 400 }
+        );
+      }
+
+      const oversized = attachments.find((item) => (item.size ?? 0) > MAX_FILE_SIZE);
+      if (oversized) {
+        return NextResponse.json(
+          { ok: false, error: `El archivo ${oversized.filename} supera el tamaño permitido (5MB)` },
+          { status: 400 }
+        );
+      }
+
+      const host = process.env.SMTP_HOST ?? "";
+      const port = Number(process.env.SMTP_PORT ?? 587);
+      const user = process.env.SMTP_USER ?? "";
+      const pass = process.env.SMTP_PASS ?? "";
+      const defaultTo = process.env.MAIL_TO ?? "pedidos@buenimar.com";
+      const to = resolveHiringDestination(locality, defaultTo);
+      const from = process.env.MAIL_FROM ?? `Web Buenimar <no-reply@buenimar.com>`;
+
+      if (!host || !user || !pass) {
+        return NextResponse.json(
+          { ok: false, error: "SMTP no configurado en variables de entorno" },
+          { status: 500 }
+        );
+      }
+
+      const transporter = createTransporter({ host, port, user, pass });
+      const subject = `UNITE: Trabajá con nosotros - ${firstName} ${lastName}`;
+      const replyTo = email || undefined;
+
+      const fields = [
+        { label: "Tipo", value: "Trabajá con nosotros" },
+        { label: "Nombre", value: `${firstName} ${lastName}`.trim() },
+        { label: "Localidad", value: locality },
+        { label: "Email", value: `<a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>`, highlight: true },
+        { label: "Teléfono", value: phoneNumber },
+        { label: "Motivación", value: motivation },
+        { label: "Acepta políticas", value: agree ? "Sí" : "No" },
+      ];
+
+      const html = buildHtmlEmail({
+        title: "Nueva postulación - Trabajá con nosotros",
+        intro: "Se recibió una nueva postulación laboral desde UNITE.",
+        fields,
+        footer: `Destino seleccionado por localidad: ${locality} -> ${to}`,
+      });
+
+      const text = buildTextEmail({
+        title: "Nueva postulación laboral",
+        intro: "Se recibió una nueva postulación laboral desde UNITE.",
+        fields: [
+          { label: "Tipo", value: "Trabajá con nosotros" },
+          { label: "Nombre", value: `${firstName} ${lastName}`.trim() },
+          { label: "Localidad", value: locality },
+          { label: "Email", value: email },
+          { label: "Teléfono", value: phoneNumber },
+          { label: "Motivación", value: motivation },
+          { label: "Acepta políticas", value: agree ? "Sí" : "No" },
+        ],
+        footer: `Destino seleccionado por localidad: ${locality} -> ${to}`,
+      });
+
+      const mailAttachments = [
+        {
+          filename: cv.filename,
+          content: Buffer.from(cv.content, "base64"),
+          contentType: cv.contentType,
+        },
+        ...attachments.map((file) => ({
+          filename: file.filename,
+          content: Buffer.from(file.content, "base64"),
+          contentType: file.contentType,
+        })),
+      ];
+
+      await transporter.sendMail({
+        from,
+        to,
+        replyTo,
+        subject,
+        html,
+        text,
+        attachments: mailAttachments,
+      });
 
       return NextResponse.json({ ok: true });
     } else {

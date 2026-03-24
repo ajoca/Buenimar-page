@@ -3,7 +3,35 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
-import { FaStore, FaTruck, FaBoxes, FaUsers, FaHandshake, FaClipboardCheck } from "react-icons/fa";
+import { FaStore, FaTruck, FaBoxes, FaUsers, FaHandshake, FaClipboardCheck, FaBriefcase } from "react-icons/fa";
+import { localities } from "@/lib/coverageData";
+
+type EncodedAttachment = {
+  filename: string;
+  content: string;
+  contentType: string;
+  size: number;
+};
+
+const MAX_EXTRA_FILES = 5;
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+async function fileToAttachment(file: File): Promise<EncodedAttachment> {
+  const buffer = await file.arrayBuffer();
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.length; i += 1) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  return {
+    filename: file.name,
+    content: btoa(binary),
+    contentType: file.type || "application/octet-stream",
+    size: file.size,
+  };
+}
 
 export default function OpenAccountSection({
   title,
@@ -12,9 +40,10 @@ export default function OpenAccountSection({
   title: string;
   subtitle: string;
 }) {
-  const [accountType, setAccountType] = useState<"cliente" | "proveedor">("cliente");
+  const [accountType, setAccountType] = useState<"cliente" | "proveedor" | "trabaja">("cliente");
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { ok: boolean; msg: string }>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
 
   const fieldStyle = {
     background: "rgb(var(--panel))",
@@ -27,30 +56,92 @@ export default function OpenAccountSection({
     const form = e.currentTarget;
     setSubmitting(true);
     setResult(null);
+    setFileError(null);
 
     const fd = new FormData(form);
     
-    const payload = accountType === "cliente" ? {
-      type: "cliente",
-      commerce: String(fd.get("commerce") || ""),
-      address: String(fd.get("address") || ""),
-      category: String(fd.get("category") || ""),
-      volume: String(fd.get("volume") || ""),
-      contactName: String(fd.get("contact-name") || ""),
-      email: String(fd.get("email") || ""),
-      phoneNumber: String(fd.get("phone-number") || ""),
-      agree: fd.get("agree-to-policies") === "on",
-    } : {
-      type: "proveedor",
-      companyName: String(fd.get("company-name") || ""),
-      productType: String(fd.get("product-type") || ""),
-      productDescription: String(fd.get("product-description") || ""),
-      productVolume: String(fd.get("product-volume") || ""),
-      contactName: String(fd.get("contact-name") || ""),
-      email: String(fd.get("email") || ""),
-      phoneNumber: String(fd.get("phone-number") || ""),
-      agree: fd.get("agree-to-policies") === "on",
-    };
+    let payload: Record<string, unknown>;
+    const agree = fd.get("agree-to-policies") === "on";
+
+    if (!agree) {
+      setResult({ ok: false, msg: "Debes aceptar la política de privacidad para continuar." });
+      setSubmitting(false);
+      return;
+    }
+
+    if (accountType === "cliente") {
+      payload = {
+        type: "cliente",
+        commerce: String(fd.get("commerce") || ""),
+        address: String(fd.get("address") || ""),
+        category: String(fd.get("category") || ""),
+        volume: String(fd.get("volume") || ""),
+        contactName: String(fd.get("contact-name") || ""),
+        email: String(fd.get("email") || ""),
+        phoneNumber: String(fd.get("phone-number") || ""),
+        agree,
+      };
+    } else if (accountType === "proveedor") {
+      payload = {
+        type: "proveedor",
+        companyName: String(fd.get("company-name") || ""),
+        productType: String(fd.get("product-type") || ""),
+        productDescription: String(fd.get("product-description") || ""),
+        productVolume: String(fd.get("product-volume") || ""),
+        contactName: String(fd.get("contact-name") || ""),
+        email: String(fd.get("email") || ""),
+        phoneNumber: String(fd.get("phone-number") || ""),
+        agree,
+      };
+    } else {
+      const cvFile = fd.get("cv-file") as File | null;
+      const extraFiles = fd.getAll("additional-files") as File[];
+      const validExtraFiles = extraFiles.filter((file) => file && file.size > 0);
+
+      if (!cvFile || cvFile.size === 0) {
+        setResult({ ok: false, msg: "Adjuntá tu CV para continuar." });
+        setSubmitting(false);
+        return;
+      }
+
+      if (validExtraFiles.length > 5) {
+        setFileError(`Podés adjuntar hasta ${MAX_EXTRA_FILES} archivos adicionales además del CV.`);
+        setResult({ ok: false, msg: "Revisá los archivos adjuntos e intentá nuevamente." });
+        setSubmitting(false);
+        return;
+      }
+
+      if (cvFile.size > MAX_FILE_SIZE_BYTES) {
+        setFileError(`El CV supera el máximo permitido de ${MAX_FILE_SIZE_MB}MB.`);
+        setSubmitting(false);
+        return;
+      }
+
+      const oversizedExtra = validExtraFiles.find((file) => file.size > MAX_FILE_SIZE_BYTES);
+      if (oversizedExtra) {
+        setFileError(`El archivo ${oversizedExtra.name} supera el máximo permitido de ${MAX_FILE_SIZE_MB}MB.`);
+        setSubmitting(false);
+        return;
+      }
+
+      const cvAttachment = await fileToAttachment(cvFile);
+      const additionalAttachments = await Promise.all(
+        validExtraFiles.map((file) => fileToAttachment(file))
+      );
+
+      payload = {
+        type: "trabaja",
+        firstName: String(fd.get("first-name") || ""),
+        lastName: String(fd.get("last-name") || ""),
+        locality: String(fd.get("locality") || ""),
+        email: String(fd.get("email") || ""),
+        phoneNumber: String(fd.get("phone-number") || ""),
+        motivation: String(fd.get("motivation") || ""),
+        agree,
+        cv: cvAttachment,
+        attachments: additionalAttachments,
+      };
+    }
 
     try {
       const res = await fetch("/api/open-account", {
@@ -64,9 +155,12 @@ export default function OpenAccountSection({
 
       setResult({
         ok: true,
-        msg: accountType === "cliente" 
-          ? "¡Solicitud enviada exitosamente! Te contactaremos en las próximas 24 horas."
-          : "¡Solicitud enviada exitosamente! Revisaremos tu producto y nos pondremos en contacto pronto.",
+        msg:
+          accountType === "cliente"
+            ? "¡Solicitud enviada exitosamente! Te contactaremos en las próximas 24 horas."
+            : accountType === "proveedor"
+              ? "¡Solicitud enviada exitosamente! Revisaremos tu producto y nos pondremos en contacto pronto."
+              : "¡Postulación enviada! Revisaremos tu CV y nos pondremos en contacto.",
       });
 
       // Reset form after successful submission
@@ -123,7 +217,7 @@ export default function OpenAccountSection({
         </p>
 
         {/* Toggle Cliente/Proveedor */}
-        <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+        <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => setAccountType("cliente")}
@@ -180,13 +274,42 @@ export default function OpenAccountSection({
               </div>
             </div>
           </button>
+
+          <button
+            type="button"
+            onClick={() => setAccountType("trabaja")}
+            className={`p-4 sm:p-5 rounded-xl text-left transition-all duration-200 border-2 ${
+              accountType === "trabaja"
+                ? "bg-red-600 text-white shadow-lg border-red-500"
+                : "hover:bg-white/10"
+            }`}
+            style={
+              accountType === "trabaja"
+                ? { background: "#dc2626" }
+                : {
+                    background: "rgb(var(--panel))",
+                    color: "rgb(var(--text))",
+                    borderColor: "rgb(var(--line))",
+                  }
+            }
+          >
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: accountType === "trabaja" ? "rgba(255,255,255,0.2)" : "rgba(var(--accent), 0.15)" }}>
+                <FaBriefcase className="text-lg" />
+              </div>
+              <div>
+                <p className="font-bold text-sm sm:text-base">Trabajá con Nosotros</p>
+                <p className="text-xs sm:text-sm opacity-90 mt-0.5">Postulate y sumate al equipo Buenimar.</p>
+              </div>
+            </div>
+          </button>
         </div>
       </div>
 
       <div className="mx-auto mt-8 sm:mt-10 max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6 px-2 sm:px-0">
         <div className="rounded-2xl border p-5 md:p-6" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
           <h3 className="text-xl md:text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Sumate a una red sólida</h3>
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
             {[
               { icon: FaUsers, text: "Atención personalizada" },
               { icon: FaBoxes, text: "Más de 100 marcas" },
@@ -202,7 +325,7 @@ export default function OpenAccountSection({
 
           <div className="mt-5 rounded-xl border p-4" style={{ borderColor: "rgb(var(--line))" }}>
             <p className="text-xs uppercase tracking-[0.15em] font-semibold" style={{ color: "rgb(var(--accent))" }}>Paso a paso</p>
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
               <div className="flex items-start gap-2">
                 <FaClipboardCheck className="mt-0.5 text-red-500" />
                 <span>Completás tus datos</span>
@@ -226,12 +349,12 @@ export default function OpenAccountSection({
 
       {/* Form */}
       <form onSubmit={onSubmit} className="mx-auto mt-10 sm:mt-14 max-w-4xl px-2 sm:px-0">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
           {/* CAMPOS PARA CLIENTE */}
           {accountType === "cliente" && (
             <>
               {/* Commerce Name */}
-              <div className="sm:col-span-2">
+              <div className="md:col-span-2">
                 <label
                   htmlFor="commerce"
                   className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -253,7 +376,7 @@ export default function OpenAccountSection({
               </div>
 
               {/* Address */}
-              <div className="sm:col-span-2">
+              <div className="md:col-span-2">
                 <label
                   htmlFor="address"
                   className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -334,7 +457,7 @@ export default function OpenAccountSection({
           {accountType === "proveedor" && (
             <>
               {/* Company Name */}
-              <div className="sm:col-span-2">
+              <div className="md:col-span-2">
                 <label
                   htmlFor="company-name"
                   className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -356,7 +479,7 @@ export default function OpenAccountSection({
               </div>
 
               {/* Product Type */}
-              <div className="sm:col-span-2">
+              <div className="md:col-span-2">
                 <label
                   htmlFor="product-type"
                   className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -378,7 +501,7 @@ export default function OpenAccountSection({
               </div>
 
               {/* Product Description */}
-              <div className="sm:col-span-2">
+              <div className="md:col-span-2">
                 <label
                   htmlFor="product-description"
                   className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -425,8 +548,153 @@ export default function OpenAccountSection({
             </>
           )}
 
-          {/* Contact Name - PARA AMBOS */}
-          <div className="sm:col-span-2">
+          {/* CAMPOS PARA TRABAJA CON NOSOTROS */}
+          {accountType === "trabaja" && (
+            <>
+              <div>
+                <label
+                  htmlFor="first-name"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  Nombre *
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="first-name"
+                    type="text"
+                    name="first-name"
+                    required
+                    placeholder="Tu nombre"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    style={fieldStyle}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="last-name"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  Apellido *
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="last-name"
+                    type="text"
+                    name="last-name"
+                    required
+                    placeholder="Tu apellido"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    style={fieldStyle}
+                  />
+                </div>
+              </div>
+
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="locality"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  Localidad de residencia *
+                </label>
+                <div className="mt-2">
+                  <select
+                    id="locality"
+                    name="locality"
+                    required
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    style={fieldStyle}
+                  >
+                    <option value="">Seleccionar localidad</option>
+                    {localities.map((locality) => (
+                      <option key={locality.id} value={locality.name}>
+                        {locality.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="motivation"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  ¿Por qué te gustaría trabajar con nosotros? *
+                </label>
+                <div className="mt-2">
+                  <textarea
+                    id="motivation"
+                    name="motivation"
+                    rows={4}
+                    required
+                    placeholder="Contanos brevemente tu motivación"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 resize-none"
+                    style={fieldStyle}
+                  />
+                </div>
+              </div>
+
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="cv-file"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  Adjuntar CV *
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="cv-file"
+                    type="file"
+                    name="cv-file"
+                    required
+                    accept=".pdf,.doc,.docx"
+                    className="block w-full rounded-md px-3 py-2 text-xs sm:text-sm outline outline-1 -outline-offset-1 file:mr-3 file:rounded-md file:border-0 file:bg-red-600 file:px-3 file:py-1.5 file:text-white"
+                    style={fieldStyle}
+                  />
+                </div>
+              </div>
+
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="additional-files"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  Archivos adicionales (opcional, hasta {MAX_EXTRA_FILES})
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="additional-files"
+                    type="file"
+                    name="additional-files"
+                    multiple
+                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                    className="block w-full rounded-md px-3 py-2 text-xs sm:text-sm outline outline-1 -outline-offset-1 file:mr-3 file:rounded-md file:border-0 file:bg-red-600 file:px-3 file:py-1.5 file:text-white"
+                    style={fieldStyle}
+                  />
+                </div>
+                <p className="mt-1 text-xs" style={{ color: "rgb(var(--muted))" }}>
+                  Máximo {MAX_EXTRA_FILES} archivos adicionales, hasta {MAX_FILE_SIZE_MB}MB cada uno.
+                </p>
+                {fileError && (
+                  <p className="mt-1 text-xs" style={{ color: "#dc2626" }}>
+                    {fileError}
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Contact Name - PARA CLIENTE/PROVEEDOR */}
+          {accountType !== "trabaja" && (
+          <div className="md:col-span-2">
             <label
               htmlFor="contact-name"
               className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -445,9 +713,10 @@ export default function OpenAccountSection({
               />
             </div>
           </div>
+          )}
 
           {/* Email - PARA AMBOS */}
-          <div className="sm:col-span-2">
+          <div className="md:col-span-2">
             <label
               htmlFor="email"
               className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -469,7 +738,7 @@ export default function OpenAccountSection({
           </div>
 
           {/* Phone - PARA AMBOS */}
-          <div className="sm:col-span-2">
+          <div className="md:col-span-2">
             <label
               htmlFor="phone-number"
               className="block text-xs sm:text-sm leading-6 font-semibold"
@@ -483,6 +752,7 @@ export default function OpenAccountSection({
                 type="tel"
                 name="phone-number"
                 autoComplete="tel"
+                required={accountType === "trabaja"}
                 placeholder="+598 99 999 999"
                 className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                 style={fieldStyle}
@@ -491,12 +761,13 @@ export default function OpenAccountSection({
           </div>
 
           {/* Checkbox */}
-          <div className="flex gap-x-3 sm:gap-x-4 sm:col-span-2">
+          <div className="flex gap-x-3 sm:gap-x-4 md:col-span-2">
             <div className="flex h-6 items-center">
               <input
                 id="agree-to-policies"
                 name="agree-to-policies"
                 type="checkbox"
+                required
                 className="h-4 w-4 rounded border-gray-300"
                 style={{
                   background: "rgb(var(--panel))",
@@ -562,10 +833,17 @@ export default function OpenAccountSection({
             className="block w-full rounded-md px-3 sm:px-3.5 py-2 sm:py-2.5 text-center text-sm sm:text-base font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
             style={{ background: "#dc2626" }}
           >
-            {submitting ? "Procesando..." : accountType === "cliente" ? "Abrir Cuenta" : "Registrarse como Proveedor"}
+            {submitting
+              ? "Procesando..."
+              : accountType === "cliente"
+                ? "Abrir Cuenta"
+                : accountType === "proveedor"
+                  ? "Registrarse como Proveedor"
+                  : "Enviar Postulación"}
           </button>
         </div>
       </form>
     </section>
   );
 }
+

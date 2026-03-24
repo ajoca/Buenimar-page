@@ -69,7 +69,7 @@ export default function MarcasPage() {
             >
               {[
                 { value: "100+", label: "Marcas" },
-                { value: "4", label: "Catálogos" },
+                { value: String(SITE.catalogs.length), label: "Catálogos" },
                 { value: "30+", label: "Años" },
               ].map((stat, i) => (
                 <div

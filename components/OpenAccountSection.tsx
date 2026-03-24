@@ -306,7 +306,7 @@ export default function OpenAccountSection({
         </div>
       </div>
 
-      <div className="mx-auto mt-8 sm:mt-10 max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6 px-2 sm:px-0">
+      <div className="mx-auto mt-8 sm:mt-10 max-w-4xl px-2 sm:px-0">
         <div className="rounded-2xl border p-5 md:p-6" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
           <h3 className="text-xl md:text-2xl font-bold" style={{ color: "rgb(var(--text))" }}>Sumate a una red sólida</h3>
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
@@ -340,10 +340,6 @@ export default function OpenAccountSection({
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgb(var(--line))" }}>
-          <img src="/img/BUENIMAR-2.avif" alt="Centro logistico Buenimar" className="w-full h-full min-h-[260px] md:min-h-[360px] object-cover" />
         </div>
       </div>
 

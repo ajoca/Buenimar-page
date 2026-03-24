@@ -107,8 +107,11 @@ const productsJsonLd = {
         offers: {
           "@type": "Offer",
           url: `https://www.buenimarcolonia.com/contacto?sku=${encodeURIComponent(safeCode)}`,
+          price: "0.00",
           priceCurrency: "UYU",
           availability: "https://schema.org/InStock",
+          itemCondition: "https://schema.org/NewCondition",
+          priceValidUntil: "2027-12-31",
           seller: {
             "@id": "https://www.buenimarcolonia.com/#organization",
           },

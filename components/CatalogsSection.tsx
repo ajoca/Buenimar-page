@@ -86,7 +86,7 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
 
                   {/* Date badge */}
                   <span
-                    className="absolute bottom-2.5 right-3 text-[11px] font-medium px-2 py-0.5 rounded-full"
+                    className="absolute top-2.5 right-3 text-[11px] font-medium px-2 py-0.5 rounded-full"
                     style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)" }}
                   >
                     02/2026

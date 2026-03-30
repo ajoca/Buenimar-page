@@ -68,7 +68,7 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
                     className="absolute bottom-2.5 right-3 text-[11px] font-medium px-2 py-0.5 rounded-full"
                     style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)" }}
                   >
-                    12/2024
+                    02/2026
                   </span>
                 </div>
 
@@ -79,7 +79,7 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
                       {c.title}
                     </h3>
                     <p className="text-xs mt-1" style={{ color: "rgb(var(--muted))" }}>
-                      Actualizado · 12/2024 · PDF
+                      Actualizado · 02/2026 · PDF
                     </p>
                   </div>
 

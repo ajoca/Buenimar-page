@@ -12,6 +12,14 @@ const BRAND_COLORS: Record<string, { bg: string; accent: string }> = {
   c5: { bg: "#0f4c81", accent: "#1d6fb0" },
 };
 
+const CATALOG_LOGOS: Record<string, string> = {
+  c1: "/archivos/img%20catalogos/conaprole.png",
+  c2: "/archivos/img%20catalogos/la%20especialista.jpg",
+  c3: "/archivos/img%20catalogos/pagnifique.png",
+  c4: "/archivos/img%20catalogos/almena.jpg",
+  c5: "/archivos/img%20catalogos/Schneck.png",
+};
+
 export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
   return (
     <section
@@ -34,6 +42,7 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
             const isExternal = href.startsWith("http");
             const brandName = c.title.replace("Catálogo ", "");
             const colors = BRAND_COLORS[c.id] ?? { bg: "#dc2626", accent: "#ef4444" };
+            const logoSrc = CATALOG_LOGOS[c.id];
 
             return (
               <div
@@ -50,14 +59,26 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
                   <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full opacity-10 bg-white pointer-events-none" />
                   <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full opacity-10 bg-white pointer-events-none" />
 
-                  {/* Icon + Brand name */}
-                  <div className="relative z-10 flex flex-col items-center gap-2">
-                    <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
-                      style={{ background: colors.accent }}
-                    >
-                      <FaFilePdf className="text-white text-2xl" />
-                    </div>
+                  {/* Brand logo + name */}
+                  <div className="relative z-10 flex flex-col items-center gap-2 w-full px-4">
+                    {logoSrc ? (
+                      <div className="w-full max-w-[220px] h-20 rounded-xl bg-white/95 p-2 flex items-center justify-center shadow-lg">
+                        <img
+                          src={logoSrc}
+                          alt={`Logo ${brandName}`}
+                          className="max-h-full max-w-full object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+                        style={{ background: colors.accent }}
+                      >
+                        <FaFilePdf className="text-white text-2xl" />
+                      </div>
+                    )}
+
                     <span className="text-white font-bold text-lg text-center px-4 leading-tight drop-shadow">
                       {brandName}
                     </span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import { FaStore, FaTruck, FaBoxes, FaUsers, FaHandshake, FaClipboardCheck, FaBriefcase } from "react-icons/fa";
@@ -16,6 +16,7 @@ type EncodedAttachment = {
 const MAX_EXTRA_FILES = 5;
 const MAX_FILE_SIZE_MB = 5;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const FORM_SCROLL_OFFSET = 90;
 
 async function fileToAttachment(file: File): Promise<EncodedAttachment> {
   const buffer = await file.arrayBuffer();
@@ -44,6 +45,20 @@ export default function OpenAccountSection({
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { ok: boolean; msg: string }>(null);
   const [fileError, setFileError] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  const handleAccountTypeSelect = (type: "cliente" | "proveedor" | "trabaja") => {
+    setAccountType(type);
+
+    // Scroll after state update so the selected form variant is visible immediately.
+    window.setTimeout(() => {
+      const form = formRef.current;
+      if (!form) return;
+
+      const top = form.getBoundingClientRect().top + window.scrollY - FORM_SCROLL_OFFSET;
+      window.scrollTo({ top, behavior: "smooth" });
+    }, 40);
+  };
 
   const fieldStyle = {
     background: "rgb(var(--panel))",
@@ -220,7 +235,7 @@ export default function OpenAccountSection({
         <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
           <button
             type="button"
-            onClick={() => setAccountType("cliente")}
+            onClick={() => handleAccountTypeSelect("cliente")}
             className={`p-4 sm:p-5 rounded-xl text-left transition-all duration-200 border-2 ${
               accountType === "cliente"
                 ? "bg-red-600 text-white shadow-lg border-red-500"
@@ -248,7 +263,7 @@ export default function OpenAccountSection({
           </button>
           <button
             type="button"
-            onClick={() => setAccountType("proveedor")}
+            onClick={() => handleAccountTypeSelect("proveedor")}
             className={`p-4 sm:p-5 rounded-xl text-left transition-all duration-200 border-2 ${
               accountType === "proveedor"
                 ? "bg-red-600 text-white shadow-lg border-red-500"
@@ -277,7 +292,7 @@ export default function OpenAccountSection({
 
           <button
             type="button"
-            onClick={() => setAccountType("trabaja")}
+            onClick={() => handleAccountTypeSelect("trabaja")}
             className={`p-4 sm:p-5 rounded-xl text-left transition-all duration-200 border-2 ${
               accountType === "trabaja"
                 ? "bg-red-600 text-white shadow-lg border-red-500"
@@ -344,7 +359,7 @@ export default function OpenAccountSection({
       </div>
 
       {/* Form */}
-      <form onSubmit={onSubmit} className="mx-auto mt-10 sm:mt-14 max-w-4xl px-2 sm:px-0">
+      <form ref={formRef} onSubmit={onSubmit} className="mx-auto mt-10 sm:mt-14 max-w-4xl px-2 sm:px-0">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
           {/* CAMPOS PARA CLIENTE */}
           {accountType === "cliente" && (

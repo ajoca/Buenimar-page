@@ -114,7 +114,7 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
                       style={{ borderColor: "rgb(var(--accent))", color: "rgb(var(--accent))" }}
                     >
                       <FaEye className="text-xs" />
-                      Ver catálogo
+                      Ver
                     </a>
                     <a
                       href={href}

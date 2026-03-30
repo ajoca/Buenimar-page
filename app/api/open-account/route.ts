@@ -597,7 +597,7 @@ export async function POST(req: NextRequest) {
             attachments: [
               {
                 filename: "firma-buenimar.png",
-                path: path.join(process.cwd(), "public", "og-buenimar.png"),
+                path: path.join(process.cwd(), "public", "img", "Outlook-aixo3dhi.png"),
                 cid: "buenimar-signature",
               },
             ],

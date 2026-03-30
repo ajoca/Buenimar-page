@@ -1,5 +1,6 @@
 "use client";
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 
 // Nuevos productos (imagen en public/img new/)
@@ -87,6 +88,26 @@ export default function NewProductsCarousel() {
       <p className="section-subtitle text-center mb-5 sm:mb-6 max-w-2xl">
         Incorporaciones recientes con codigo visible para agilizar pedidos.
       </p>
+
+      <div
+        className="mb-5 sm:mb-6 w-full max-w-2xl rounded-2xl border px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3"
+        style={{
+          background: "rgba(var(--accent), 0.08)",
+          borderColor: "rgba(var(--accent), 0.28)",
+        }}
+      >
+        <p className="text-sm sm:text-base font-semibold text-center sm:text-left" style={{ color: "rgb(var(--text))" }}>
+          ¿Querés ser parte?
+        </p>
+        <Link
+          href="/abrir-cuenta"
+          className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-xs sm:text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          style={{ background: "rgb(var(--accent))" }}
+        >
+          Ir a Unite
+        </Link>
+      </div>
+
       <div className="w-full flex flex-col items-center max-w-7xl">
         <div
           ref={trackRef}

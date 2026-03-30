@@ -90,7 +90,7 @@ socials: [
 
 brandsTitle: "Marcas con las que trabajamos",
  catalogs: [
-  { id: "c5", title: "Catálogo Schneck", file: "Catalogo Schneck.pdf" },
+  { id: "c5", title: "Catálogo Schneck", file: "Catalogo Schneck (3).pdf" },
   { id: "c1", title: "Catálogo Conaprole", file: "Catalogo-Conaprole_Buenimar-Colonia_v2.pdf" },
   { id: "c2", title: "Catálogo La Especialista", file: "Catalogo-La-Especialista_Buenimar-Colonia_v2.pdf" },
   { id: "c3", title: "Catálogo Pagnifique", file: "Catalogo-Pagnifique_Buenimar-Colonia_v2.pdf" },

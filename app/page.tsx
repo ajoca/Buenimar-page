@@ -5,6 +5,7 @@ import PortalSection from "@/components/PortalSection";
 import Footer from "@/components/Footer";
 import { SITE } from "@/lib/siteContent";
 import NewProductsCarousel from "@/components/NewProductsCarousel";
+import Link from "next/link";
 
 export const metadata = {
   title: "Buenimar Colonia",
@@ -155,6 +156,37 @@ export default function HomePage() {
         <NewProductsCarousel />
 
         <ProductsSection title={SITE.productsTitle} products={SITE.products} />
+
+        <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div
+            className="mx-auto max-w-5xl rounded-3xl border p-6 sm:p-8 md:p-10 text-center"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(var(--accent), 0.12), rgba(var(--accent), 0.04))",
+              borderColor: "rgba(var(--accent), 0.3)",
+            }}
+          >
+            <p className="text-xs sm:text-sm font-semibold tracking-[0.14em] uppercase" style={{ color: "rgb(var(--accent))" }}>
+              Unite a Buenimar
+            </p>
+            <h2 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
+              ¿Querés ser parte?
+            </h2>
+            <p className="mt-3 max-w-2xl mx-auto text-sm sm:text-base md:text-lg" style={{ color: "rgb(var(--muted))" }}>
+              Sumate como cliente, proveedor o postulante y empecemos a trabajar juntos.
+            </p>
+
+            <div className="mt-6">
+              <Link
+                href="/abrir-cuenta"
+                className="inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm sm:text-base font-semibold text-white transition-all hover:opacity-90"
+                style={{ background: "rgb(var(--accent))" }}
+              >
+                Ir a Unite
+              </Link>
+            </div>
+          </div>
+        </section>
 
         <PortalSection
           title={SITE.portal.title}

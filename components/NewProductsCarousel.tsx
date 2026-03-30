@@ -81,16 +81,8 @@ export default function NewProductsCarousel() {
 
   return (
     <div className="w-full flex flex-col items-center py-8 sm:py-10 px-3 sm:px-4 overflow-hidden">
-      <p className="section-eyebrow text-center">Lanzamientos</p>
-      <h2 className="text-2xl sm:text-3xl font-bold mt-2 mb-2 text-center" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
-        Nuevos Productos
-      </h2>
-      <p className="section-subtitle text-center mb-5 sm:mb-6 max-w-2xl">
-        Incorporaciones recientes con codigo visible para agilizar pedidos.
-      </p>
-
       <div
-        className="mb-5 sm:mb-6 w-full max-w-2xl rounded-2xl border px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3"
+        className="mb-4 sm:mb-5 w-full max-w-2xl rounded-2xl border px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3"
         style={{
           background: "rgba(var(--accent), 0.08)",
           borderColor: "rgba(var(--accent), 0.28)",
@@ -107,6 +99,14 @@ export default function NewProductsCarousel() {
           Ir a Unite
         </Link>
       </div>
+
+      <p className="section-eyebrow text-center">Lanzamientos</p>
+      <h2 className="text-2xl sm:text-3xl font-bold mt-2 mb-2 text-center" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
+        Nuevos Productos
+      </h2>
+      <p className="section-subtitle text-center mb-5 sm:mb-6 max-w-2xl">
+        Incorporaciones recientes con codigo visible para agilizar pedidos.
+      </p>
 
       <div className="w-full flex flex-col items-center max-w-7xl">
         <div

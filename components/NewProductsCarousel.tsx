@@ -80,9 +80,9 @@ export default function NewProductsCarousel() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-8 sm:py-10 px-3 sm:px-4 overflow-hidden">
+    <div className="w-full flex flex-col items-center pt-2 sm:pt-3 pb-8 sm:pb-10 px-3 sm:px-4 overflow-hidden">
       <div
-        className="mb-4 sm:mb-5 w-full max-w-2xl rounded-2xl border px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3"
+        className="-mt-2 sm:-mt-3 mb-3 sm:mb-4 w-full max-w-2xl rounded-2xl border px-3 py-3 sm:px-4 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3"
         style={{
           background: "rgba(var(--accent), 0.08)",
           borderColor: "rgba(var(--accent), 0.28)",

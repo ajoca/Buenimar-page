@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import path from "node:path";
 
 export const runtime = "nodejs";
 
@@ -539,15 +540,15 @@ export async function POST(req: NextRequest) {
 
       const applicantConfirmationText = `Estimado/a,
 
-Agradecemos su interés en formar parte de Buenimar y el envío de su currículum vitae.
+    Agradecemos su interés en formar parte de Buenimar y el envío de su currículum vitae.
 
-Confirmamos la correcta recepción de su postulación. Su perfil será incorporado a nuestra base de datos y considerado para futuras oportunidades laborales acordes a nuestras necesidades.
+    Confirmamos la correcta recepción de su postulación. Su perfil será incorporado a nuestra base de datos y considerado para futuras oportunidades laborales acordes a nuestras necesidades.
 
-En caso de que su experiencia se ajuste a una búsqueda activa, nos estaremos comunicando oportunamente.
+    En caso de que su experiencia se ajuste a una búsqueda activa, nos estaremos comunicando oportunamente.
 
-Saluda atentamente,
-Equipo de Selección
-Buenimar`;
+    Saluda atentamente,
+
+    Equipo de Selección Buenimar`;
 
       const applicantConfirmationHtml = `
         <!DOCTYPE html>
@@ -558,8 +559,10 @@ Buenimar`;
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
             .header { background-color: #dc2626; color: white; padding: 14px 16px; border-radius: 8px 8px 0 0; }
             .content { border: 1px solid #fecaca; border-top: 0; background: #fff5f5; padding: 20px; border-radius: 0 0 8px 8px; }
-            .message { white-space: pre-line; margin: 0; }
-            .brand { margin-top: 16px; font-weight: 700; color: #dc2626; }
+            .message { margin: 0 0 14px 0; text-align: justify; color: #1f2937; }
+            .team { margin: 14px 0 0 0; text-align: justify; color: #dc2626; font-weight: 700; }
+            .signature-wrap { margin-top: 18px; text-align: center; }
+            .signature-img { max-width: 100%; height: auto; border: 1px solid #fecaca; border-radius: 8px; }
           </style>
         </head>
         <body>
@@ -568,8 +571,15 @@ Buenimar`;
               <h2 style="margin: 0;">Postulación recibida</h2>
             </div>
             <div class="content">
-              <p class="message">${escapeHtml(applicantConfirmationText)}</p>
-              <p class="brand">Buenimar</p>
+              <p class="message">Estimado/a,</p>
+              <p class="message">Agradecemos su interés en formar parte de Buenimar y el envío de su currículum vitae.</p>
+              <p class="message">Confirmamos la correcta recepción de su postulación. Su perfil será incorporado a nuestra base de datos y considerado para futuras oportunidades laborales acordes a nuestras necesidades.</p>
+              <p class="message">En caso de que su experiencia se ajuste a una búsqueda activa, nos estaremos comunicando oportunamente.</p>
+              <p class="message">Saluda atentamente,</p>
+              <p class="team">Equipo de Selección Buenimar</p>
+              <div class="signature-wrap">
+                <img src="cid:buenimar-signature" alt="Firma Buenimar" class="signature-img" />
+              </div>
             </div>
           </div>
         </body>
@@ -584,6 +594,13 @@ Buenimar`;
             subject: "Postulación recibida - Buenimar",
             html: applicantConfirmationHtml,
             text: applicantConfirmationText,
+            attachments: [
+              {
+                filename: "firma-buenimar.png",
+                path: path.join(process.cwd(), "public", "og-buenimar.png"),
+                cid: "buenimar-signature",
+              },
+            ],
           });
         } catch (confirmationError) {
           console.error("Error enviando confirmación de postulación:", confirmationError);

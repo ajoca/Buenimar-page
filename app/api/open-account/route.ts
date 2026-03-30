@@ -54,9 +54,8 @@ const MAX_EXTRA_ATTACHMENTS = 5;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 const LOCALITY_MAIL_ROUTES: Record<string, string> = {
-  // TODO: Reemplazar estos destinos cuando estén definidos los correos por localidad.
-  carmelo: "pedidos@buenimar.com",
-  "nueva helvecia": "pedidos@buenimar.com",
+  carmelo: "admconaprolecarmelo@buenimar.com",
+  "nueva helvecia": "admconaprolenh@buenimar.com",
 };
 
 function normalizeText(value: string) {
@@ -537,6 +536,59 @@ export async function POST(req: NextRequest) {
         text,
         attachments: mailAttachments,
       });
+
+      const applicantConfirmationText = `Estimado/a,
+
+Agradecemos su interés en formar parte de Buenimar y el envío de su currículum vitae.
+
+Confirmamos la correcta recepción de su postulación. Su perfil será incorporado a nuestra base de datos y considerado para futuras oportunidades laborales acordes a nuestras necesidades.
+
+En caso de que su experiencia se ajuste a una búsqueda activa, nos estaremos comunicando oportunamente.
+
+Saluda atentamente,
+Equipo de Selección
+Buenimar`;
+
+      const applicantConfirmationHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background-color: #dc2626; color: white; padding: 14px 16px; border-radius: 8px 8px 0 0; }
+            .content { border: 1px solid #fecaca; border-top: 0; background: #fff5f5; padding: 20px; border-radius: 0 0 8px 8px; }
+            .message { white-space: pre-line; margin: 0; }
+            .brand { margin-top: 16px; font-weight: 700; color: #dc2626; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h2 style="margin: 0;">Postulación recibida</h2>
+            </div>
+            <div class="content">
+              <p class="message">${escapeHtml(applicantConfirmationText)}</p>
+              <p class="brand">Buenimar</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+
+      if (email) {
+        try {
+          await transporter.sendMail({
+            from,
+            to: email,
+            subject: "Postulación recibida - Buenimar",
+            html: applicantConfirmationHtml,
+            text: applicantConfirmationText,
+          });
+        } catch (confirmationError) {
+          console.error("Error enviando confirmación de postulación:", confirmationError);
+        }
+      }
 
       return NextResponse.json({ ok: true });
     } else {

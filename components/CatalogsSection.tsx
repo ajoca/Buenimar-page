@@ -9,6 +9,7 @@ const BRAND_COLORS: Record<string, { bg: string; accent: string }> = {
   c2: { bg: "#8B1A1A", accent: "#a52020" },
   c3: { bg: "#3d1345", accent: "#5a1e68" },
   c4: { bg: "#1a3c5e", accent: "#1e4d78" },
+  c5: { bg: "#0f4c81", accent: "#1d6fb0" },
 };
 
 export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {

@@ -94,6 +94,7 @@ brandsTitle: "Marcas con las que trabajamos",
   { id: "c2", title: "Catálogo La Especialista", file: "Catalogo-La-Especialista_Buenimar-Colonia_v2.pdf" },
   { id: "c3", title: "Catálogo Pagnifique", file: "Catalogo-Pagnifique_Buenimar-Colonia_v2.pdf" },
   { id: "c4", title: "Catálogo Almena", file: "Catalogo-Almena_Buenimar-Colonia_v2.pdf" },
+    { id: "c5", title: "Catálogo Schneck", file: "Catalogo Schneck.pdf" },
 ],
 
   brands: [

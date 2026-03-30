@@ -62,11 +62,11 @@ export default function CatalogsSection({ catalogs }: { catalogs: Catalog[] }) {
                   {/* Brand logo + name */}
                   <div className="relative z-10 flex flex-col items-center gap-2 w-full px-4">
                     {logoSrc ? (
-                      <div className="w-full max-w-[220px] h-20 rounded-xl bg-white/95 p-2 flex items-center justify-center shadow-lg">
+                      <div className="w-[112px] h-[112px] rounded-xl bg-white p-1.5 flex items-center justify-center shadow-lg overflow-hidden">
                         <img
                           src={logoSrc}
                           alt={`Logo ${brandName}`}
-                          className="max-h-full max-w-full object-contain"
+                          className="w-full h-full object-cover"
                           loading="lazy"
                         />
                       </div>

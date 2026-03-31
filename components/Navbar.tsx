@@ -103,7 +103,7 @@ export default function Navbar() {
               isActive('/marcas') ? 'opacity-100' : 'opacity-80'
             }`}
           >
-            MARCAS
+            MARCAS + CATALOGOS
             <span className={`absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300 ${
               isActive('/marcas') ? 'w-full' : 'w-0 group-hover:w-full'
             }`} />
@@ -206,7 +206,7 @@ export default function Navbar() {
               isActive('/marcas') ? 'bg-white/15 font-semibold' : ''
             }`}
           >
-            MARCAS
+            MARCAS + CATALOGOS
           </Link>
           <Link
             href="/empresa"

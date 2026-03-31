@@ -28,7 +28,6 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
 
             {/* Contenido encima de la imagen */}
             <div className="absolute inset-0 flex flex-col justify-center left-12 max-w-xl text-white z-20 p-4">
-              <h1 className="text-sm font-bold tracking-widest opacity-90 mb-2" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR COLONIA</h1>
               <h2 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
                 Distribución y logística con confianza
               </h2>
@@ -52,7 +51,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
                   href="/marcas"
                   className="rounded-full bg-red-600/95 px-5 py-2.5 text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
-                  Catálogos
+                  Marcas + Catálogos
                 </a>
               </div>
             </div>
@@ -70,7 +69,6 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
             
             {/* Contenido debajo de la imagen */}
             <div className="p-6 bg-gradient-to-b from-gray-900 to-black text-white relative z-20">
-              <p className="text-xs font-bold tracking-widest opacity-90 mb-2" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>BUENIMAR COLONIA</p>
               <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-raleway, system-ui)" }}>
                 Distribución y logística con confianza
               </h2>
@@ -97,7 +95,7 @@ export default function HeroSlider({ slides }: { slides: Slide[] }) {
                   href="/marcas"
                   className="rounded-full bg-red-600/95 px-5 py-3 text-sm font-bold text-white hover:bg-red-600 transition-all duration-300 active:scale-95 shadow-lg text-center touch-manipulation"
                 >
-                  Catálogos
+                  Marcas + Catálogos
                 </a>
               </div>
             </div>

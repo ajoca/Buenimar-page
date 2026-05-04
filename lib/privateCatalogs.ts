@@ -1,4 +1,4 @@
-import { list, put, del, head } from "@vercel/blob";
+import { list, put } from "@vercel/blob";
 import { readdir, stat } from "fs/promises";
 import path from "path";
 
@@ -70,6 +70,14 @@ function formatFileSize(size: number) {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function getTodayLabel() {
+  return new Intl.DateTimeFormat("es-UY", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date());
+}
+
 function sanitizeFileName(fileName: string) {
   return fileName.replace(/[\\/:*?"<>|]/g, "-").replace(/\s+/g, " ").trim();
 }
@@ -80,6 +88,7 @@ function getBlobPrefix(slug: string): string {
 
 async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[]> {
   const files: PrivateCatalogFile[] = [];
+  const todayLabel = getTodayLabel();
 
   // Keep legacy Conaprole PDFs visible from the repository's public folder.
   if (slug === "conaprole") {
@@ -96,11 +105,7 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
           name: entry.name,
           url: encodeURI(`/archivos/catalogos pdfs conaprole/${entry.name}`),
           sizeLabel: formatFileSize(meta.size),
-          updatedAt: new Intl.DateTimeFormat("es-UY", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }).format(meta.mtime),
+          updatedAt: todayLabel,
         });
       }
     } catch {
@@ -118,11 +123,7 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
         name: fileName,
         url: encodeURI(`/${relativeFile}`),
         sizeLabel: formatFileSize(meta.size),
-        updatedAt: new Intl.DateTimeFormat("es-UY", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        }).format(meta.mtime),
+        updatedAt: todayLabel,
       });
     } catch {
       // Missing optional file should not break the private area.
@@ -137,6 +138,7 @@ export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCata
   if (!folder) {
     throw new Error("Carpeta privada no válida");
   }
+  const todayLabel = getTodayLabel();
 
   const staticFiles = await listStaticCatalogFiles(slug);
 
@@ -152,11 +154,7 @@ export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCata
           name: fileName,
           url: blob.url,
           sizeLabel: formatFileSize(blob.size),
-          updatedAt: new Intl.DateTimeFormat("es-UY", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }).format(new Date(blob.uploadedAt)),
+          updatedAt: todayLabel,
           timestamp: new Date(blob.uploadedAt).getTime(),
         };
       });
@@ -188,23 +186,15 @@ export async function savePrivateCatalogFile(slug: string, file: File): Promise<
 
   const originalName = sanitizeFileName(file.name || "catalogo.pdf");
   const hasPdfExtension = originalName.toLowerCase().endsWith(".pdf");
-  const baseName = hasPdfExtension ? originalName.slice(0, -4) : originalName;
-  let finalName = hasPdfExtension ? originalName : `${originalName}.pdf`;
-
-  // Check if file already exists
+  const finalName = hasPdfExtension ? originalName : `${originalName}.pdf`;
   const prefix = getBlobPrefix(slug);
-  let pathToCheck = `${prefix}${finalName}`;
-  
-  try {
-    await head(pathToCheck);
-    // File exists, add timestamp to avoid collision
-    finalName = `${baseName}-${Date.now()}.pdf`;
-    pathToCheck = `${prefix}${finalName}`;
-  } catch {
-    // File does not exist, continue with original name
-  }
+  const pathToSave = `${prefix}${finalName}`;
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  await put(pathToCheck, buffer, { access: "public" });
+  await put(pathToSave, buffer, {
+    access: "public",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+  });
   return finalName;
 }

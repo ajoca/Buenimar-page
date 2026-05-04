@@ -24,40 +24,9 @@ export const PRIVATE_CATALOG_FOLDERS: PrivateCatalogFolder[] = [
     icon: "/archivos/img%20catalogos/conaprole.png",
     description: "Listas y catálogos privados.",
   },
-  {
-    slug: "schneck",
-    name: "Schneck",
-    icon: "/archivos/img%20catalogos/schneck.png",
-    description: "Catálogos Schneck para distribuidores.",
-  },
-  {
-    slug: "especialista",
-    name: "La Especialista",
-    icon: "/archivos/img%20catalogos/especialista.png",
-    description: "Productos La Especialista privados.",
-  },
-  {
-    slug: "pagnifique",
-    name: "Pagnifique",
-    icon: "/archivos/img%20catalogos/pagnifique.png",
-    description: "Ofertas Pagnifique para vendedores.",
-  },
-  {
-    slug: "almena",
-    name: "Almena",
-    icon: "/archivos/img%20catalogos/almena.png",
-    description: "Catálogos Almena exclusivos.",
-  },
 ];
 
 const BLOB_PREFIX = "private-catalogs";
-
-const STATIC_FILE_PATHS: Record<string, string[]> = {
-  schneck: ["archivos/Catalogo Schneck.pdf", "archivos/Catalogo Schneck (3).pdf"],
-  especialista: ["archivos/Catalogo-La-Especialista_Buenimar-Colonia_v2.pdf"],
-  pagnifique: ["archivos/Catalogo-Pagnifique_Buenimar-Colonia_v2.pdf"],
-  almena: ["archivos/Catalogo-Almena_Buenimar-Colonia_v2.pdf"],
-};
 
 export function getPrivateCatalogFolder(slug: string) {
   return PRIVATE_CATALOG_FOLDERS.find((folder) => folder.slug === slug) || null;
@@ -125,24 +94,6 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
       }
     } catch {
       // If read-only assets are unavailable in the current environment, skip gracefully.
-    }
-  }
-
-  const mapped = STATIC_FILE_PATHS[slug] || [];
-  for (const relativeFile of mapped) {
-    const absoluteFile = path.join(process.cwd(), "public", ...relativeFile.split("/"));
-    try {
-      const meta = await stat(absoluteFile);
-      const fileName = path.basename(relativeFile);
-      files.push({
-        name: fileName,
-        url: encodeURI(`/${relativeFile}`),
-        sizeLabel: formatFileSize(meta.size),
-        updatedAt: todayLabel,
-        canManage: false,
-      });
-    } catch {
-      // Missing optional file should not break the private area.
     }
   }
 

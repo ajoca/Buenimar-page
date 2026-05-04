@@ -1,4 +1,6 @@
 import { list, put, del, head } from "@vercel/blob";
+import { readdir, stat } from "fs/promises";
+import path from "path";
 
 export type PrivateCatalogFile = {
   name: string;
@@ -49,6 +51,13 @@ export const PRIVATE_CATALOG_FOLDERS: PrivateCatalogFolder[] = [
 
 const BLOB_PREFIX = "private-catalogs";
 
+const STATIC_FILE_PATHS: Record<string, string[]> = {
+  schneck: ["archivos/Catalogo Schneck.pdf", "archivos/Catalogo Schneck (3).pdf"],
+  especialista: ["archivos/Catalogo-La-Especialista_Buenimar-Colonia_v2.pdf"],
+  pagnifique: ["archivos/Catalogo-Pagnifique_Buenimar-Colonia_v2.pdf"],
+  almena: ["archivos/Catalogo-Almena_Buenimar-Colonia_v2.pdf"],
+};
+
 export function getPrivateCatalogFolder(slug: string) {
   return PRIVATE_CATALOG_FOLDERS.find((folder) => folder.slug === slug) || null;
 }
@@ -69,11 +78,67 @@ function getBlobPrefix(slug: string): string {
   return `${BLOB_PREFIX}/${slug}/`;
 }
 
+async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[]> {
+  const files: PrivateCatalogFile[] = [];
+
+  // Keep legacy Conaprole PDFs visible from the repository's public folder.
+  if (slug === "conaprole") {
+    const conaproleDir = path.join(process.cwd(), "public", "archivos", "catalogos pdfs conaprole");
+    try {
+      const entries = await readdir(conaproleDir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (!entry.isFile() || !entry.name.toLowerCase().endsWith(".pdf")) {
+          continue;
+        }
+        const absoluteFile = path.join(conaproleDir, entry.name);
+        const meta = await stat(absoluteFile);
+        files.push({
+          name: entry.name,
+          url: encodeURI(`/archivos/catalogos pdfs conaprole/${entry.name}`),
+          sizeLabel: formatFileSize(meta.size),
+          updatedAt: new Intl.DateTimeFormat("es-UY", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }).format(meta.mtime),
+        });
+      }
+    } catch {
+      // If read-only assets are unavailable in the current environment, skip gracefully.
+    }
+  }
+
+  const mapped = STATIC_FILE_PATHS[slug] || [];
+  for (const relativeFile of mapped) {
+    const absoluteFile = path.join(process.cwd(), "public", ...relativeFile.split("/"));
+    try {
+      const meta = await stat(absoluteFile);
+      const fileName = path.basename(relativeFile);
+      files.push({
+        name: fileName,
+        url: encodeURI(`/${relativeFile}`),
+        sizeLabel: formatFileSize(meta.size),
+        updatedAt: new Intl.DateTimeFormat("es-UY", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }).format(meta.mtime),
+      });
+    } catch {
+      // Missing optional file should not break the private area.
+    }
+  }
+
+  return files;
+}
+
 export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCatalogFile[]> {
   const folder = getPrivateCatalogFolder(slug);
   if (!folder) {
     throw new Error("Carpeta privada no válida");
   }
+
+  const staticFiles = await listStaticCatalogFiles(slug);
 
   try {
     const prefix = getBlobPrefix(slug);
@@ -96,10 +161,22 @@ export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCata
         };
       });
 
-    return files.sort((a, b) => b.timestamp - a.timestamp).map(({ timestamp, ...entry }) => entry);
+    const blobFiles = files.sort((a, b) => b.timestamp - a.timestamp).map(({ timestamp, ...entry }) => entry);
+    const mergedByName = new Map<string, PrivateCatalogFile>();
+
+    for (const staticFile of staticFiles) {
+      mergedByName.set(staticFile.name.toLowerCase(), staticFile);
+    }
+
+    // Blob files override static duplicates because they are the newest managed source.
+    for (const blobFile of blobFiles) {
+      mergedByName.set(blobFile.name.toLowerCase(), blobFile);
+    }
+
+    return Array.from(mergedByName.values());
   } catch (error) {
     console.error("Error listing files from Blob Storage:", error);
-    return [];
+    return staticFiles;
   }
 }
 
@@ -128,6 +205,6 @@ export async function savePrivateCatalogFile(slug: string, file: File): Promise<
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  await put(pathToCheck, buffer, { access: "private" });
+  await put(pathToCheck, buffer, { access: "public" });
   return finalName;
 }

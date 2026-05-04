@@ -168,7 +168,7 @@ export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCata
         const fileName = blob.pathname.replace(prefix, "");
         return {
           name: fileName,
-          url: blob.url,
+          url: blob.downloadUrl || blob.url,
           sizeLabel: formatFileSize(blob.size),
           updatedAt: todayLabel,
           canManage: true,

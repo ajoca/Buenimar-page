@@ -1,0 +1,10 @@
+{
+  "env": {
+    "PRIVATE_PRICES_USERNAME": "@private_prices_username",
+    "PRIVATE_PRICES_PASSWORD": "@private_prices_password",
+    "PRIVATE_PRICES_SESSION_SECRET": "@private_prices_session_secret"
+  },
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install"
+}

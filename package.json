@@ -12,6 +12,7 @@
   "dependencies": {
     "@turf/along": "^7.3.1",
     "@turf/length": "^7.3.1",
+    "@vercel/blob": "^2.3.3",
     "d3-geo": "^3.1.1",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",

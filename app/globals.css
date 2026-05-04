@@ -19,6 +19,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  @media (max-width: 768px) {
+    input,
+    textarea,
+    select,
+    button {
+      font-size: 16px;
+    }
+  }
 }
 
 /* Screen reader only utility */

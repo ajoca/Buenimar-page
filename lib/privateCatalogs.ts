@@ -1,4 +1,4 @@
-import { list, put } from "@vercel/blob";
+import { copy, del, list, put } from "@vercel/blob";
 import { readdir, stat } from "fs/promises";
 import path from "path";
 
@@ -7,6 +7,7 @@ export type PrivateCatalogFile = {
   url: string;
   sizeLabel: string;
   updatedAt: string;
+  canManage: boolean;
 };
 
 export type PrivateCatalogFolder = {
@@ -82,6 +83,19 @@ function sanitizeFileName(fileName: string) {
   return fileName.replace(/[\\/:*?"<>|]/g, "-").replace(/\s+/g, " ").trim();
 }
 
+function assertSafeFileName(fileName: string) {
+  const normalized = fileName.trim();
+  if (!normalized) {
+    throw new Error("Nombre de archivo inválido");
+  }
+
+  if (normalized.includes("/") || normalized.includes("\\") || normalized.includes("..")) {
+    throw new Error("Nombre de archivo inválido");
+  }
+
+  return normalized;
+}
+
 function getBlobPrefix(slug: string): string {
   return `${BLOB_PREFIX}/${slug}/`;
 }
@@ -106,6 +120,7 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
           url: encodeURI(`/archivos/catalogos pdfs conaprole/${entry.name}`),
           sizeLabel: formatFileSize(meta.size),
           updatedAt: todayLabel,
+          canManage: false,
         });
       }
     } catch {
@@ -124,6 +139,7 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
         url: encodeURI(`/${relativeFile}`),
         sizeLabel: formatFileSize(meta.size),
         updatedAt: todayLabel,
+        canManage: false,
       });
     } catch {
       // Missing optional file should not break the private area.
@@ -155,6 +171,7 @@ export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCata
           url: blob.url,
           sizeLabel: formatFileSize(blob.size),
           updatedAt: todayLabel,
+          canManage: true,
           timestamp: new Date(blob.uploadedAt).getTime(),
         };
       });
@@ -197,4 +214,43 @@ export async function savePrivateCatalogFile(slug: string, file: File): Promise<
     allowOverwrite: true,
   });
   return finalName;
+}
+
+export async function deletePrivateCatalogFile(slug: string, fileName: string): Promise<void> {
+  const folder = getPrivateCatalogFolder(slug);
+  if (!folder) {
+    throw new Error("Carpeta privada no válida");
+  }
+
+  const safeName = assertSafeFileName(fileName);
+  const blobPath = `${getBlobPrefix(slug)}${safeName}`;
+  await del(blobPath);
+}
+
+export async function renamePrivateCatalogFile(slug: string, currentName: string, nextName: string): Promise<string> {
+  const folder = getPrivateCatalogFolder(slug);
+  if (!folder) {
+    throw new Error("Carpeta privada no válida");
+  }
+
+  const safeCurrent = assertSafeFileName(currentName);
+  const sanitizedNext = sanitizeFileName(nextName || "");
+  const withExtension = sanitizedNext.toLowerCase().endsWith(".pdf") ? sanitizedNext : `${sanitizedNext}.pdf`;
+  const safeNext = assertSafeFileName(withExtension);
+
+  if (safeCurrent.toLowerCase() === safeNext.toLowerCase()) {
+    return safeCurrent;
+  }
+
+  const fromPath = `${getBlobPrefix(slug)}${safeCurrent}`;
+  const toPath = `${getBlobPrefix(slug)}${safeNext}`;
+
+  await copy(fromPath, toPath, {
+    access: "public",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+  });
+  await del(fromPath);
+
+  return safeNext;
 }

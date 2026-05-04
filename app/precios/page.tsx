@@ -22,16 +22,16 @@ export default function PreciosDashboardPage() {
       <Navbar />
       <Breadcrumbs items={[{ label: "Precios clientes" }]} />
 
-      <main className="py-16 md:py-24">
+      <main className="py-10 md:py-24">
         <section className="container-x">
           <div className="max-w-3xl">
             <p className="section-eyebrow mb-3">Acceso privado</p>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold" style={{ color: "rgb(var(--text))" }}>
+                <h1 className="text-2xl font-bold sm:text-4xl" style={{ color: "rgb(var(--text))" }}>
                   Precios y catálogos para vendedores
                 </h1>
-                <p className="mt-3 text-base md:text-lg" style={{ color: "rgb(var(--muted))" }}>
+                <p className="mt-3 text-base" style={{ color: "rgb(var(--muted))" }}>
                   Entrá a cada carpeta privada para ver PDFs de clientes, descargarlos o subir nuevas versiones.
                 </p>
               </div>
@@ -39,7 +39,7 @@ export default function PreciosDashboardPage() {
               <form action="/api/private-auth/logout" method="post">
                 <button
                   type="submit"
-                  className="rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  className="w-full rounded-xl px-4 py-3 text-base font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto"
                   style={{ background: "rgb(var(--accent))" }}
                 >
                   Cerrar sesión
@@ -48,12 +48,12 @@ export default function PreciosDashboardPage() {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {PRIVATE_CATALOG_FOLDERS.map((folder) => (
               <Link
                 key={folder.slug}
                 href={`/precios/${folder.slug}`}
-                className="rounded-3xl border p-6 transition-all hover:-translate-y-1 hover:shadow-xl"
+                className="rounded-3xl border p-5 transition-all hover:-translate-y-1 hover:shadow-xl sm:p-6"
                 style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}
               >
                 <div className="w-20 h-20 rounded-2xl bg-white p-3 flex items-center justify-center shadow-lg">

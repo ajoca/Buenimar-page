@@ -25,13 +25,13 @@ export default async function PreciosLoginPage({
       <Navbar />
       <Breadcrumbs items={[{ label: "Acceso vendedores" }]} />
 
-      <main className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-md rounded-3xl border p-6 sm:p-8" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
+      <main className="px-4 py-10 sm:px-6 md:py-24 lg:px-8">
+        <div className="mx-auto max-w-md rounded-3xl border p-5 sm:p-8" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
           <p className="section-eyebrow mb-3 text-center">Área privada</p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-center" style={{ color: "rgb(var(--text))" }}>
+          <h1 className="text-2xl font-bold text-center sm:text-3xl" style={{ color: "rgb(var(--text))" }}>
             Acceso vendedores
           </h1>
-          <p className="mt-3 text-sm sm:text-base text-center" style={{ color: "rgb(var(--muted))" }}>
+          <p className="mt-3 text-base text-center" style={{ color: "rgb(var(--muted))" }}>
             Ingresá con el usuario general para ver listas y catálogos privados de clientes.
           </p>
 
@@ -53,7 +53,7 @@ export default async function PreciosLoginPage({
                 name="username"
                 type="text"
                 required
-                className="block w-full rounded-xl border px-4 py-3 text-sm outline-none"
+                className="block w-full rounded-xl border px-4 py-3.5 text-base outline-none"
                 style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
               />
             </div>
@@ -67,14 +67,14 @@ export default async function PreciosLoginPage({
                 name="password"
                 type="password"
                 required
-                className="block w-full rounded-xl border px-4 py-3 text-sm outline-none"
+                className="block w-full rounded-xl border px-4 py-3.5 text-base outline-none"
                 style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
               />
             </div>
 
             <button
               type="submit"
-              className="w-full rounded-xl px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              className="w-full rounded-xl px-4 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90"
               style={{ background: "rgb(var(--accent))" }}
             >
               Ingresar

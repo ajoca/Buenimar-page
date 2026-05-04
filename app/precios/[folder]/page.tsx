@@ -24,12 +24,26 @@ function getUploadMessage(status?: string) {
   return null;
 }
 
+function getDeleteMessage(status?: string) {
+  if (status === "ok") return { text: "PDF eliminado correctamente.", tone: "ok" as const };
+  if (status === "invalid") return { text: "No se pudo identificar el PDF a eliminar.", tone: "error" as const };
+  if (status === "error") return { text: "No se pudo eliminar el PDF.", tone: "error" as const };
+  return null;
+}
+
+function getRenameMessage(status?: string) {
+  if (status === "ok") return { text: "Nombre actualizado correctamente.", tone: "ok" as const };
+  if (status === "invalid") return { text: "Completá el nombre nuevo para continuar.", tone: "error" as const };
+  if (status === "error") return { text: "No se pudo cambiar el nombre del PDF.", tone: "error" as const };
+  return null;
+}
+
 export default async function PrivateFolderPage({
   params,
   searchParams,
 }: {
   params: Promise<{ folder: string }>;
-  searchParams: Promise<{ upload?: string }>;
+  searchParams: Promise<{ upload?: string; delete?: string; rename?: string }>;
 }) {
   const { folder: folderSlug } = await params;
   const query = await searchParams;
@@ -41,24 +55,27 @@ export default async function PrivateFolderPage({
 
   const files = await listPrivateCatalogFiles(folder.slug);
   const uploadMessage = getUploadMessage(query?.upload);
+  const deleteMessage = getDeleteMessage(query?.delete);
+  const renameMessage = getRenameMessage(query?.rename);
+  const actionMessage = uploadMessage || deleteMessage || renameMessage;
 
   return (
     <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
       <Breadcrumbs items={[{ label: "Precios clientes", href: "/precios" }, { label: folder.name }]} />
 
-      <main className="py-16 md:py-24">
+      <main className="py-10 md:py-24">
         <section className="container-x">
-          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="grid gap-6 sm:gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
             <div>
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-2xl bg-white p-3 flex items-center justify-center shadow-lg">
+              <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                <div className="h-16 w-16 rounded-2xl bg-white p-2.5 flex items-center justify-center shadow-lg sm:h-20 sm:w-20 sm:p-3">
                   <img src={folder.icon} alt={`Logo ${folder.name}`} className="max-w-full max-h-full object-contain" />
                 </div>
                 <div>
                   <p className="section-eyebrow mb-2">Carpeta privada</p>
-                  <h1 className="text-3xl sm:text-4xl font-bold">{folder.name}</h1>
-                  <p className="mt-2 text-sm sm:text-base" style={{ color: "rgb(var(--muted))" }}>
+                  <h1 className="text-2xl font-bold sm:text-4xl">{folder.name}</h1>
+                  <p className="mt-2 text-base" style={{ color: "rgb(var(--muted))" }}>
                     PDFs internos disponibles para ver o descargar.
                   </p>
                 </div>
@@ -83,12 +100,12 @@ export default async function PrivateFolderPage({
                             Actualizado: {file.updatedAt} · {file.sizeLabel}
                           </p>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap">
                           <a
                             href={file.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-semibold"
+                            className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
                             style={{ borderColor: "rgba(var(--accent), 0.4)", color: "rgb(var(--accent))" }}
                           >
                             Ver
@@ -96,12 +113,51 @@ export default async function PrivateFolderPage({
                           <a
                             href={file.url}
                             download
-                            className="inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold text-white"
+                            className="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white"
                             style={{ background: "rgb(var(--accent))" }}
                           >
                             Descargar
                           </a>
                         </div>
+
+                        {file.canManage && (
+                          <div className="mt-3 grid gap-2 sm:flex sm:items-center sm:justify-end">
+                            <form action="/api/private-catalogs/rename" method="post" className="grid gap-2 sm:flex sm:items-center">
+                              <input type="hidden" name="folder" value={folder.slug} />
+                              <input type="hidden" name="currentName" value={file.name} />
+                              <input type="hidden" name="redirectTo" value={`/precios/${folder.slug}`} />
+                              <input
+                                name="nextName"
+                                type="text"
+                                required
+                                defaultValue={file.name}
+                                className="w-full rounded-xl border px-3 py-2.5 text-sm outline-none sm:w-64"
+                                style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
+                                aria-label={`Renombrar ${file.name}`}
+                              />
+                              <button
+                                type="submit"
+                                className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
+                                style={{ borderColor: "rgba(var(--accent), 0.4)", color: "rgb(var(--accent))" }}
+                              >
+                                Guardar nombre
+                              </button>
+                            </form>
+
+                            <form action="/api/private-catalogs/delete" method="post">
+                              <input type="hidden" name="folder" value={folder.slug} />
+                              <input type="hidden" name="fileName" value={file.name} />
+                              <input type="hidden" name="redirectTo" value={`/precios/${folder.slug}`} />
+                              <button
+                                type="submit"
+                                className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
+                                style={{ borderColor: "rgba(220, 38, 38, 0.45)", color: "#fca5a5" }}
+                              >
+                                Eliminar
+                              </button>
+                            </form>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -115,16 +171,16 @@ export default async function PrivateFolderPage({
                 El archivo se guardará dentro de la carpeta privada de {folder.name}.
               </p>
 
-              {uploadMessage && (
+              {actionMessage && (
                 <div
                   className="mt-4 rounded-2xl border px-4 py-3 text-sm"
                   style={{
-                    borderColor: uploadMessage.tone === "ok" ? "rgba(34, 197, 94, 0.35)" : "rgba(220, 38, 38, 0.35)",
-                    background: uploadMessage.tone === "ok" ? "rgba(34, 197, 94, 0.08)" : "rgba(220, 38, 38, 0.08)",
-                    color: uploadMessage.tone === "ok" ? "#86efac" : "#fca5a5",
+                    borderColor: actionMessage.tone === "ok" ? "rgba(34, 197, 94, 0.35)" : "rgba(220, 38, 38, 0.35)",
+                    background: actionMessage.tone === "ok" ? "rgba(34, 197, 94, 0.08)" : "rgba(220, 38, 38, 0.08)",
+                    color: actionMessage.tone === "ok" ? "#86efac" : "#fca5a5",
                   }}
                 >
-                  {uploadMessage.text}
+                  {actionMessage.text}
                 </div>
               )}
 
@@ -142,14 +198,14 @@ export default async function PrivateFolderPage({
                     type="file"
                     accept="application/pdf,.pdf"
                     required
-                    className="block w-full rounded-xl border px-3 py-3 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-red-600 file:px-3 file:py-2 file:font-semibold file:text-white"
+                    className="block w-full rounded-xl border px-3 py-3.5 text-base file:mr-3 file:rounded-lg file:border-0 file:bg-red-600 file:px-3 file:py-2 file:font-semibold file:text-white"
                     style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full rounded-xl px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                  className="w-full rounded-xl px-4 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90"
                   style={{ background: "rgb(var(--accent))" }}
                 >
                   Subir PDF

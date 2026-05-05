@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { getPrivateCatalogFolder, listPrivateCatalogFiles } from "@/lib/privateCatalogs";
+import { getPrivateCatalogFolder, listPrivateCatalogFiles, listPrivatePriceFiles } from "@/lib/privateCatalogs";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +16,8 @@ export const metadata = {
 };
 
 function getUploadMessage(status?: string) {
-  if (status === "ok") return { text: "PDF subido correctamente.", tone: "ok" as const };
-  if (status === "type-error") return { text: "Solo se permiten archivos PDF.", tone: "error" as const };
+  if (status === "ok") return { text: "Archivo subido correctamente.", tone: "ok" as const };
+  if (status === "type-error") return { text: "Solo se permiten PDF, Excel e imagenes.", tone: "error" as const };
   if (status === "empty") return { text: "Seleccioná un archivo antes de subir.", tone: "error" as const };
   if (status === "folder-error") return { text: "La carpeta indicada no es válida.", tone: "error" as const };
   if (status === "error") return { text: "No se pudo guardar el archivo.", tone: "error" as const };
@@ -38,6 +38,108 @@ function getRenameMessage(status?: string) {
   return null;
 }
 
+function getFileKindLabel(kind: "pdf" | "spreadsheet" | "image" | "other") {
+  if (kind === "pdf") return "PDF";
+  if (kind === "spreadsheet") return "Excel";
+  if (kind === "image") return "Imagen";
+  return "Archivo";
+}
+
+function FileListSection({
+  title,
+  emptyMessage,
+  files,
+}: {
+  title: string;
+  emptyMessage: string;
+  files: Awaited<ReturnType<typeof listPrivateCatalogFiles>>;
+}) {
+  return (
+    <div className="rounded-3xl border overflow-hidden" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
+      <div className="px-5 py-4 border-b" style={{ borderColor: "rgb(var(--line))" }}>
+        <h2 className="text-xl font-bold">{title}</h2>
+      </div>
+
+      {files.length === 0 ? (
+        <div className="px-5 py-8 text-sm" style={{ color: "rgb(var(--muted))" }}>
+          {emptyMessage}
+        </div>
+      ) : (
+        <div className="divide-y" style={{ borderColor: "rgb(var(--line))" }}>
+          {files.map((file) => (
+            <div key={file.name} className="px-5 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 className="font-semibold break-all">{file.name}</h3>
+                <p className="mt-1 text-xs sm:text-sm" style={{ color: "rgb(var(--muted))" }}>
+                  {getFileKindLabel(file.kind)} · Actualizado: {file.updatedAt} · {file.sizeLabel}
+                </p>
+              </div>
+              <div className="grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap">
+                <a
+                  href={file.viewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
+                  style={{ borderColor: "rgba(var(--accent), 0.4)", color: "rgb(var(--accent))" }}
+                >
+                  Ver
+                </a>
+                <a
+                  href={file.url}
+                  download
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white"
+                  style={{ background: "rgb(var(--accent))" }}
+                >
+                  Descargar
+                </a>
+              </div>
+
+              {file.canManage && (
+                <div className="mt-3 grid gap-2 sm:flex sm:items-center sm:justify-end">
+                  <form action="/api/private-catalogs/rename" method="post" className="grid gap-2 sm:flex sm:items-center">
+                    <input type="hidden" name="folder" value="conaprole" />
+                    <input type="hidden" name="currentName" value={file.name} />
+                    <input type="hidden" name="redirectTo" value="/precios/conaprole" />
+                    <input
+                      name="nextName"
+                      type="text"
+                      required
+                      defaultValue={file.name}
+                      className="w-full rounded-xl border px-3 py-2.5 text-sm outline-none sm:w-64"
+                      style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
+                      aria-label={`Renombrar ${file.name}`}
+                    />
+                    <button
+                      type="submit"
+                      className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
+                      style={{ borderColor: "rgba(var(--accent), 0.4)", color: "rgb(var(--accent))" }}
+                    >
+                      Guardar nombre
+                    </button>
+                  </form>
+
+                  <form action="/api/private-catalogs/delete" method="post">
+                    <input type="hidden" name="folder" value="conaprole" />
+                    <input type="hidden" name="fileName" value={file.name} />
+                    <input type="hidden" name="redirectTo" value="/precios/conaprole" />
+                    <button
+                      type="submit"
+                      className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
+                      style={{ borderColor: "rgba(220, 38, 38, 0.45)", color: "#fca5a5" }}
+                    >
+                      Eliminar
+                    </button>
+                  </form>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default async function PrivateFolderPage({
   params,
   searchParams,
@@ -54,6 +156,7 @@ export default async function PrivateFolderPage({
   }
 
   const files = await listPrivateCatalogFiles(folder.slug);
+  const priceFiles = await listPrivatePriceFiles(folder.slug);
   const uploadMessage = getUploadMessage(query?.upload);
   const deleteMessage = getDeleteMessage(query?.delete);
   const renameMessage = getRenameMessage(query?.rename);
@@ -76,99 +179,30 @@ export default async function PrivateFolderPage({
                   <p className="section-eyebrow mb-2">Carpeta privada</p>
                   <h1 className="text-2xl font-bold sm:text-4xl">{folder.name}</h1>
                   <p className="mt-2 text-base" style={{ color: "rgb(var(--muted))" }}>
-                    PDFs internos disponibles para ver o descargar.
+                    Archivos internos disponibles para ver o descargar.
                   </p>
                 </div>
               </div>
 
-              <div className="mt-8 rounded-3xl border overflow-hidden" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
-                <div className="px-5 py-4 border-b" style={{ borderColor: "rgb(var(--line))" }}>
-                  <h2 className="text-xl font-bold">Archivos disponibles</h2>
-                </div>
+              <div className="mt-8 space-y-6">
+                <FileListSection
+                  title="Catalogos y archivos"
+                  emptyMessage="Todavía no hay archivos cargados en esta carpeta."
+                  files={files}
+                />
 
-                {files.length === 0 ? (
-                  <div className="px-5 py-8 text-sm" style={{ color: "rgb(var(--muted))" }}>
-                    Todavía no hay PDFs cargados en esta carpeta.
-                  </div>
-                ) : (
-                  <div className="divide-y" style={{ borderColor: "rgb(var(--line))" }}>
-                    {files.map((file) => (
-                      <div key={file.name} className="px-5 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                        <div>
-                          <h3 className="font-semibold break-all">{file.name}</h3>
-                          <p className="mt-1 text-xs sm:text-sm" style={{ color: "rgb(var(--muted))" }}>
-                            Actualizado: {file.updatedAt} · {file.sizeLabel}
-                          </p>
-                        </div>
-                        <div className="grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap">
-                          <a
-                            href={file.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
-                            style={{ borderColor: "rgba(var(--accent), 0.4)", color: "rgb(var(--accent))" }}
-                          >
-                            Ver
-                          </a>
-                          <a
-                            href={file.url}
-                            download
-                            className="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white"
-                            style={{ background: "rgb(var(--accent))" }}
-                          >
-                            Descargar
-                          </a>
-                        </div>
-
-                        {file.canManage && (
-                          <div className="mt-3 grid gap-2 sm:flex sm:items-center sm:justify-end">
-                            <form action="/api/private-catalogs/rename" method="post" className="grid gap-2 sm:flex sm:items-center">
-                              <input type="hidden" name="folder" value={folder.slug} />
-                              <input type="hidden" name="currentName" value={file.name} />
-                              <input type="hidden" name="redirectTo" value={`/precios/${folder.slug}`} />
-                              <input
-                                name="nextName"
-                                type="text"
-                                required
-                                defaultValue={file.name}
-                                className="w-full rounded-xl border px-3 py-2.5 text-sm outline-none sm:w-64"
-                                style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
-                                aria-label={`Renombrar ${file.name}`}
-                              />
-                              <button
-                                type="submit"
-                                className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
-                                style={{ borderColor: "rgba(var(--accent), 0.4)", color: "rgb(var(--accent))" }}
-                              >
-                                Guardar nombre
-                              </button>
-                            </form>
-
-                            <form action="/api/private-catalogs/delete" method="post">
-                              <input type="hidden" name="folder" value={folder.slug} />
-                              <input type="hidden" name="fileName" value={file.name} />
-                              <input type="hidden" name="redirectTo" value={`/precios/${folder.slug}`} />
-                              <button
-                                type="submit"
-                                className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
-                                style={{ borderColor: "rgba(220, 38, 38, 0.45)", color: "#fca5a5" }}
-                              >
-                                Eliminar
-                              </button>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <FileListSection
+                  title="Lista de precios"
+                  emptyMessage="Todavía no hay listas de precios cargadas."
+                  files={priceFiles}
+                />
               </div>
             </div>
 
             <aside className="rounded-3xl border p-5 sm:p-6 h-fit" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
-              <h2 className="text-xl font-bold">Subir nuevo PDF</h2>
+              <h2 className="text-xl font-bold">Subir nuevo archivo</h2>
               <p className="mt-2 text-sm" style={{ color: "rgb(var(--muted))" }}>
-                El archivo se guardará dentro de la carpeta privada de {folder.name}.
+                Podés subir PDFs, Excel o imagenes dentro de la carpeta privada de {folder.name}.
               </p>
 
               {actionMessage && (
@@ -190,13 +224,13 @@ export default async function PrivateFolderPage({
 
                 <div>
                   <label htmlFor="file" className="block text-sm font-semibold mb-2">
-                    Archivo PDF
+                    Archivo
                   </label>
                   <input
                     id="file"
                     name="file"
                     type="file"
-                    accept="application/pdf,.pdf"
+                    accept="application/pdf,.pdf,.xlsx,.xls,.csv,image/png,image/jpeg,image/webp,image/avif,.png,.jpg,.jpeg,.webp,.avif"
                     required
                     className="block w-full rounded-xl border px-3 py-3.5 text-base file:mr-3 file:rounded-lg file:border-0 file:bg-red-600 file:px-3 file:py-2 file:font-semibold file:text-white"
                     style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
@@ -208,7 +242,7 @@ export default async function PrivateFolderPage({
                   className="w-full rounded-xl px-4 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90"
                   style={{ background: "rgb(var(--accent))" }}
                 >
-                  Subir PDF
+                  Subir archivo
                 </button>
               </form>
             </aside>

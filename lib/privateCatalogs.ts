@@ -5,9 +5,11 @@ import path from "path";
 export type PrivateCatalogFile = {
   name: string;
   url: string;
+  viewUrl: string;
   sizeLabel: string;
   updatedAt: string;
   canManage: boolean;
+  kind: "pdf" | "spreadsheet" | "image" | "other";
 };
 
 export type PrivateCatalogFolder = {
@@ -30,6 +32,18 @@ const BLOB_PREFIX = "private-catalogs";
 const CURRENT_CONAPROLE_DIR = "catalogos pdfs conaprole";
 const SCHEDULED_CONAPROLE_DIR = "catalogos pdfs conaprole/catalogos pdfs 11 mayo";
 const SCHEDULED_CONAPROLE_SWITCH_AT = "2026-05-11T00:00:00.000Z";
+const CONAPROLE_PRICE_LIST_DIR = "precios";
+const SUPPORTED_PRIVATE_FILE_EXTENSIONS = [
+  ".pdf",
+  ".xlsx",
+  ".xls",
+  ".csv",
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".webp",
+  ".avif",
+];
 
 export function getPrivateCatalogFolder(slug: string) {
   return PRIVATE_CATALOG_FOLDERS.find((folder) => folder.slug === slug) || null;
@@ -53,6 +67,47 @@ function getTodayLabel() {
 
 function sanitizeFileName(fileName: string) {
   return fileName.replace(/[\\/:*?"<>|]/g, "-").replace(/\s+/g, " ").trim();
+}
+
+function getFileExtension(fileName: string) {
+  const extension = path.extname(fileName).toLowerCase();
+  return extension;
+}
+
+function isSupportedPrivateFile(fileName: string) {
+  return SUPPORTED_PRIVATE_FILE_EXTENSIONS.includes(getFileExtension(fileName));
+}
+
+function getPrivateFileKind(fileName: string): PrivateCatalogFile["kind"] {
+  const extension = getFileExtension(fileName);
+
+  if (extension === ".pdf") {
+    return "pdf";
+  }
+
+  if ([".xlsx", ".xls", ".csv"].includes(extension)) {
+    return "spreadsheet";
+  }
+
+  if ([".png", ".jpg", ".jpeg", ".webp", ".avif"].includes(extension)) {
+    return "image";
+  }
+
+  return "other";
+}
+
+function getViewUrl(url: string, fileName: string) {
+  const kind = getPrivateFileKind(fileName);
+  if (kind === "spreadsheet") {
+    const extension = getFileExtension(fileName);
+    if (extension === ".csv") {
+      return url;
+    }
+
+    return `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`;
+  }
+
+  return url;
 }
 
 function assertSafeFileName(fileName: string) {
@@ -88,17 +143,20 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
     try {
       const entries = await readdir(conaproleDir, { withFileTypes: true });
       for (const entry of entries) {
-        if (!entry.isFile() || !entry.name.toLowerCase().endsWith(".pdf")) {
+        if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
           continue;
         }
         const absoluteFile = path.join(conaproleDir, entry.name);
         const meta = await stat(absoluteFile);
+        const assetUrl = encodeURI(`/archivos/${activeDirName}/${entry.name}`);
         files.push({
           name: entry.name,
-          url: encodeURI(`/archivos/${activeDirName}/${entry.name}`),
+          url: assetUrl,
+          viewUrl: getViewUrl(assetUrl, entry.name),
           sizeLabel: formatFileSize(meta.size),
           updatedAt: todayLabel,
           canManage: false,
+          kind: getPrivateFileKind(entry.name),
         });
       }
     } catch {
@@ -108,17 +166,20 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
           const fallbackDir = path.join(process.cwd(), "public", "archivos", CURRENT_CONAPROLE_DIR);
           const fallbackEntries = await readdir(fallbackDir, { withFileTypes: true });
           for (const entry of fallbackEntries) {
-            if (!entry.isFile() || !entry.name.toLowerCase().endsWith(".pdf")) {
+            if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
               continue;
             }
             const absoluteFile = path.join(fallbackDir, entry.name);
             const meta = await stat(absoluteFile);
+            const assetUrl = encodeURI(`/archivos/${CURRENT_CONAPROLE_DIR}/${entry.name}`);
             files.push({
               name: entry.name,
-              url: encodeURI(`/archivos/${CURRENT_CONAPROLE_DIR}/${entry.name}`),
+              url: assetUrl,
+              viewUrl: getViewUrl(assetUrl, entry.name),
               sizeLabel: formatFileSize(meta.size),
               updatedAt: todayLabel,
               canManage: false,
+              kind: getPrivateFileKind(entry.name),
             });
           }
         } catch {
@@ -126,6 +187,43 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
         }
       }
     }
+  }
+
+  return files;
+}
+
+export async function listPrivatePriceFiles(slug: string): Promise<PrivateCatalogFile[]> {
+  if (slug !== "conaprole") {
+    return [];
+  }
+
+  const todayLabel = getTodayLabel();
+  const files: PrivateCatalogFile[] = [];
+  const pricesDir = path.join(process.cwd(), "public", "archivos", CONAPROLE_PRICE_LIST_DIR);
+
+  try {
+    const entries = await readdir(pricesDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
+        continue;
+      }
+
+      const absoluteFile = path.join(pricesDir, entry.name);
+      const meta = await stat(absoluteFile);
+      const assetUrl = encodeURI(`/archivos/${CONAPROLE_PRICE_LIST_DIR}/${entry.name}`);
+
+      files.push({
+        name: entry.name,
+        url: assetUrl,
+        viewUrl: getViewUrl(assetUrl, entry.name),
+        sizeLabel: formatFileSize(meta.size),
+        updatedAt: todayLabel,
+        canManage: false,
+        kind: getPrivateFileKind(entry.name),
+      });
+    }
+  } catch {
+    return [];
   }
 
   return files;
@@ -145,15 +243,18 @@ export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCata
     const blobs = await list({ prefix });
     
     const files = blobs.blobs
-      .filter((blob) => blob.pathname.toLowerCase().endsWith(".pdf"))
+      .filter((blob) => isSupportedPrivateFile(blob.pathname))
       .map((blob) => {
         const fileName = blob.pathname.replace(prefix, "");
+        const fileUrl = blob.downloadUrl || blob.url;
         return {
           name: fileName,
-          url: blob.downloadUrl || blob.url,
+          url: fileUrl,
+          viewUrl: getViewUrl(fileUrl, fileName),
           sizeLabel: formatFileSize(blob.size),
           updatedAt: todayLabel,
           canManage: true,
+          kind: getPrivateFileKind(fileName),
           timestamp: new Date(blob.uploadedAt).getTime(),
         };
       });
@@ -183,9 +284,14 @@ export async function savePrivateCatalogFile(slug: string, file: File): Promise<
     throw new Error("Carpeta privada no válida");
   }
 
-  const originalName = sanitizeFileName(file.name || "catalogo.pdf");
-  const hasPdfExtension = originalName.toLowerCase().endsWith(".pdf");
-  const finalName = hasPdfExtension ? originalName : `${originalName}.pdf`;
+  const originalName = sanitizeFileName(file.name || "archivo");
+  const extension = getFileExtension(originalName);
+
+  if (!isSupportedPrivateFile(originalName) || !extension) {
+    throw new Error("Tipo de archivo no soportado");
+  }
+
+  const finalName = originalName;
   const prefix = getBlobPrefix(slug);
   const pathToSave = `${prefix}${finalName}`;
 
@@ -217,8 +323,14 @@ export async function renamePrivateCatalogFile(slug: string, currentName: string
 
   const safeCurrent = assertSafeFileName(currentName);
   const sanitizedNext = sanitizeFileName(nextName || "");
-  const withExtension = sanitizedNext.toLowerCase().endsWith(".pdf") ? sanitizedNext : `${sanitizedNext}.pdf`;
+  const currentExtension = getFileExtension(safeCurrent);
+  const nextExtension = getFileExtension(sanitizedNext);
+  const withExtension = nextExtension ? sanitizedNext : `${sanitizedNext}${currentExtension || ".pdf"}`;
   const safeNext = assertSafeFileName(withExtension);
+
+  if (!isSupportedPrivateFile(safeNext)) {
+    throw new Error("Tipo de archivo no soportado");
+  }
 
   if (safeCurrent.toLowerCase() === safeNext.toLowerCase()) {
     return safeCurrent;

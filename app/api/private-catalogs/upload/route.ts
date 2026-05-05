@@ -26,7 +26,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (!file.name.toLowerCase().endsWith(".pdf")) {
+  const lowerName = file.name.toLowerCase();
+  const allowedExtensions = [".pdf", ".xlsx", ".xls", ".csv", ".png", ".jpg", ".jpeg", ".webp", ".avif"];
+  const isAllowed = allowedExtensions.some((extension) => lowerName.endsWith(extension));
+
+  if (!isAllowed) {
     redirectUrl.searchParams.set("upload", "type-error");
     return NextResponse.redirect(redirectUrl);
   }

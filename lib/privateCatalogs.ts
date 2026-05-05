@@ -27,6 +27,9 @@ export const PRIVATE_CATALOG_FOLDERS: PrivateCatalogFolder[] = [
 ];
 
 const BLOB_PREFIX = "private-catalogs";
+const CURRENT_CONAPROLE_DIR = "catalogos pdfs conaprole";
+const SCHEDULED_CONAPROLE_DIR = "catalogos pdfs conaprole/catalogos pdfs 11 mayo";
+const SCHEDULED_CONAPROLE_SWITCH_AT = "2026-05-11T00:00:00.000Z";
 
 export function getPrivateCatalogFolder(slug: string) {
   return PRIVATE_CATALOG_FOLDERS.find((folder) => folder.slug === slug) || null;
@@ -69,13 +72,19 @@ function getBlobPrefix(slug: string): string {
   return `${BLOB_PREFIX}/${slug}/`;
 }
 
+function getActiveConaproleDirName() {
+  const switchAt = new Date(SCHEDULED_CONAPROLE_SWITCH_AT);
+  return new Date() >= switchAt ? SCHEDULED_CONAPROLE_DIR : CURRENT_CONAPROLE_DIR;
+}
+
 async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[]> {
   const files: PrivateCatalogFile[] = [];
   const todayLabel = getTodayLabel();
 
   // Keep legacy Conaprole PDFs visible from the repository's public folder.
   if (slug === "conaprole") {
-    const conaproleDir = path.join(process.cwd(), "public", "archivos", "catalogos pdfs conaprole");
+    const activeDirName = getActiveConaproleDirName();
+    const conaproleDir = path.join(process.cwd(), "public", "archivos", activeDirName);
     try {
       const entries = await readdir(conaproleDir, { withFileTypes: true });
       for (const entry of entries) {
@@ -86,14 +95,36 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
         const meta = await stat(absoluteFile);
         files.push({
           name: entry.name,
-          url: encodeURI(`/archivos/catalogos pdfs conaprole/${entry.name}`),
+          url: encodeURI(`/archivos/${activeDirName}/${entry.name}`),
           sizeLabel: formatFileSize(meta.size),
           updatedAt: todayLabel,
           canManage: false,
         });
       }
     } catch {
-      // If read-only assets are unavailable in the current environment, skip gracefully.
+      // If the scheduled folder is not present yet, fall back to the current folder.
+      if (activeDirName !== CURRENT_CONAPROLE_DIR) {
+        try {
+          const fallbackDir = path.join(process.cwd(), "public", "archivos", CURRENT_CONAPROLE_DIR);
+          const fallbackEntries = await readdir(fallbackDir, { withFileTypes: true });
+          for (const entry of fallbackEntries) {
+            if (!entry.isFile() || !entry.name.toLowerCase().endsWith(".pdf")) {
+              continue;
+            }
+            const absoluteFile = path.join(fallbackDir, entry.name);
+            const meta = await stat(absoluteFile);
+            files.push({
+              name: entry.name,
+              url: encodeURI(`/archivos/${CURRENT_CONAPROLE_DIR}/${entry.name}`),
+              sizeLabel: formatFileSize(meta.size),
+              updatedAt: todayLabel,
+              canManage: false,
+            });
+          }
+        } catch {
+          // If read-only assets are unavailable in the current environment, skip gracefully.
+        }
+      }
     }
   }
 

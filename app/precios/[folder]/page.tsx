@@ -67,19 +67,19 @@ function FileListSection({
       ) : (
         <div className="divide-y" style={{ borderColor: "rgb(var(--line))" }}>
           {files.map((file) => (
-            <div key={file.name} className="px-5 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <div>
+            <div key={file.name} className="px-5 py-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-4">
+              <div className="min-w-0">
                 <h3 className="font-semibold break-all">{file.displayName}</h3>
                 <p className="mt-1 text-xs sm:text-sm" style={{ color: "rgb(var(--muted))" }}>
                   {getFileKindLabel(file.kind)} · Actualizado: {file.updatedAt} · {file.sizeLabel}
                 </p>
               </div>
-              <div className="grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap">
+              <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-end md:flex-nowrap">
                 <a
                   href={file.viewUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
+                  className="inline-flex min-h-11 min-w-[92px] flex-1 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold sm:flex-none"
                   style={{ borderColor: "rgba(var(--accent), 0.4)", color: "rgb(var(--accent))" }}
                 >
                   Ver
@@ -87,7 +87,7 @@ function FileListSection({
                 <a
                   href={file.url}
                   download
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white"
+                  className="inline-flex min-h-11 min-w-[110px] flex-1 items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold text-white sm:flex-none"
                   style={{ background: "rgb(var(--accent))" }}
                 >
                   Descargar
@@ -95,7 +95,7 @@ function FileListSection({
               </div>
 
               {file.canManage && (
-                <div className="mt-3 grid gap-2 sm:flex sm:items-center sm:justify-end">
+                <div className="md:col-span-2 mt-1 grid gap-2 sm:flex sm:items-center sm:justify-end">
                   <form action="/api/private-catalogs/rename" method="post" className="grid gap-2 sm:flex sm:items-center">
                     <input type="hidden" name="folder" value="conaprole" />
                     <input type="hidden" name="currentName" value={file.name} />

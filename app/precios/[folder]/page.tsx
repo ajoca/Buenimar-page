@@ -69,7 +69,7 @@ function FileListSection({
           {files.map((file) => (
             <div key={file.name} className="px-5 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
-                <h3 className="font-semibold break-all">{file.name}</h3>
+                <h3 className="font-semibold break-all">{file.displayName}</h3>
                 <p className="mt-1 text-xs sm:text-sm" style={{ color: "rgb(var(--muted))" }}>
                   {getFileKindLabel(file.kind)} · Actualizado: {file.updatedAt} · {file.sizeLabel}
                 </p>
@@ -107,7 +107,7 @@ function FileListSection({
                       defaultValue={file.name}
                       className="w-full rounded-xl border px-3 py-2.5 text-sm outline-none sm:w-64"
                       style={{ background: "rgb(var(--bg))", borderColor: "rgb(var(--line))", color: "rgb(var(--text))" }}
-                      aria-label={`Renombrar ${file.name}`}
+                      aria-label={`Renombrar ${file.displayName}`}
                     />
                     <button
                       type="submit"

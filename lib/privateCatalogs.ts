@@ -4,6 +4,7 @@ import path from "path";
 
 export type PrivateCatalogFile = {
   name: string;
+  displayName: string;
   url: string;
   viewUrl: string;
   sizeLabel: string;
@@ -33,6 +34,7 @@ const CURRENT_CONAPROLE_DIR = "catalogos pdfs conaprole";
 const SCHEDULED_CONAPROLE_DIR = "catalogos pdfs conaprole/catalogos pdfs 11 mayo";
 const SCHEDULED_CONAPROLE_SWITCH_AT = "2026-05-11T00:00:00.000Z";
 const CONAPROLE_PRICE_LIST_DIR = "precios";
+const CONAPROLE_PRICE_LIST_UPDATED_AT = "11/05/2026";
 const SUPPORTED_PRIVATE_FILE_EXTENSIONS = [
   ".pdf",
   ".xlsx",
@@ -44,6 +46,19 @@ const SUPPORTED_PRIVATE_FILE_EXTENSIONS = [
   ".webp",
   ".avif",
 ];
+
+const CONAPROLE_PRICE_DISPLAY_NAMES: Record<string, string> = {
+  "lista precios conaprole (40).pdf": "Lista de precios Conaprole - Yogures y frutados",
+  "lista precios conaprole 2 (41).pdf": "Lista de precios Conaprole - Mantecas",
+  "lista precios conaprole 3 (42).pdf": "Lista de precios Conaprole - Quesos pasta dura y semidura",
+  "lista precios conaprole 4 (43).pdf": "Lista de precios Conaprole - Bebidas lacteas y Biotop",
+  "lista precios conaprole 5 (44).pdf": "Lista de precios Conaprole - Dulce de leche y dulce crema",
+  "lista precios conaprole congelados (47).pdf": "Lista de precios Conaprole Congelados - Empanadas y bastones",
+  "lista precios conaprole congelados (48).pdf": "Lista de precios Conaprole Congelados - Papas Simplot",
+  "lista precios conaprole congelados (49).pdf": "Lista de precios Conaprole Congelados - Helado crema granel y familiar",
+  "lista precios conaprole congelados (50).pdf": "Lista de precios Conaprole Congelados - Helado crema individual",
+  "lista precios conaprole congelados (51).pdf": "Lista de precios Conaprole Congelados - Alfajores, salchichon y triffles",
+};
 
 export function getPrivateCatalogFolder(slug: string) {
   return PRIVATE_CATALOG_FOLDERS.find((folder) => folder.slug === slug) || null;
@@ -110,6 +125,10 @@ function getViewUrl(url: string, fileName: string) {
   return url;
 }
 
+function getConaprolePriceDisplayName(fileName: string) {
+  return CONAPROLE_PRICE_DISPLAY_NAMES[fileName.toLowerCase()] || fileName;
+}
+
 function assertSafeFileName(fileName: string) {
   const normalized = fileName.trim();
   if (!normalized) {
@@ -151,6 +170,7 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
         const assetUrl = encodeURI(`/archivos/${activeDirName}/${entry.name}`);
         files.push({
           name: entry.name,
+          displayName: entry.name,
           url: assetUrl,
           viewUrl: getViewUrl(assetUrl, entry.name),
           sizeLabel: formatFileSize(meta.size),
@@ -174,6 +194,7 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
             const assetUrl = encodeURI(`/archivos/${CURRENT_CONAPROLE_DIR}/${entry.name}`);
             files.push({
               name: entry.name,
+              displayName: entry.name,
               url: assetUrl,
               viewUrl: getViewUrl(assetUrl, entry.name),
               sizeLabel: formatFileSize(meta.size),
@@ -214,10 +235,11 @@ export async function listPrivatePriceFiles(slug: string): Promise<PrivateCatalo
 
       files.push({
         name: entry.name,
+        displayName: getConaprolePriceDisplayName(entry.name),
         url: assetUrl,
         viewUrl: getViewUrl(assetUrl, entry.name),
         sizeLabel: formatFileSize(meta.size),
-        updatedAt: todayLabel,
+        updatedAt: CONAPROLE_PRICE_LIST_UPDATED_AT,
         canManage: false,
         kind: getPrivateFileKind(entry.name),
       });
@@ -249,6 +271,7 @@ export async function listPrivateCatalogFiles(slug: string): Promise<PrivateCata
         const fileUrl = blob.downloadUrl || blob.url;
         return {
           name: fileName,
+          displayName: fileName,
           url: fileUrl,
           viewUrl: getViewUrl(fileUrl, fileName),
           sizeLabel: formatFileSize(blob.size),

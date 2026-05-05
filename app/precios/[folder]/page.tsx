@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { getPrivateCatalogFolder, listPrivateCatalogFiles, listPrivatePriceFiles } from "@/lib/privateCatalogs";
+import { getPrivateAuthSessionFromCookieStore } from "@/lib/privateAuth";
 
 export const dynamic = "force-dynamic";
 
@@ -49,10 +52,12 @@ function FileListSection({
   title,
   emptyMessage,
   files,
+  folderSlug,
 }: {
   title: string;
   emptyMessage: string;
   files: Awaited<ReturnType<typeof listPrivateCatalogFiles>>;
+  folderSlug: string;
 }) {
   return (
     <div className="rounded-3xl border overflow-hidden" style={{ background: "rgb(var(--panel))", borderColor: "rgb(var(--line))" }}>
@@ -97,9 +102,9 @@ function FileListSection({
               {file.canManage && (
                 <div className="md:col-span-2 mt-1 grid gap-2 sm:flex sm:items-center sm:justify-end">
                   <form action="/api/private-catalogs/rename" method="post" className="grid gap-2 sm:flex sm:items-center">
-                    <input type="hidden" name="folder" value="conaprole" />
+                    <input type="hidden" name="folder" value={folderSlug} />
                     <input type="hidden" name="currentName" value={file.name} />
-                    <input type="hidden" name="redirectTo" value="/precios/conaprole" />
+                    <input type="hidden" name="redirectTo" value={`/precios/${folderSlug}`} />
                     <input
                       name="nextName"
                       type="text"
@@ -119,9 +124,9 @@ function FileListSection({
                   </form>
 
                   <form action="/api/private-catalogs/delete" method="post">
-                    <input type="hidden" name="folder" value="conaprole" />
+                    <input type="hidden" name="folder" value={folderSlug} />
                     <input type="hidden" name="fileName" value={file.name} />
-                    <input type="hidden" name="redirectTo" value="/precios/conaprole" />
+                    <input type="hidden" name="redirectTo" value={`/precios/${folderSlug}`} />
                     <button
                       type="submit"
                       className="inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2.5 text-sm font-semibold"
@@ -149,10 +154,16 @@ export default async function PrivateFolderPage({
 }) {
   const { folder: folderSlug } = await params;
   const query = await searchParams;
+  const cookieStore = await cookies();
+  const session = getPrivateAuthSessionFromCookieStore(cookieStore);
   const folder = getPrivateCatalogFolder(folderSlug);
 
   if (!folder) {
     notFound();
+  }
+
+  if (!session || !session.allowedFolders.includes(folder.slug)) {
+    redirect("/precios");
   }
 
   const files = await listPrivateCatalogFiles(folder.slug);
@@ -189,13 +200,17 @@ export default async function PrivateFolderPage({
                   title="Catalogos y archivos"
                   emptyMessage="Todavía no hay archivos cargados en esta carpeta."
                   files={files}
+                  folderSlug={folder.slug}
                 />
 
-                <FileListSection
-                  title="Lista de precios"
-                  emptyMessage="Todavía no hay listas de precios cargadas."
-                  files={priceFiles}
-                />
+                {folder.slug === "conaprole" ? (
+                  <FileListSection
+                    title="Lista de precios"
+                    emptyMessage="Todavía no hay listas de precios cargadas."
+                    files={priceFiles}
+                    folderSlug={folder.slug}
+                  />
+                ) : null}
               </div>
             </div>
 

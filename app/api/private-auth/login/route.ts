@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 
 import {
   PRIVATE_AUTH_COOKIE,
+  PRIVATE_AUTH_SCOPE_COOKIE,
+  PRIVATE_AUTH_USER_COOKIE,
   createPrivateAuthToken,
+  findPrivateAuthAccount,
   getPrivateAuthCookieOptions,
-  getPrivateAuthCredentials,
 } from "@/lib/privateAuth";
 
 export async function POST(request: Request) {
@@ -13,10 +15,10 @@ export async function POST(request: Request) {
   const password = String(formData.get("password") || "");
   const next = String(formData.get("next") || "/precios");
 
-  const credentials = getPrivateAuthCredentials();
   const loginUrl = new URL("/precios/login", request.url);
+  const account = findPrivateAuthAccount(username, password);
 
-  if (username !== credentials.username || password !== credentials.password) {
+  if (!account) {
     loginUrl.searchParams.set("error", "1");
     if (next.startsWith("/")) {
       loginUrl.searchParams.set("next", next);
@@ -24,12 +26,20 @@ export async function POST(request: Request) {
     return NextResponse.redirect(loginUrl);
   }
 
-  const destination = next.startsWith("/") ? next : "/precios";
+  const requestedDestination = next.startsWith("/") ? next : "/precios";
+  const defaultDestination = `/precios/${account.allowedFolders[0] || "conaprole"}`;
+  const destination = account.allowedFolders.some((folder) => requestedDestination.startsWith(`/precios/${folder}`))
+    ? requestedDestination
+    : defaultDestination;
   const response = NextResponse.redirect(new URL(destination, request.url));
+  const cookieOptions = getPrivateAuthCookieOptions();
+
   response.cookies.set(
     PRIVATE_AUTH_COOKIE,
-    createPrivateAuthToken(),
-    getPrivateAuthCookieOptions()
+    createPrivateAuthToken(account.username),
+    cookieOptions
   );
+  response.cookies.set(PRIVATE_AUTH_USER_COOKIE, account.username, cookieOptions);
+  response.cookies.set(PRIVATE_AUTH_SCOPE_COOKIE, account.allowedFolders.join(","), cookieOptions);
   return response;
 }

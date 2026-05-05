@@ -27,6 +27,12 @@ export const PRIVATE_CATALOG_FOLDERS: PrivateCatalogFolder[] = [
     icon: "/archivos/img%20catalogos/conaprole.png",
     description: "Listas y catálogos privados.",
   },
+  {
+    slug: "buenimar-general",
+    name: "Buenimar General",
+    icon: "/og-buenimar.png",
+    description: "Archivos generales privados de Buenimar.",
+  },
 ];
 
 const BLOB_PREFIX = "private-catalogs";
@@ -154,6 +160,37 @@ function getActiveConaproleDirName() {
 async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[]> {
   const files: PrivateCatalogFile[] = [];
   const todayLabel = getTodayLabel();
+
+  if (slug === "buenimar-general") {
+    const generalDir = path.join(process.cwd(), "public", "archivos", "buenimar-general");
+    try {
+      const entries = await readdir(generalDir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
+          continue;
+        }
+
+        const absoluteFile = path.join(generalDir, entry.name);
+        const meta = await stat(absoluteFile);
+        const assetUrl = encodeURI(`/archivos/buenimar-general/${entry.name}`);
+
+        files.push({
+          name: entry.name,
+          displayName: entry.name,
+          url: assetUrl,
+          viewUrl: getViewUrl(assetUrl, entry.name),
+          sizeLabel: formatFileSize(meta.size),
+          updatedAt: todayLabel,
+          canManage: false,
+          kind: getPrivateFileKind(entry.name),
+        });
+      }
+    } catch {
+      return [];
+    }
+
+    return files;
+  }
 
   // Keep legacy Conaprole PDFs visible from the repository's public folder.
   if (slug === "conaprole") {

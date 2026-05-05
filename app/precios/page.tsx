@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { PRIVATE_CATALOG_FOLDERS } from "@/lib/privateCatalogs";
+import { getPrivateAuthSessionFromCookieStore } from "@/lib/privateAuth";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +18,13 @@ export const metadata = {
   },
 };
 
-export default function PreciosDashboardPage() {
+export default async function PreciosDashboardPage() {
+  const cookieStore = await cookies();
+  const session = getPrivateAuthSessionFromCookieStore(cookieStore);
+  const visibleFolders = session
+    ? PRIVATE_CATALOG_FOLDERS.filter((folder) => session.allowedFolders.includes(folder.slug))
+    : [];
+
   return (
     <div className="min-h-screen" style={{ background: "rgb(var(--bg))", color: "rgb(var(--text))" }}>
       <Navbar />
@@ -49,7 +57,7 @@ export default function PreciosDashboardPage() {
           </div>
 
           <div className="mt-8 grid gap-4 sm:mt-10 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {PRIVATE_CATALOG_FOLDERS.map((folder) => (
+            {visibleFolders.map((folder) => (
               <Link
                 key={folder.slug}
                 href={`/precios/${folder.slug}`}

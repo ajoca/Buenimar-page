@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { isPanelAuthenticated } from "@/lib/panelAuth";
-import { isPrivateAuthenticated } from "@/lib/privateAuth";
+import { canAccessPrivateFolder, isPrivateAuthenticated } from "@/lib/privateAuth";
 
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -13,6 +13,11 @@ export function middleware(request: NextRequest) {
     }
 
     if (isPrivateAuthenticated(request)) {
+      const folderMatch = pathname.match(/^\/precios\/([^/?#]+)/);
+      if (folderMatch && !canAccessPrivateFolder(request, folderMatch[1])) {
+        return NextResponse.redirect(new URL("/precios", request.url));
+      }
+
       return NextResponse.next();
     }
 

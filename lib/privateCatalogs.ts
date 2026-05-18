@@ -43,6 +43,66 @@ const CONAPROLE_PRICE_LIST_DIR = "precios";
 const GENERAL_PRICE_LIST_DIR = "lista precios general";
 const LEGACY_GENERAL_PRICE_LIST_DIR = "buenimar-general";
 const CONAPROLE_PRICE_LIST_UPDATED_AT = "11/05/2026";
+const GENERAL_PRICE_FILES = [
+  "Lista Precios  Auriculares y Parlantes (57).pdf",
+  "Lista Precios  Olisur (56).pdf",
+  "Lista Precios 5 Estrellas y Augusta (1).pdf",
+  "Lista Precios Aceites (2).pdf",
+  "Lista Precios Ades (3).pdf",
+  "Lista Precios Almena (vinos, whisky y más) (4).pdf",
+  "Lista Precios Altos del Plata, Terrazas y otros (5).pdf",
+  "Lista Precios Articulos Varios (6).pdf",
+  "Lista Precios Balance (48).pdf",
+  "Lista Precios Cervezas 1 (7).pdf",
+  "Lista Precios Cervezas 2 (8).pdf",
+  "Lista Precios Chandon y otros (9).pdf",
+  "Lista Precios Coca Cola 1 (10).pdf",
+  "Lista Precios Coca Cola 2 (11).pdf",
+  "Lista Precios Conaprole (40).pdf",
+  "Lista Precios Conaprole 2 (41).pdf",
+  "Lista Precios Conaprole 3 (42).pdf",
+  "Lista Precios Conaprole 4 (43).pdf",
+  "Lista Precios Conaprole 5 (44).pdf",
+  "Lista Precios Conaprole Congelados (48).pdf",
+  "Lista Precios Discarvi (12).pdf",
+  "Lista Precios El Faro (13).pdf",
+  "Lista Precios Familia Deicas (14).pdf",
+  "Lista Precios Fritas (15).pdf",
+  "Lista Precios Galletitas Cañuelas (16).pdf",
+  "Lista Precios Gin Sur (54).pdf",
+  "Lista Precios Glace (17).pdf",
+  "Lista Precios Haagen Dazs y Framore(18).pdf",
+  "Lista Precios Harinas (19).pdf",
+  "Lista Precios Iguacu (20).pdf",
+  "Lista Precios La Bordona (21).pdf",
+  "Lista Precios La Especialista Pizzas (54).pdf",
+  "Lista Precios La Paila (23) (3).pdf",
+  "Lista Precios La Paila (23).pdf",
+  "Lista Precios Limpieza Unilever (24).pdf",
+  "Lista Precios Listo para Comer (46).pdf",
+  "Lista Precios Macru (41).pdf",
+  "Lista Precios Macru Power Bank (53).pdf",
+  "Lista Precios Macru Smartwatch (52).pdf",
+  "Lista Precios Manducas (25).pdf",
+  "Lista Precios Olaso (45).pdf",
+  "Lista Precios Pagnifique (26).pdf",
+  "Lista Precios Pescados y Mariscos (27).pdf",
+  "Lista Precios Primocao (28).pdf",
+  "Lista Precios Sadia (29).pdf",
+  "Lista Precios Schneck Comercios y Super (30).pdf",
+  "Lista Precios Schneck Comercios y Super (55) 2.pdf",
+  "Lista Precios Shampoo Procao (31).pdf",
+  "Lista Precios SIN TAC CAÑUELAS (54).pdf",
+  "Lista Precios Stack (32).pdf",
+  "Lista Precios Unilever (33).pdf",
+  "Lista Precios Vegetales Ensaladas (34).pdf",
+  "Lista Precios Vinos Bianchi (35).pdf",
+  "Lista Precios Vinos Concha y Toro (36).pdf",
+  "Lista Precios Vinos Don Pascual (37).pdf",
+  "Lista Precios Vinos Felíx Solís y Caviccioli(38).pdf",
+  "Lista Precios Vinos Norton (39).pdf",
+  "Lista Precios WINSO (55).pdf",
+];
 const SUPPORTED_PRIVATE_FILE_EXTENSIONS = [
   ".pdf",
   ".xlsx",
@@ -177,55 +237,44 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
   const todayLabel = getTodayLabel();
 
   if (slug === "lista-precios-general") {
-    const generalDir = path.join(process.cwd(), "public", "archivos", GENERAL_PRICE_LIST_DIR);
-    try {
-      const entries = await readdir(generalDir, { withFileTypes: true });
-      for (const entry of entries) {
-        if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
+    for (const fileName of GENERAL_PRICE_FILES) {
+      if (!isSupportedPrivateFile(fileName)) {
+        continue;
+      }
+
+      const primaryUrl = encodeURI(`/archivos/${GENERAL_PRICE_LIST_DIR}/${fileName}`);
+
+      files.push({
+        name: fileName,
+        displayName: getGeneralPriceDisplayName(fileName),
+        url: primaryUrl,
+        viewUrl: getViewUrl(primaryUrl, fileName),
+        sizeLabel: "-",
+        updatedAt: todayLabel,
+        canManage: false,
+        kind: getPrivateFileKind(fileName),
+      });
+    }
+
+    // Backward compatibility for legacy static path while users migrate assets.
+    if (files.length === 0) {
+      for (const fileName of GENERAL_PRICE_FILES) {
+        if (!isSupportedPrivateFile(fileName)) {
           continue;
         }
 
-        const absoluteFile = path.join(generalDir, entry.name);
-        const meta = await stat(absoluteFile);
-        const assetUrl = encodeURI(`/archivos/buenimar-general/${entry.name}`);
+        const legacyUrl = encodeURI(`/archivos/${LEGACY_GENERAL_PRICE_LIST_DIR}/${fileName}`);
 
         files.push({
-          name: entry.name,
-          displayName: getGeneralPriceDisplayName(entry.name),
-          url: assetUrl,
-          viewUrl: getViewUrl(assetUrl, entry.name),
-          sizeLabel: formatFileSize(meta.size),
+          name: fileName,
+          displayName: getGeneralPriceDisplayName(fileName),
+          url: legacyUrl,
+          viewUrl: getViewUrl(legacyUrl, fileName),
+          sizeLabel: "-",
           updatedAt: todayLabel,
           canManage: false,
-          kind: getPrivateFileKind(entry.name),
+          kind: getPrivateFileKind(fileName),
         });
-      }
-    } catch {
-      try {
-        const legacyDir = path.join(process.cwd(), "public", "archivos", LEGACY_GENERAL_PRICE_LIST_DIR);
-        const legacyEntries = await readdir(legacyDir, { withFileTypes: true });
-        for (const entry of legacyEntries) {
-          if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
-            continue;
-          }
-
-          const absoluteFile = path.join(legacyDir, entry.name);
-          const meta = await stat(absoluteFile);
-          const assetUrl = encodeURI(`/archivos/${LEGACY_GENERAL_PRICE_LIST_DIR}/${entry.name}`);
-
-          files.push({
-            name: entry.name,
-            displayName: getGeneralPriceDisplayName(entry.name),
-            url: assetUrl,
-            viewUrl: getViewUrl(assetUrl, entry.name),
-            sizeLabel: formatFileSize(meta.size),
-            updatedAt: todayLabel,
-            canManage: false,
-            kind: getPrivateFileKind(entry.name),
-          });
-        }
-      } catch {
-        return [];
       }
     }
 

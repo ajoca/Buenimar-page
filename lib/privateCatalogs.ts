@@ -28,10 +28,10 @@ export const PRIVATE_CATALOG_FOLDERS: PrivateCatalogFolder[] = [
     description: "Listas y catálogos privados.",
   },
   {
-    slug: "buenimar-general",
-    name: "Buenimar General",
+    slug: "lista-precios-general",
+    name: "Lista de Precios General",
     icon: "/og-buenimar.png",
-    description: "Archivos generales privados de Buenimar.",
+    description: "Listas de precios generales de Buenimar.",
   },
 ];
 
@@ -40,6 +40,8 @@ const CURRENT_CONAPROLE_DIR = "catalogos pdfs conaprole";
 const SCHEDULED_CONAPROLE_DIR = "catalogos pdfs conaprole/catalogos pdfs 11 mayo";
 const SCHEDULED_CONAPROLE_SWITCH_AT = "2026-05-11T00:00:00.000Z";
 const CONAPROLE_PRICE_LIST_DIR = "precios";
+const GENERAL_PRICE_LIST_DIR = "lista precios general";
+const LEGACY_GENERAL_PRICE_LIST_DIR = "buenimar-general";
 const CONAPROLE_PRICE_LIST_UPDATED_AT = "11/05/2026";
 const SUPPORTED_PRIVATE_FILE_EXTENSIONS = [
   ".pdf",
@@ -135,6 +137,19 @@ function getConaprolePriceDisplayName(fileName: string) {
   return CONAPROLE_PRICE_DISPLAY_NAMES[fileName.toLowerCase()] || fileName;
 }
 
+function getGeneralPriceDisplayName(fileName: string) {
+  const extension = path.extname(fileName);
+  let baseName = path.basename(fileName, extension);
+
+  baseName = baseName.replace(/\s+/g, " ").trim();
+  baseName = baseName.replace(/^lista\s+precios?/i, "Lista de precios");
+  baseName = baseName.replace(/\s*\(\d+\)(?:\s*\(\d+\))?/gi, "");
+  baseName = baseName.replace(/\s+\d+$/g, "");
+  baseName = baseName.replace(/\(\s*\)/g, "").replace(/\s+/g, " ").trim();
+
+  return baseName || fileName;
+}
+
 function assertSafeFileName(fileName: string) {
   const normalized = fileName.trim();
   if (!normalized) {
@@ -161,8 +176,8 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
   const files: PrivateCatalogFile[] = [];
   const todayLabel = getTodayLabel();
 
-  if (slug === "buenimar-general") {
-    const generalDir = path.join(process.cwd(), "public", "archivos", "buenimar-general");
+  if (slug === "lista-precios-general") {
+    const generalDir = path.join(process.cwd(), "public", "archivos", GENERAL_PRICE_LIST_DIR);
     try {
       const entries = await readdir(generalDir, { withFileTypes: true });
       for (const entry of entries) {
@@ -176,7 +191,7 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
 
         files.push({
           name: entry.name,
-          displayName: entry.name,
+          displayName: getGeneralPriceDisplayName(entry.name),
           url: assetUrl,
           viewUrl: getViewUrl(assetUrl, entry.name),
           sizeLabel: formatFileSize(meta.size),
@@ -186,7 +201,32 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
         });
       }
     } catch {
-      return [];
+      try {
+        const legacyDir = path.join(process.cwd(), "public", "archivos", LEGACY_GENERAL_PRICE_LIST_DIR);
+        const legacyEntries = await readdir(legacyDir, { withFileTypes: true });
+        for (const entry of legacyEntries) {
+          if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
+            continue;
+          }
+
+          const absoluteFile = path.join(legacyDir, entry.name);
+          const meta = await stat(absoluteFile);
+          const assetUrl = encodeURI(`/archivos/${LEGACY_GENERAL_PRICE_LIST_DIR}/${entry.name}`);
+
+          files.push({
+            name: entry.name,
+            displayName: getGeneralPriceDisplayName(entry.name),
+            url: assetUrl,
+            viewUrl: getViewUrl(assetUrl, entry.name),
+            sizeLabel: formatFileSize(meta.size),
+            updatedAt: todayLabel,
+            canManage: false,
+            kind: getPrivateFileKind(entry.name),
+          });
+        }
+      } catch {
+        return [];
+      }
     }
 
     return files;

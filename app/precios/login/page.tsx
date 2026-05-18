@@ -32,7 +32,7 @@ export default async function PreciosLoginPage({
             Acceso vendedores
           </h1>
           <p className="mt-3 text-base text-center" style={{ color: "rgb(var(--muted))" }}>
-            Ingresá con tus credenciales para ver la carpeta privada que te corresponda, como Conaprole o Buenimar General.
+            Ingresá con tus credenciales para ver la carpeta privada que te corresponda, como Conaprole o Lista de Precios General.
           </p>
 
           {hasError && (

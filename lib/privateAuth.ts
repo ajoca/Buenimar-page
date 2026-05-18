@@ -30,7 +30,7 @@ export function getPrivateAuthAccounts(): PrivateAuthAccount[] {
     {
       username: process.env.PRIVATE_GENERAL_USERNAME || "buenimar_general",
       password: process.env.PRIVATE_GENERAL_PASSWORD || "BuenimarGeneral2026!",
-      allowedFolders: ["buenimar-general"],
+      allowedFolders: ["lista-precios-general"],
     },
   ];
 }

@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 
 const panelLinks = [
   { href: "/panel/dashboard", label: "Dashboard" },
+  { href: "/panel/clientes", label: "Top 50 Clientes" },
+  { href: "/panel/analisis", label: "Análisis" },
   { href: "/panel/reportes", label: "Reportes" },
   { href: "/panel/alertas", label: "Alertas" },
   { href: "/panel/usuarios", label: "Usuarios" },
@@ -27,7 +29,7 @@ export default function Sidebar({ mobileOpen, onNavigate }: SidebarProps) {
     >
       <div className="border-b border-slate-800 px-5 py-4">
         <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Buenimar</p>
-        <h2 className="mt-2 text-xl font-bold text-red-500">Panel Privado</h2>
+        <h2 className="mt-2 text-xl font-bold text-red-500">Panel POC</h2>
       </div>
 
       <nav className="space-y-1 p-3">

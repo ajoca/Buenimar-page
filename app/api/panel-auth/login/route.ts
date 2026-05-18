@@ -15,8 +15,13 @@ export async function POST(request: Request) {
   const password = String(formData.get("password") || "").trim();
   const role = normalizePanelRole(String(formData.get("role") || ""));
 
+  const requestUrl = new URL(request.url);
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const forwardedProto = request.headers.get("x-forwarded-proto") || requestUrl.protocol.replace(":", "");
+  const origin = forwardedHost ? `${forwardedProto}://${forwardedHost}` : requestUrl.origin;
+
   const next = String(formData.get("next") || "/panel/dashboard");
-  const loginUrl = new URL("/login", request.url);
+  const loginUrl = new URL("/login", origin);
 
   // TODO: Reemplazar validación por proveedor real (LDAP/SSO/API interna).
   const configuredUser = process.env.PANEL_AUTH_USERNAME?.trim() || "";
@@ -33,7 +38,7 @@ export async function POST(request: Request) {
   }
 
   const destination = next.startsWith("/panel") ? next : "/panel/dashboard";
-  const response = NextResponse.redirect(new URL(destination, request.url));
+  const response = NextResponse.redirect(new URL(destination, origin));
 
   response.cookies.set(PANEL_AUTH_COOKIE, createPanelAuthToken(role), getPanelAuthCookieOptions());
   response.cookies.set(PANEL_ROLE_COOKIE, role, getPanelAuthCookieOptions());

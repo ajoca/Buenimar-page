@@ -36,7 +36,7 @@ export const PRIVATE_CATALOG_FOLDERS: PrivateCatalogFolder[] = [
 ];
 
 const BLOB_PREFIX = "private-catalogs";
-const CURRENT_CONAPROLE_DIR = "catalogos pdfs conaprole";
+const CURRENT_CONAPROLE_DIR = "catalogos pdfs conaprole/catalogos pdfs 11 mayo";
 const SCHEDULED_CONAPROLE_DIR = "catalogos pdfs conaprole/catalogos pdfs 11 mayo";
 const SCHEDULED_CONAPROLE_SWITCH_AT = "2026-05-11T00:00:00.000Z";
 const CONAPROLE_PRICE_LIST_DIR = "precios";

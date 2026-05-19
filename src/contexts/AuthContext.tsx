@@ -3,12 +3,14 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { fetchPanelSession } from "@/services/authService";
+import { canAccess, type PanelPermission } from "@/src/lib/panel/permissions";
 import type { PanelSession, UserRole } from "@/src/lib/panel/types";
 
 type AuthContextValue = {
   session: PanelSession | null;
   loading: boolean;
   hasRole: (roles: UserRole[]) => boolean;
+  canAccessPermission: (permission: PanelPermission) => boolean;
   refreshSession: () => Promise<void>;
 };
 
@@ -39,6 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       session,
       loading,
       hasRole: (roles) => !!session && roles.includes(session.role),
+      canAccessPermission: (permission) => canAccess(session?.role, permission),
       refreshSession,
     }),
     [session, loading]

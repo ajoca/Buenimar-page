@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 import AlertCard from "@/components/panel/AlertCard";
 import EmptyState from "@/components/panel/EmptyState";
 import FilterBar from "@/components/panel/FilterBar";
 import DateRangeFilter from "@/components/panel/DateRangeFilter";
+import PanelDataControls from "@/components/panel/PanelDataControls";
 import PageHeader from "@/components/panel/PageHeader";
 
 export default function PanelAlertasPage() {
@@ -10,7 +13,17 @@ export default function PanelAlertasPage() {
       <PageHeader
         title="Alertas"
         description="Modulo preparado para monitorear eventos criticos, medios y bajos."
+        actions={
+          <Link
+            href="/panel/alertas/reglas"
+            className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
+          >
+            Configurar reglas
+          </Link>
+        }
       />
+
+      <PanelDataControls module="alerts" />
 
       <FilterBar>
         <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -56,6 +69,16 @@ export default function PanelAlertasPage() {
         title="Alertas listas para conexion"
         message="La vista ya esta preparada en rojo para destacar eventos. Falta conectar consultas reales y umbrales operativos."
       />
+
+      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 className="text-base font-semibold text-slate-900">Canales de notificacion preparados</h3>
+        <p className="mt-2 text-sm text-slate-600">
+          Se dejaron adaptadores stub para Email, Microsoft Teams, WhatsApp/API externa y notificacion interna.
+        </p>
+        <p className="mt-2 text-xs text-slate-500">
+          TODO: conectar servicios reales y credenciales tecnicas desde variables de entorno seguras.
+        </p>
+      </section>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import DateRangeFilter from "@/components/panel/DateRangeFilter";
 import EmptyState from "@/components/panel/EmptyState";
 import FilterBar from "@/components/panel/FilterBar";
+import PanelDataControls from "@/components/panel/PanelDataControls";
 import PageHeader from "@/components/panel/PageHeader";
 
 export default function PanelReportesPage() {
@@ -9,15 +10,9 @@ export default function PanelReportesPage() {
       <PageHeader
         title="Reportes"
         description="Estructura preparada para reportes operativos cuando la fuente de datos este conectada."
-        actions={
-          <button
-            type="button"
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700"
-          >
-            Exportar a Excel
-          </button>
-        }
       />
+
+      <PanelDataControls module="reports" />
 
       <FilterBar>
         <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">

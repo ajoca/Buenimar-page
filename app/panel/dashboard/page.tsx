@@ -2,6 +2,7 @@ import Link from "next/link";
 import { kpiSummary, alerts, topClients } from "@/lib/mockData";
 import AlertCard from "@/components/panel/AlertCard";
 import MetricCard from "@/components/panel/MetricCard";
+import PanelDataControls from "@/components/panel/PanelDataControls";
 import PageHeader from "@/components/panel/PageHeader";
 
 export default function PanelDashboardPage() {
@@ -13,6 +14,8 @@ export default function PanelDashboardPage() {
         title="Dashboard"
         description="POC con datos ficticios de Buenimar. Navegá por clientes, análisis y alertas."
       />
+
+      <PanelDataControls module="dashboard" />
 
       {/* KPI Summary */}
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">

@@ -2,15 +2,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
-const panelLinks = [
-  { href: "/panel/dashboard", label: "Dashboard" },
-  { href: "/panel/clientes", label: "Top 50 Clientes" },
-  { href: "/panel/analisis", label: "Análisis" },
-  { href: "/panel/reportes", label: "Reportes" },
-  { href: "/panel/alertas", label: "Alertas" },
-  { href: "/panel/usuarios", label: "Usuarios" },
-  { href: "/panel/configuracion", label: "Configuracion" },
+import type { PanelPermission } from "@/src/lib/panel/permissions";
+import { useAuth } from "@/src/contexts/AuthContext";
+
+type PanelLink = {
+  href: string;
+  label: string;
+  permission: PanelPermission;
+};
+
+const panelLinks: PanelLink[] = [
+  { href: "/panel/dashboard", label: "Dashboard", permission: "view_dashboard" },
+  { href: "/panel/clientes", label: "Top 50 Clientes", permission: "view_dashboard" },
+  { href: "/panel/analisis", label: "Analisis", permission: "view_dashboard" },
+  { href: "/panel/reportes", label: "Reportes", permission: "view_reports" },
+  { href: "/panel/alertas", label: "Alertas", permission: "view_alerts" },
+  { href: "/panel/alertas/reglas", label: "Reglas de alertas", permission: "configure_alerts" },
+  { href: "/panel/usuarios", label: "Usuarios", permission: "manage_users" },
+  { href: "/panel/configuracion", label: "Configuracion", permission: "manage_settings" },
+  { href: "/panel/health", label: "Health check", permission: "manage_settings" },
 ];
 
 type SidebarProps = {
@@ -20,6 +32,28 @@ type SidebarProps = {
 
 export default function Sidebar({ mobileOpen, onNavigate }: SidebarProps) {
   const pathname = usePathname();
+  const { canAccessPermission, session } = useAuth();
+  const visibleLinks = useMemo(
+    () =>
+      panelLinks
+        .filter((link) => canAccessPermission(link.permission))
+        .map((link) => {
+          if (link.href === "/panel/reportes" && session?.role === "deposito") {
+            return { ...link, label: "Reportes operativos" };
+          }
+
+          if (link.href === "/panel/reportes" && session?.role === "contabilidad") {
+            return { ...link, label: "Reportes administrativos" };
+          }
+
+          if (link.href === "/panel/reportes" && session?.role === "ventas") {
+            return { ...link, label: "Reportes comerciales" };
+          }
+
+          return link;
+        }),
+    [canAccessPermission, session?.role]
+  );
 
   return (
     <aside
@@ -33,7 +67,7 @@ export default function Sidebar({ mobileOpen, onNavigate }: SidebarProps) {
       </div>
 
       <nav className="space-y-1 p-3">
-        {panelLinks.map((link) => {
+        {visibleLinks.map((link) => {
           const active = pathname === link.href;
           return (
             <Link

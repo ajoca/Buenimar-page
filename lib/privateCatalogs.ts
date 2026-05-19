@@ -127,6 +127,18 @@ const CONAPROLE_CATALOG_FILES = [
   "27_Polar_Food_con_precios.pdf",
 ];
 const CONAPROLE_CATALOG_UPDATED_AT = "11/05/2026";
+const CONAPROLE_PRICE_FILES = [
+  "Lista Precios Conaprole (40).pdf",
+  "Lista Precios Conaprole 2 (41).pdf",
+  "Lista Precios Conaprole 3 (42).pdf",
+  "Lista Precios Conaprole 4 (43).pdf",
+  "Lista Precios Conaprole 5 (44).pdf",
+  "Lista Precios Conaprole Congelados (47).pdf",
+  "Lista Precios Conaprole Congelados (48).pdf",
+  "Lista Precios Conaprole Congelados (49).pdf",
+  "Lista Precios Conaprole Congelados (50).pdf",
+  "Lista Precios Conaprole Congelados (51).pdf",
+];
 const SUPPORTED_PRIVATE_FILE_EXTENSIONS = [
   ".pdf",
   ".xlsx",
@@ -335,34 +347,23 @@ export async function listPrivatePriceFiles(slug: string): Promise<PrivateCatalo
     return [];
   }
 
-  const todayLabel = getTodayLabel();
   const files: PrivateCatalogFile[] = [];
-  const pricesDir = path.join(process.cwd(), "public", "archivos", CONAPROLE_PRICE_LIST_DIR);
-
-  try {
-    const entries = await readdir(pricesDir, { withFileTypes: true });
-    for (const entry of entries) {
-      if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
-        continue;
-      }
-
-      const absoluteFile = path.join(pricesDir, entry.name);
-      const meta = await stat(absoluteFile);
-      const assetUrl = encodeURI(`/archivos/${CONAPROLE_PRICE_LIST_DIR}/${entry.name}`);
-
-      files.push({
-        name: entry.name,
-        displayName: getConaprolePriceDisplayName(entry.name),
-        url: assetUrl,
-        viewUrl: getViewUrl(assetUrl, entry.name),
-        sizeLabel: formatFileSize(meta.size),
-        updatedAt: CONAPROLE_PRICE_LIST_UPDATED_AT,
-        canManage: false,
-        kind: getPrivateFileKind(entry.name),
-      });
+  for (const fileName of CONAPROLE_PRICE_FILES) {
+    if (!isSupportedPrivateFile(fileName)) {
+      continue;
     }
-  } catch {
-    return [];
+
+    const assetUrl = encodeURI(`/archivos/${CONAPROLE_PRICE_LIST_DIR}/${fileName}`);
+    files.push({
+      name: fileName,
+      displayName: getConaprolePriceDisplayName(fileName),
+      url: assetUrl,
+      viewUrl: getViewUrl(assetUrl, fileName),
+      sizeLabel: "-",
+      updatedAt: CONAPROLE_PRICE_LIST_UPDATED_AT,
+      canManage: false,
+      kind: getPrivateFileKind(fileName),
+    });
   }
 
   return files;

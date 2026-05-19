@@ -97,6 +97,36 @@ const GENERAL_PRICE_FILES = [
   "Lista Precios Vinos Norton (39).pdf",
   "Lista Precios WINSO (55).pdf",
 ];
+const CONAPROLE_CATALOG_FILES = [
+  "01_Leches_con_precios.pdf",
+  "02_Leches_UHT_con_precios.pdf",
+  "03_Leche_en_Polvo_con_precios.pdf",
+  "04_Leches_Saborizadas_con_precios.pdf",
+  "05_Mantecas_con_precios.pdf",
+  "06_Yogures_con_precios.pdf",
+  "07_Viva_con_precios.pdf",
+  "08_Yogures_Biotransit_con_precios.pdf",
+  "09_Postres_con_precios.pdf",
+  "10_Deleite_con_precios.pdf",
+  "11_Viva_Postres_con_precios.pdf",
+  "12_Jugos_con_precios.pdf",
+  "13_Jugos_Light_con_precios.pdf",
+  "14_Dulce_de_Leche_con_precios.pdf",
+  "15_Crema_de_Leche_con_precios.pdf",
+  "16_Pulpa_de_Tomate_con_precios.pdf",
+  "17_Queso_Rallado_con_precios.pdf",
+  "18_Alpa_con_precios.pdf",
+  "19_Queso_Procesado_con_precios.pdf",
+  "20_Queso_Pasta_Blanda_con_precios.pdf",
+  "21_Queso_Pasta_Semidura_con_precios.pdf",
+  "22_Queso_Pasta_Dura_con_precios.pdf",
+  "23_Helados_Impulsivos_con_precios.pdf",
+  "24_Helados_Familiares_con_precios.pdf",
+  "25_Helados_Granel_con_precios.pdf",
+  "26_Congelados_con_precios.pdf",
+  "27_Polar_Food_con_precios.pdf",
+];
+const CONAPROLE_CATALOG_UPDATED_AT = "11/05/2026";
 const SUPPORTED_PRIVATE_FILE_EXTENSIONS = [
   ".pdf",
   ".xlsx",
@@ -278,55 +308,22 @@ async function listStaticCatalogFiles(slug: string): Promise<PrivateCatalogFile[
   // Keep legacy Conaprole PDFs visible from the repository's public folder.
   if (slug === "conaprole") {
     const activeDirName = getActiveConaproleDirName();
-    const conaproleDir = path.join(process.cwd(), "public", "archivos", activeDirName);
-    try {
-      const entries = await readdir(conaproleDir, { withFileTypes: true });
-      for (const entry of entries) {
-        if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
-          continue;
-        }
-        const absoluteFile = path.join(conaproleDir, entry.name);
-        const meta = await stat(absoluteFile);
-        const assetUrl = encodeURI(`/archivos/${activeDirName}/${entry.name}`);
-        files.push({
-          name: entry.name,
-          displayName: entry.name,
-          url: assetUrl,
-          viewUrl: getViewUrl(assetUrl, entry.name),
-          sizeLabel: formatFileSize(meta.size),
-          updatedAt: todayLabel,
-          canManage: false,
-          kind: getPrivateFileKind(entry.name),
-        });
+    for (const fileName of CONAPROLE_CATALOG_FILES) {
+      if (!isSupportedPrivateFile(fileName)) {
+        continue;
       }
-    } catch {
-      // If the scheduled folder is not present yet, fall back to the current folder.
-      if (activeDirName !== CURRENT_CONAPROLE_DIR) {
-        try {
-          const fallbackDir = path.join(process.cwd(), "public", "archivos", CURRENT_CONAPROLE_DIR);
-          const fallbackEntries = await readdir(fallbackDir, { withFileTypes: true });
-          for (const entry of fallbackEntries) {
-            if (!entry.isFile() || !isSupportedPrivateFile(entry.name)) {
-              continue;
-            }
-            const absoluteFile = path.join(fallbackDir, entry.name);
-            const meta = await stat(absoluteFile);
-            const assetUrl = encodeURI(`/archivos/${CURRENT_CONAPROLE_DIR}/${entry.name}`);
-            files.push({
-              name: entry.name,
-              displayName: entry.name,
-              url: assetUrl,
-              viewUrl: getViewUrl(assetUrl, entry.name),
-              sizeLabel: formatFileSize(meta.size),
-              updatedAt: todayLabel,
-              canManage: false,
-              kind: getPrivateFileKind(entry.name),
-            });
-          }
-        } catch {
-          // If read-only assets are unavailable in the current environment, skip gracefully.
-        }
-      }
+
+      const assetUrl = encodeURI(`/archivos/${activeDirName}/${fileName}`);
+      files.push({
+        name: fileName,
+        displayName: fileName,
+        url: assetUrl,
+        viewUrl: getViewUrl(assetUrl, fileName),
+        sizeLabel: "-",
+        updatedAt: CONAPROLE_CATALOG_UPDATED_AT || todayLabel,
+        canManage: false,
+        kind: getPrivateFileKind(fileName),
+      });
     }
   }
 

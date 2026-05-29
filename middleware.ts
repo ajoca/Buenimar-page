@@ -18,6 +18,25 @@ const PANEL_ROUTE_PERMISSIONS: Array<{ pattern: RegExp; permission: PanelPermiss
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  if (pathname.startsWith("/_next/webpack-hmr") || pathname.startsWith("/_next/static/chunks/webpack")) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  if (pathname.startsWith("/.env") || pathname.startsWith("/.git") || pathname.startsWith("/src")) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  const isProtectedAsset =
+    pathname.startsWith("/archivos/precios/") ||
+    pathname.startsWith("/archivos/catalogos%20pdfs%20conaprole/") ||
+    pathname.startsWith("/archivos/catalogos pdfs conaprole/") ||
+    pathname.startsWith("/archivos/lista%20precios%20general/") ||
+    pathname.startsWith("/archivos/lista precios general/");
+
+  if (isProtectedAsset && !isPrivateAuthenticated(request)) {
+    return new NextResponse(null, { status: 404 });
+  }
+
   if (pathname.startsWith("/precios")) {
     if (pathname === "/precios/login") {
       return NextResponse.next();
@@ -63,5 +82,13 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/precios/:path*", "/panel/:path*", "/login"],
+  matcher: [
+    "/precios/:path*",
+    "/panel/:path*",
+    "/login",
+    "/_next/:path*",
+    "/archivos/precios/:path*",
+    "/archivos/catalogos pdfs conaprole/:path*",
+    "/archivos/lista precios general/:path*",
+  ],
 };

@@ -18,10 +18,6 @@ const PANEL_ROUTE_PERMISSIONS: Array<{ pattern: RegExp; permission: PanelPermiss
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  if (pathname.startsWith("/_next/webpack-hmr") || pathname.startsWith("/_next/static/chunks/webpack")) {
-    return new NextResponse(null, { status: 404 });
-  }
-
   if (pathname.startsWith("/.env") || pathname.startsWith("/.git") || pathname.startsWith("/src")) {
     return new NextResponse(null, { status: 404 });
   }
@@ -86,7 +82,6 @@ export const config = {
     "/precios/:path*",
     "/panel/:path*",
     "/login",
-    "/_next/:path*",
     "/archivos/precios/:path*",
     "/archivos/catalogos pdfs conaprole/:path*",
     "/archivos/lista precios general/:path*",

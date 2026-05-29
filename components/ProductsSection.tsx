@@ -14,7 +14,7 @@ export default function ProductsSection({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading] = useState(false);
 
   // Detectar si es móvil después de montar el componente
   useEffect(() => {
@@ -25,12 +25,6 @@ export default function ProductsSection({
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Simular loading inicial
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
   }, []);
 
   // Cerrar modal con Escape

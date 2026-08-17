@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 
 // Nuevos productos (imagen en public/img new/)
 const products = [
-  { code: '12316 / 12317 / 12318', image: '12316-12317-12318.jpg', name: 'Yerba Mate Mansa 80 g, 500 g y 1 kg' },
+  { code: '12316 / 12317 / 12318', image: '12316-12317-12318.png', name: 'Yerba Mate Mansa 80 g, 500 g y 1 kg' },
   { code: '277', image: '277.png', name: 'Yogur Conaprole +Proteína Frutilla 185 g' },
   { code: '2286', image: '2286.png', name: 'Yogur Griego Conaprole Sabor Natural' },
   { code: '2287', image: '2287.png', name: 'Yogur Griego Conaprole Natural sin azúcares' },
@@ -32,6 +32,7 @@ export default function NewProductsCarousel() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const resumeTimeoutRef = useRef<number | null>(null);
+  const touchStartPosRef = useRef<{ x: number; y: number } | null>(null);
 
   const pauseAutoScroll = () => {
     setIsAutoPaused(true);
@@ -41,6 +42,25 @@ export default function NewProductsCarousel() {
     resumeTimeoutRef.current = window.setTimeout(() => {
       setIsAutoPaused(false);
     }, 4000);
+  };
+
+  // On touch devices, vertical page scrolling also fires touchstart on the
+  // track; only pause when the gesture is actually a horizontal swipe.
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchStartPosRef.current = t ? { x: t.clientX, y: t.clientY } : null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const start = touchStartPosRef.current;
+    const t = e.touches[0];
+    if (!start || !t) return;
+    const dx = Math.abs(t.clientX - start.x);
+    const dy = Math.abs(t.clientY - start.y);
+    if (dx > 10 && dx > dy) {
+      touchStartPosRef.current = null;
+      pauseAutoScroll();
+    }
   };
 
   useEffect(() => {
@@ -118,7 +138,8 @@ export default function NewProductsCarousel() {
         <div
           ref={trackRef}
           onWheel={pauseAutoScroll}
-          onTouchStart={pauseAutoScroll}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
           onMouseDown={pauseAutoScroll}
           className="flex gap-3 sm:gap-4 justify-start items-stretch w-full overflow-x-auto pb-4 px-1 sm:px-2 snap-x snap-mandatory scroll-smooth"
         >

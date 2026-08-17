@@ -5,6 +5,12 @@ import { useState, useEffect, useRef } from 'react';
 
 // Nuevos productos (imagen en public/img new/)
 const products = [
+  { code: '12316 / 12317 / 12318', image: '12316-12317-12318.jpg', name: 'Yerba Mate Mansa 80 g, 500 g y 1 kg' },
+  { code: '277', image: '277.png', name: 'Yogur Conaprole +Proteína Frutilla 185 g' },
+  { code: '2286', image: '2286.png', name: 'Yogur Griego Conaprole Sabor Natural' },
+  { code: '2287', image: '2287.png', name: 'Yogur Griego Conaprole Natural sin azúcares' },
+  { code: '515', image: '515.png', name: 'Dulce de Leche Receta Casera Edición Especial 970 g' },
+  { code: '12280', image: '12280.jpg', name: 'Whisky The Famous Grouse 1 Litro' },
   { code: 'ALM12263', image: 'ALM12263.png', name: 'Aceite de oliva O-LIVE 450 ml' },
   { code: 'ALM12264', image: 'ALM12264.png', name: 'Aceite de oliva O-LIVE 1 Litro' },
   { code: 'ALM12265', image: 'ALM12265.png', name: 'Aceite de oliva Santiago Premium 250 ml' },

@@ -24,7 +24,6 @@ export const localities: Locality[] = [
   { id: "col-9", name: "Conchillas", department: "Colonia", coordinates: [-58.0314, -34.1614], population: 989, description: "Pueblo histórico" },
   { id: "col-10", name: "Colonia Valdense", department: "Colonia", coordinates: [-57.194038, -34.390671], population: 3878, description: "Colonia valdense" },
   { id: "col-11", name: "Miguelete", department: "Colonia", coordinates: [-57.647282, -34.006851], population: 2412, description: "Zona agrícola" },
-  { id: "col-12", name: "La Paz", department: "Colonia", coordinates: [-57.309231, -34.347157], population: 1845, description: "Localidad costera" },
   { id: "col-13", name: "Britópolis", department: "Colonia", coordinates: [-57.271175, -34.431866], population: 687, description: "Localidad rural" },
   { id: "col-14", name: "Artilleros", department: "Colonia", coordinates: [-57.5300, -34.4300], population: 1156, description: "Pueblo costero" },
   { id: "col-15", name: "Playa Fomento", department: "Colonia", coordinates: [-57.25177, -34.433743], population: 456, description: "Balneario" },

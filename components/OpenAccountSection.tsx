@@ -87,8 +87,11 @@ export default function OpenAccountSection({
     if (accountType === "cliente") {
       payload = {
         type: "cliente",
+        rut: String(fd.get("rut") || ""),
+        razonSocial: String(fd.get("razon-social") || ""),
         commerce: String(fd.get("commerce") || ""),
         address: String(fd.get("address") || ""),
+        localidad: String(fd.get("localidad-cliente") || ""),
         category: String(fd.get("category") || ""),
         volume: String(fd.get("volume") || ""),
         contactName: String(fd.get("contact-name") || ""),
@@ -364,6 +367,50 @@ export default function OpenAccountSection({
           {/* CAMPOS PARA CLIENTE */}
           {accountType === "cliente" && (
             <>
+              {/* RUT */}
+              <div>
+                <label
+                  htmlFor="rut"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  RUT *
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="rut"
+                    type="text"
+                    name="rut"
+                    required
+                    placeholder="Ej: 21234567890"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    style={fieldStyle}
+                  />
+                </div>
+              </div>
+
+              {/* Razón Social */}
+              <div>
+                <label
+                  htmlFor="razon-social"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  Razón Social *
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="razon-social"
+                    type="text"
+                    name="razon-social"
+                    required
+                    placeholder="Nombre legal de la empresa"
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    style={fieldStyle}
+                  />
+                </div>
+              </div>
+
               {/* Commerce Name */}
               <div className="md:col-span-2">
                 <label
@@ -405,6 +452,33 @@ export default function OpenAccountSection({
                     className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
                     style={fieldStyle}
                   />
+                </div>
+              </div>
+
+              {/* Localidad */}
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="localidad-cliente"
+                  className="block text-xs sm:text-sm leading-6 font-semibold"
+                  style={{ color: "rgb(var(--text))" }}
+                >
+                  Localidad *
+                </label>
+                <div className="mt-2">
+                  <select
+                    id="localidad-cliente"
+                    name="localidad-cliente"
+                    required
+                    className="block w-full rounded-md px-3 sm:px-3.5 py-2 text-sm sm:text-base outline outline-1 -outline-offset-1 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500"
+                    style={fieldStyle}
+                  >
+                    <option value="">Seleccionar localidad</option>
+                    {localities.map((locality) => (
+                      <option key={locality.id} value={locality.name}>
+                        {locality.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

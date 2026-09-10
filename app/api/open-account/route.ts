@@ -7,8 +7,11 @@ export const runtime = "nodejs";
 
 type ClientePayload = {
   type: "cliente";
+  rut?: string;
+  razonSocial?: string;
   commerce?: string;
   address?: string;
+  localidad?: string;
   category?: string;
   volume?: string;
   contactName?: string;
@@ -184,8 +187,11 @@ export async function POST(req: NextRequest) {
 
     if (type === "cliente") {
       const {
+        rut = "",
+        razonSocial = "",
         commerce = "",
         address = "",
+        localidad = "",
         category = "",
         volume = "",
         contactName = "",
@@ -194,7 +200,7 @@ export async function POST(req: NextRequest) {
         agree = false,
       } = data as ClientePayload;
 
-      if (!commerce || !email || !address) {
+      if (!rut || !razonSocial || !commerce || !email || !address || !localidad) {
         return NextResponse.json(
           { ok: false, error: "Datos insuficientes" },
           { status: 400 }
@@ -227,8 +233,11 @@ export async function POST(req: NextRequest) {
       const replyTo = email || undefined;
       const clientFields = [
         { label: "Tipo", value: "Cliente" },
+        { label: "RUT", value: rut },
+        { label: "Razón Social", value: razonSocial },
         { label: "Comercio/Negocio", value: commerce },
         { label: "Dirección", value: address },
+        { label: "Localidad", value: localidad },
         { label: "Rubro/Categoría", value: category || "No especificado" },
         { label: "Volumen estimado", value: volume || "No especificado" },
         { label: "Contacto", value: contactName || "No especificado" },
@@ -249,8 +258,11 @@ export async function POST(req: NextRequest) {
         intro: "Se recibió una nueva solicitud de alta como cliente.",
         fields: [
           { label: "Tipo", value: "Cliente" },
+          { label: "RUT", value: rut },
+          { label: "Razón Social", value: razonSocial },
           { label: "Comercio/Negocio", value: commerce },
           { label: "Dirección", value: address },
+          { label: "Localidad", value: localidad },
           { label: "Rubro/Categoría", value: category || "No especificado" },
           { label: "Volumen estimado", value: volume || "No especificado" },
           { label: "Contacto", value: contactName || "No especificado" },
@@ -277,8 +289,11 @@ export async function POST(req: NextRequest) {
         <p>Nuestro equipo se pondrá en contacto contigo en las próximas 24 horas.</p>
         <p>Los datos registrados son:</p>
         <ul>
+          <li><strong>RUT:</strong> ${rut}</li>
+          <li><strong>Razón Social:</strong> ${razonSocial}</li>
           <li><strong>Comercio:</strong> ${commerce}</li>
           <li><strong>Dirección:</strong> ${address}</li>
+          <li><strong>Localidad:</strong> ${localidad}</li>
           <li><strong>Rubro:</strong> ${category || "No especificado"}</li>
           <li><strong>Volumen:</strong> ${volume || "No especificado"}</li>
         </ul>
